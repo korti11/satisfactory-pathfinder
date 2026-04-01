@@ -1,0 +1,25 @@
+# Normalize line endings to LF in the repository; check out as-is on all platforms
+* text=auto eol=lf
+
+# Rust source
+*.rs text eol=lf
+
+# JSON data files
+*.json text eol=lf
+
+# Markdown
+*.md text eol=lf
+
+# TOML config
+*.toml text eol=lf
+
+# Shell scripts — must be LF
+*.sh text eol=lf
+
+# Windows scripts — must be CRLF
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+
+# Binaries — no line ending conversion
+*.exe binary
+*.pdb binary

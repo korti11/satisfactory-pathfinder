@@ -14,7 +14,7 @@ use pathfinder_core::db::{load_factories, Db};
 use output::Formatter;
 
 #[derive(Parser)]
-#[command(name = "pathfinder", about = "Satisfactory factory planning companion")]
+#[command(name = "pathfinder", version, about = "Satisfactory factory planning companion")]
 struct Cli {
     /// Path to the data directory containing JSON game data files
     #[arg(long, default_value = "./data")]
