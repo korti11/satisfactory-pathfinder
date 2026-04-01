@@ -43,6 +43,12 @@ cargo build
 ./target/debug/pathfinder list items
 ```
 
+**Run the test suite:**
+
+```bash
+cargo test
+```
+
 **Run clippy before every commit — this is required:**
 
 ```bash
@@ -64,6 +70,24 @@ node tools/validate_data.js
 - **No hardcoded game data:** never hardcode item IDs, recipe IDs, or numeric game values in Rust — always load from the JSON data files
 - **JSON flag:** the `--json` flag must be checked early and affect all output — every command must support machine-readable output
 - **Formatting:** use `cargo fmt` before committing
+
+---
+
+## Testing
+
+Pathfinder has two layers of tests, following standard Rust conventions:
+
+**Unit tests** live inside the source file they test, in a `#[cfg(test)]` module at the bottom of the file. They test internal logic directly and are only compiled when running `cargo test`. Use these for pure functions in `pathfinder-core` (rate calculations, model methods, etc.).
+
+**Integration tests** live in `crates/pathfinder-cli/tests/cli.rs`. They compile the binary and run it as an external process against the real game data files, validating JSON output and exit codes. Use these to cover new CLI commands end-to-end.
+
+Run the full suite with:
+
+```bash
+cargo test
+```
+
+When adding a new CLI command, both a unit test (for any core logic) and an integration test (for the command itself) are expected. See [Adding a New CLI Command](#adding-a-new-cli-command) below.
 
 ---
 
@@ -91,7 +115,7 @@ External contributors should use the standard GitHub fork workflow:
    ```bash
    git checkout -b feat/my-new-command
    ```
-4. Make your changes, ensuring `cargo clippy` and `cargo build` pass cleanly
+4. Make your changes, ensuring `cargo test`, `cargo clippy`, and `cargo build` all pass cleanly
 5. If your change touches `data/`, run `node tools/validate_data.js`
 6. **Push** to your fork and open a Pull Request against `main` on this repository
 
@@ -101,6 +125,7 @@ External contributors should use the standard GitHub fork workflow:
 |--------|---------|
 | `feat:` | New CLI command or agent skill |
 | `fix:` | Bug fix |
+| `test:` | Adding or updating tests |
 | `data:` | Changes to `data/*.json` files |
 | `docs:` | README, CONTRIBUTING, or other documentation |
 | `chore:` | Build config, CI, dependencies, tooling |
@@ -115,8 +140,10 @@ Keep each PR focused — one feature or bug fix per PR. Write a clear descriptio
 2. Add the subcommand to the `Commands` enum in `crates/pathfinder-cli/src/main.rs`
 3. Implement the handler function following the existing `cmd_*` pattern
 4. Support both human-readable and `--json` output
-5. Run `cargo clippy` and fix all warnings
-6. Update the usage examples in `README.md`
+5. Add unit tests for any new core logic in the relevant `src/*.rs` file under `#[cfg(test)]`
+6. Add integration tests for the new command in `crates/pathfinder-cli/tests/cli.rs`
+7. Run `cargo test` and `cargo clippy` and fix all failures and warnings
+8. Update the usage examples in `README.md`
 
 ## Adding or Updating an Agent Skill
 
