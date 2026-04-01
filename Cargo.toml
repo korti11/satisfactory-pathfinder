@@ -1,0 +1,6 @@
+[workspace]
+members = [
+  "crates/pathfinder-core",
+  "crates/pathfinder-cli",
+]
+resolver = "2"
