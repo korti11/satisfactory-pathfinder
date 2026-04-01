@@ -40,9 +40,23 @@ cargo run --bin pathfinder -- bottleneck --factory path/to/factory.json --json
 - Always round machines UP to nearest integer for real-world builds,
   but report the exact decimal for planning purposes
 
+## Commit message convention
+
+| Prefix | Use for |
+|--------|---------|
+| `feat:` | New CLI command or agent skill |
+| `fix:` | Bug fix |
+| `test:` | Adding or updating tests |
+| `data:` | Changes to `data/*.json` files |
+| `docs:` | README, CONTRIBUTING, or other documentation |
+| `chore:` | Build config, CI, dependencies, tooling |
+
 ## Notes
-- Always run `cargo clippy` and fix warnings before considering a task done
+- Always run `cargo fmt` before committing — CI will reject unformatted code
+- Always run `cargo clippy` and fix all warnings before considering a task done — CI treats warnings as errors
+- Always run `cargo test` and fix all failures before considering a task done
 - Use `anyhow::Result` for error handling in the CLI layer; `thiserror` for domain errors in core
 - The `--json` flag must be checked early and affect all downstream formatting
 - Data file paths are configurable via `--data-dir` flag (default: `./data`)
 - Never hardcode item or recipe IDs in Rust logic — always load from JSON
+- Item and recipe IDs use `snake_case`; alternate recipe IDs are prefixed with `alt_`
