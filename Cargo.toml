@@ -4,3 +4,8 @@ members = [
   "crates/pathfinder-cli",
 ]
 resolver = "2"
+
+[workspace.package]
+license = "MIT"
+authors = ["korti11"]
+repository = "https://github.com/korti11/satisfactory-pathfinder"
