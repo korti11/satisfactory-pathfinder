@@ -146,3 +146,145 @@ pub fn calculate(
         power_mw,
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::models::{Recipe, RecipeIngredient};
+
+    /// 1 iron_ingot → 1 iron_rod every 4s in a Constructor (4 MW).
+    /// Base output rate = (1/4) * 60 = 15/min at 100% clock.
+    fn make_recipe() -> Recipe {
+        Recipe {
+            id: "iron_rod_default".to_string(),
+            name: "Iron Rod".to_string(),
+            is_alternate: false,
+            machine: "constructor".to_string(),
+            cycle_time_s: 4.0,
+            inputs: vec![RecipeIngredient { item: "iron_ingot".to_string(), amount: 1 }],
+            outputs: vec![RecipeIngredient { item: "iron_rod".to_string(), amount: 1 }],
+            unlock_tier: 0,
+            notes: String::new(),
+        }
+    }
+
+    // --- power_at_clock ---
+
+    #[test]
+    fn power_at_100_percent_equals_base() {
+        assert!((power_at_clock(4.0, 1.0) - 4.0).abs() < 0.001);
+    }
+
+    #[test]
+    fn power_scales_superlinearly_above_100() {
+        // At 200% clock, power should be more than 2× base (super-linear)
+        assert!(power_at_clock(4.0, 2.0) > 8.0);
+    }
+
+    #[test]
+    fn power_scales_sublinearly_below_100() {
+        // At 50% clock, power should be less than 0.5× base (sub-linear)
+        assert!(power_at_clock(4.0, 0.5) < 2.0);
+    }
+
+    // --- calculate ---
+
+    #[test]
+    fn calculate_one_machine_at_base_rate() {
+        // Targeting exactly 15/min requires exactly 1 machine at 100%
+        let result = calculate(&make_recipe(), "iron_rod", 15.0, 1.0, 4.0);
+        assert!((result.machines_exact - 1.0).abs() < 0.001);
+        assert!((result.clock_speed - 1.0).abs() < 0.001);
+    }
+
+    #[test]
+    fn calculate_multiple_machines() {
+        // 45/min at 100% clock = 3 machines
+        let result = calculate(&make_recipe(), "iron_rod", 45.0, 1.0, 4.0);
+        assert!((result.machines_exact - 3.0).abs() < 0.001);
+    }
+
+    #[test]
+    fn calculate_fractional_machines() {
+        // 22.5/min at 100% clock = 1.5 machines
+        let result = calculate(&make_recipe(), "iron_rod", 22.5, 1.0, 4.0);
+        assert!((result.machines_exact - 1.5).abs() < 0.001);
+    }
+
+    #[test]
+    fn calculate_input_rate_scales_with_output() {
+        // 30/min iron_rod requires 30/min iron_ingot (1:1 recipe)
+        let result = calculate(&make_recipe(), "iron_rod", 30.0, 1.0, 4.0);
+        let ingot_input = result.inputs.iter().find(|i| i.item == "iron_ingot").unwrap();
+        assert!((ingot_input.rate - 30.0).abs() < 0.001);
+    }
+
+    #[test]
+    fn calculate_power_scales_with_machine_count() {
+        // 2 machines at 100% clock = 2 × 4 MW = 8 MW
+        let result = calculate(&make_recipe(), "iron_rod", 30.0, 1.0, 4.0);
+        assert!((result.power_mw - 8.0).abs() < 0.01);
+    }
+
+    // --- overclock ---
+
+    #[test]
+    fn overclock_exactly_100_percent_needs_no_shards() {
+        // 3 machines × 15/min = 45/min → clock = 1.0, 0 shards
+        let result = overclock(&make_recipe(), "iron_rod", 3, 45.0, 4.0);
+        assert!(result.feasible);
+        assert!((result.clock_speed - 1.0).abs() < 0.001);
+        assert_eq!(result.shards_per_machine, 0);
+        assert_eq!(result.total_shards, 0);
+    }
+
+    #[test]
+    fn overclock_150_percent_needs_one_shard() {
+        // 1 machine, target 22.5/min → clock = 1.5 → 1 shard
+        let result = overclock(&make_recipe(), "iron_rod", 1, 22.5, 4.0);
+        assert!(result.feasible);
+        assert!((result.clock_speed - 1.5).abs() < 0.001);
+        assert_eq!(result.shards_per_machine, 1);
+    }
+
+    #[test]
+    fn overclock_200_percent_needs_two_shards() {
+        // 1 machine, target 30/min → clock = 2.0 → 2 shards
+        let result = overclock(&make_recipe(), "iron_rod", 1, 30.0, 4.0);
+        assert!(result.feasible);
+        assert!((result.clock_speed - 2.0).abs() < 0.001);
+        assert_eq!(result.shards_per_machine, 2);
+    }
+
+    #[test]
+    fn overclock_250_percent_needs_three_shards() {
+        // 1 machine, target 37.5/min → clock = 2.5 → 3 shards (max)
+        let result = overclock(&make_recipe(), "iron_rod", 1, 37.5, 4.0);
+        assert!(result.feasible);
+        assert!((result.clock_speed - 2.5).abs() < 0.001);
+        assert_eq!(result.shards_per_machine, 3);
+    }
+
+    #[test]
+    fn overclock_infeasible_above_max_clock() {
+        // 1 machine, target 60/min → clock = 4.0 → infeasible
+        let result = overclock(&make_recipe(), "iron_rod", 1, 60.0, 4.0);
+        assert!(!result.feasible);
+        assert!(result.clock_speed > 2.5);
+    }
+
+    #[test]
+    fn overclock_infeasible_gives_correct_machine_count_at_max() {
+        // 1 machine infeasible at 60/min; at 250% = 37.5/min → need ceil(60/37.5) = 2
+        let result = overclock(&make_recipe(), "iron_rod", 1, 60.0, 4.0);
+        assert_eq!(result.machines_at_max_clock, 2);
+    }
+
+    #[test]
+    fn overclock_total_shards_is_per_machine_times_count() {
+        // 4 machines at 150% → 1 shard each → 4 total
+        let result = overclock(&make_recipe(), "iron_rod", 4, 90.0, 4.0);
+        assert_eq!(result.shards_per_machine, 1);
+        assert_eq!(result.total_shards, 4);
+    }
+}

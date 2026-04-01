@@ -106,3 +106,53 @@ pub struct Factory {
     #[serde(default)]
     pub notes: String,
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn make_recipe() -> Recipe {
+        Recipe {
+            id: "test_recipe".to_string(),
+            name: "Test Recipe".to_string(),
+            is_alternate: false,
+            machine: "constructor".to_string(),
+            cycle_time_s: 6.0,
+            inputs: vec![RecipeIngredient { item: "iron_ingot".to_string(), amount: 3 }],
+            outputs: vec![
+                RecipeIngredient { item: "iron_rod".to_string(), amount: 2 },
+                RecipeIngredient { item: "scrap".to_string(), amount: 1 },
+            ],
+            unlock_tier: 0,
+            notes: String::new(),
+        }
+    }
+
+    #[test]
+    fn output_rate_primary_output() {
+        // 2 iron_rod per 6s = 20/min
+        assert!((make_recipe().output_rate("iron_rod") - 20.0).abs() < 0.001);
+    }
+
+    #[test]
+    fn output_rate_secondary_output() {
+        // 1 scrap per 6s = 10/min
+        assert!((make_recipe().output_rate("scrap") - 10.0).abs() < 0.001);
+    }
+
+    #[test]
+    fn output_rate_unknown_item_returns_zero() {
+        assert_eq!(make_recipe().output_rate("nonexistent"), 0.0);
+    }
+
+    #[test]
+    fn input_rate_known_item() {
+        // 3 iron_ingot per 6s = 30/min
+        assert!((make_recipe().input_rate("iron_ingot") - 30.0).abs() < 0.001);
+    }
+
+    #[test]
+    fn input_rate_unknown_item_returns_zero() {
+        assert_eq!(make_recipe().input_rate("nonexistent"), 0.0);
+    }
+}
