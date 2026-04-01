@@ -22,7 +22,6 @@ pub struct ChainOptions {
     pub no_alternates: bool,
 }
 
-
 /// Recursively resolve the full production chain for `item_id` at `target_rate`.
 pub fn resolve_chain(
     db: &Db,

@@ -180,7 +180,15 @@ fn chain_unknown_item_exits_with_error() {
 #[test]
 fn overclock_one_machine_at_base_rate_is_100_percent() {
     let output = pathfinder()
-        .args(["overclock", "Iron Rod", "--machines", "1", "--rate", "15", "--json"])
+        .args([
+            "overclock",
+            "Iron Rod",
+            "--machines",
+            "1",
+            "--rate",
+            "15",
+            "--json",
+        ])
         .assert()
         .success()
         .get_output()
@@ -197,7 +205,15 @@ fn overclock_one_machine_at_base_rate_is_100_percent() {
 #[test]
 fn overclock_infeasible_reports_machines_at_max() {
     let output = pathfinder()
-        .args(["overclock", "Iron Rod", "--machines", "1", "--rate", "1000", "--json"])
+        .args([
+            "overclock",
+            "Iron Rod",
+            "--machines",
+            "1",
+            "--rate",
+            "1000",
+            "--json",
+        ])
         .assert()
         .success()
         .get_output()
@@ -225,7 +241,9 @@ fn sink_list_returns_only_sinkable_items() {
 
     let items: Vec<serde_json::Value> = serde_json::from_slice(&output).unwrap();
     assert!(!items.is_empty());
-    assert!(items.iter().all(|i| i["sink_value"].as_u64().unwrap_or(0) > 0));
+    assert!(items
+        .iter()
+        .all(|i| i["sink_value"].as_u64().unwrap_or(0) > 0));
 }
 
 #[test]
@@ -295,7 +313,5 @@ fn nuclear_plutonium_produces_less_waste_than_uranium() {
 
     let u: serde_json::Value = serde_json::from_slice(&uranium).unwrap();
     let p: serde_json::Value = serde_json::from_slice(&plutonium).unwrap();
-    assert!(
-        u["waste_per_min"].as_f64().unwrap() > p["waste_per_min"].as_f64().unwrap()
-    );
+    assert!(u["waste_per_min"].as_f64().unwrap() > p["waste_per_min"].as_f64().unwrap());
 }

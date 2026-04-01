@@ -7,14 +7,18 @@ use anyhow::{bail, Result};
 use clap::{Parser, Subcommand};
 use serde_json::json;
 
+use output::Formatter;
+use pathfinder_core::bottleneck::analyse_factory;
 use pathfinder_core::calculator::{calculate, overclock};
 use pathfinder_core::chain::{resolve_chain, ChainNode, ChainOptions};
-use pathfinder_core::bottleneck::analyse_factory;
 use pathfinder_core::db::{load_factories, Db};
-use output::Formatter;
 
 #[derive(Parser)]
-#[command(name = "pathfinder", version, about = "Satisfactory factory planning companion")]
+#[command(
+    name = "pathfinder",
+    version,
+    about = "Satisfactory factory planning companion"
+)]
 struct Cli {
     /// Path to the data directory containing JSON game data files
     #[arg(long, default_value = "./data")]
@@ -130,13 +134,28 @@ fn main() -> Result<()> {
 
     match cli.command {
         Commands::List { target } => cmd_list(&db, &fmt, target),
-        Commands::Calc { recipe, rate, clock } => cmd_calc(&db, &fmt, &recipe, rate, clock / 100.0),
-        Commands::Chain { item, rate, no_alternates, assume } => {
-            cmd_chain(&db, &fmt, &item, rate, no_alternates, &assume)
-        }
+        Commands::Calc {
+            recipe,
+            rate,
+            clock,
+        } => cmd_calc(&db, &fmt, &recipe, rate, clock / 100.0),
+        Commands::Chain {
+            item,
+            rate,
+            no_alternates,
+            assume,
+        } => cmd_chain(&db, &fmt, &item, rate, no_alternates, &assume),
         Commands::Bottleneck { factory, world } => cmd_bottleneck(&db, &fmt, factory, world),
-        Commands::Overclock { recipe, machines, rate } => cmd_overclock(&db, &fmt, &recipe, machines, rate),
-        Commands::Sink { item, rate, category } => cmd_sink(&db, &fmt, item.as_deref(), rate, category.as_deref()),
+        Commands::Overclock {
+            recipe,
+            machines,
+            rate,
+        } => cmd_overclock(&db, &fmt, &recipe, machines, rate),
+        Commands::Sink {
+            item,
+            rate,
+            category,
+        } => cmd_sink(&db, &fmt, item.as_deref(), rate, category.as_deref()),
         Commands::Nuclear { plants, fuel } => cmd_nuclear(&fmt, plants, &fuel),
     }
 }
@@ -189,10 +208,16 @@ fn cmd_list(db: &Db, fmt: &Formatter, target: ListTarget) -> Result<()> {
             } else {
                 fmt.header(&format!("Recipes ({})", recipes.len()));
                 for r in &recipes {
-                    let inputs: Vec<String> =
-                        r.inputs.iter().map(|i| format!("{}×{}", i.amount, i.item)).collect();
-                    let outputs: Vec<String> =
-                        r.outputs.iter().map(|o| format!("{}×{}", o.amount, o.item)).collect();
+                    let inputs: Vec<String> = r
+                        .inputs
+                        .iter()
+                        .map(|i| format!("{}×{}", i.amount, i.item))
+                        .collect();
+                    let outputs: Vec<String> = r
+                        .outputs
+                        .iter()
+                        .map(|o| format!("{}×{}", o.amount, o.item))
+                        .collect();
                     println!(
                         "  {:<50} [{}] {}→{}",
                         r.name,
@@ -234,7 +259,10 @@ fn cmd_calc(db: &Db, fmt: &Formatter, query: &str, rate: f64, clock: f64) -> Res
         .ok_or_else(|| anyhow::anyhow!("No recipe found for '{}'", query))?;
 
     if recipe.cycle_time_s <= 0.0 {
-        bail!("Recipe '{}' is an equipment workshop recipe and cannot be calculated", recipe.id);
+        bail!(
+            "Recipe '{}' is an equipment workshop recipe and cannot be calculated",
+            recipe.id
+        );
     }
 
     let primary_output = recipe
@@ -262,8 +290,14 @@ fn cmd_calc(db: &Db, fmt: &Formatter, query: &str, rate: f64, clock: f64) -> Res
     } else {
         fmt.header(&format!("calc: {}", result.recipe_name));
         fmt.separator();
-        fmt.field("Recipe", &format!("{} ({})", result.recipe_name, machine_name));
-        fmt.field("Target", &format!("{} {}/min", result.target_rate, primary_output));
+        fmt.field(
+            "Recipe",
+            &format!("{} ({})", result.recipe_name, machine_name),
+        );
+        fmt.field(
+            "Target",
+            &format!("{} {}/min", result.target_rate, primary_output),
+        );
         fmt.field(
             "Machines",
             &format!(
@@ -311,11 +345,16 @@ fn cmd_chain(
         if parts.len() != 2 {
             bail!("--assume format must be ITEM:RATE, got '{}'", arg);
         }
-        let supply_rate: f64 = parts[1].parse().map_err(|_| anyhow::anyhow!("Invalid rate in --assume '{}'", arg))?;
+        let supply_rate: f64 = parts[1]
+            .parse()
+            .map_err(|_| anyhow::anyhow!("Invalid rate in --assume '{}'", arg))?;
         assumed_supplies.insert(parts[0].to_string(), supply_rate);
     }
 
-    let opts = ChainOptions { assumed_supplies, no_alternates };
+    let opts = ChainOptions {
+        assumed_supplies,
+        no_alternates,
+    };
     let mut visited = std::collections::HashSet::new();
     let tree = resolve_chain(db, &item_id, rate, &opts, &mut visited);
 
@@ -330,7 +369,10 @@ fn cmd_chain(
 
 fn print_chain_node(db: &Db, node: &ChainNode, depth: usize) {
     let indent = "  ".repeat(depth);
-    let item_name = db.item(&node.item_id).map(|i| i.name.as_str()).unwrap_or(&node.item_id);
+    let item_name = db
+        .item(&node.item_id)
+        .map(|i| i.name.as_str())
+        .unwrap_or(&node.item_id);
 
     if node.assumed {
         println!("{}[assumed] {:.2}/min  {}", indent, node.rate, item_name);
@@ -344,9 +386,7 @@ fn print_chain_node(db: &Db, node: &ChainNode, depth: usize) {
         Some(calc) => {
             println!(
                 "{}{:.2}/min  {}  →  {:.3}x {}",
-                indent, node.rate, item_name,
-                calc.machines_exact,
-                calc.machine_id
+                indent, node.rate, item_name, calc.machines_exact, calc.machine_id
             );
         }
     }
@@ -379,10 +419,17 @@ fn cmd_overclock(db: &Db, fmt: &Formatter, query: &str, machines: u64, rate: f64
         .ok_or_else(|| anyhow::anyhow!("No recipe found for '{}'", query))?;
 
     if recipe.cycle_time_s <= 0.0 {
-        bail!("Recipe '{}' cannot be calculated (equipment workshop recipe)", recipe.id);
+        bail!(
+            "Recipe '{}' cannot be calculated (equipment workshop recipe)",
+            recipe.id
+        );
     }
 
-    let primary_output = recipe.outputs.first().map(|o| o.item.as_str()).unwrap_or("");
+    let primary_output = recipe
+        .outputs
+        .first()
+        .map(|o| o.item.as_str())
+        .unwrap_or("");
     let machine = db.machine(&recipe.machine);
     let base_power = machine.map(|m| m.power_mw).unwrap_or(0.0);
     let machine_name = machine.map(|m| m.name.as_str()).unwrap_or(&recipe.machine);
@@ -406,24 +453,61 @@ fn cmd_overclock(db: &Db, fmt: &Formatter, query: &str, machines: u64, rate: f64
     } else {
         fmt.header(&format!("overclock: {}", result.recipe_name));
         fmt.separator();
-        fmt.field("Recipe", &format!("{} ({})", result.recipe_name, machine_name));
-        fmt.field("Target", &format!("{}/min with {} machines", result.target_rate, result.machine_count));
+        fmt.field(
+            "Recipe",
+            &format!("{} ({})", result.recipe_name, machine_name),
+        );
+        fmt.field(
+            "Target",
+            &format!(
+                "{}/min with {} machines",
+                result.target_rate, result.machine_count
+            ),
+        );
         if result.feasible {
-            fmt.field("Clock speed", &format!("{:.4}  ({:.2}%)", result.clock_speed, result.clock_speed * 100.0));
-            fmt.field("Power shards", &format!("{} per machine  ({} total)", result.shards_per_machine, result.total_shards));
-            fmt.field("Power draw", &format!("{:.2} MW/machine  ({:.2} MW total)", result.power_per_machine_mw, result.total_power_mw));
+            fmt.field(
+                "Clock speed",
+                &format!(
+                    "{:.4}  ({:.2}%)",
+                    result.clock_speed,
+                    result.clock_speed * 100.0
+                ),
+            );
+            fmt.field(
+                "Power shards",
+                &format!(
+                    "{} per machine  ({} total)",
+                    result.shards_per_machine, result.total_shards
+                ),
+            );
+            fmt.field(
+                "Power draw",
+                &format!(
+                    "{:.2} MW/machine  ({:.2} MW total)",
+                    result.power_per_machine_mw, result.total_power_mw
+                ),
+            );
         } else {
             println!(
                 "  ✗ Requires {:.2}x clock ({:.0}%) — exceeds 250% maximum.",
                 result.clock_speed,
                 result.clock_speed * 100.0
             );
-            fmt.field("Solution", &format!("Use {} machines at 250% (3 shards each)", result.machines_at_max_clock));
-            fmt.field("Power draw", &format!(
-                "{:.2} MW/machine  ({:.2} MW total at 250%)",
-                result.power_per_machine_mw,
-                result.power_per_machine_mw * result.machines_at_max_clock as f64
-            ));
+            fmt.field(
+                "Solution",
+                &format!(
+                    "Use {} machines at 250% (3 shards each)",
+                    result.machines_at_max_clock
+                ),
+            );
+            fmt.field(
+                "Power draw",
+                &format!(
+                    "{:.2} MW/machine  ({:.2} MW total at 250%)",
+                    result.power_per_machine_mw,
+                    result.power_per_machine_mw * result.machines_at_max_clock as f64
+                ),
+            );
         }
     }
 
@@ -434,7 +518,13 @@ fn cmd_overclock(db: &Db, fmt: &Formatter, query: &str, machines: u64, rate: f64
 // sink
 // ---------------------------------------------------------------------------
 
-fn cmd_sink(db: &Db, fmt: &Formatter, item_query: Option<&str>, rate: Option<f64>, category: Option<&str>) -> Result<()> {
+fn cmd_sink(
+    db: &Db,
+    fmt: &Formatter,
+    item_query: Option<&str>,
+    rate: Option<f64>,
+    category: Option<&str>,
+) -> Result<()> {
     if let Some(query) = item_query {
         let lower = query.to_lowercase();
         let item = db
@@ -482,17 +572,25 @@ fn cmd_sink(db: &Db, fmt: &Formatter, item_query: Option<&str>, rate: Option<f64
     items.sort_by(|a, b| b.sink_value.cmp(&a.sink_value));
 
     if fmt.json_mode {
-        let out: Vec<_> = items.iter().map(|i| json!({
-            "item": i.id,
-            "name": i.name,
-            "category": i.category,
-            "sink_value": i.sink_value,
-        })).collect();
+        let out: Vec<_> = items
+            .iter()
+            .map(|i| {
+                json!({
+                    "item": i.id,
+                    "name": i.name,
+                    "category": i.category,
+                    "sink_value": i.sink_value,
+                })
+            })
+            .collect();
         fmt.print_json(&out);
     } else {
         fmt.header(&format!("Sinkable items ({})", items.len()));
         for item in &items {
-            println!("  {:<40} [{:<10}] {:>8} pts", item.name, item.category, item.sink_value);
+            println!(
+                "  {:<40} [{:<10}] {:>8} pts",
+                item.name, item.category, item.sink_value
+            );
         }
     }
 
@@ -520,7 +618,11 @@ fn cmd_nuclear(fmt: &Formatter, plants: u64, fuel: &str) -> Result<()> {
         ),
     };
 
-    let fuel_label = if fuel == "plutonium" { "Plutonium Fuel Rod" } else { "Uranium Fuel Rod" };
+    let fuel_label = if fuel == "plutonium" {
+        "Plutonium Fuel Rod"
+    } else {
+        "Uranium Fuel Rod"
+    };
     let power_mw_per_plant = 2500.0_f64;
     let water_per_plant = 240.0_f64;
 
@@ -544,15 +646,39 @@ fn cmd_nuclear(fmt: &Formatter, plants: u64, fuel: &str) -> Result<()> {
             "waste_processing_command": waste_processing_hint.replace("<waste/min>", &total_waste.to_string()),
         }));
     } else {
-        fmt.header(&format!("nuclear: {} × Nuclear Power Plant ({})", plants, fuel_label));
+        fmt.header(&format!(
+            "nuclear: {} × Nuclear Power Plant ({})",
+            plants, fuel_label
+        ));
         fmt.separator();
-        fmt.field("Power output", &format!("{:.0} MW total  ({:.0} MW/plant)", total_power, power_mw_per_plant));
-        fmt.field(&format!("{} consumed", fuel_label), &format!("{:.2}/min total", total_rods));
-        fmt.field("Water required", &format!("{:.0} m³/min  →  {} Water Extractors at 100%", total_water, water_extractors));
-        fmt.field(&format!("{} produced", waste_item), &format!("{:.0}/min total", total_waste));
+        fmt.field(
+            "Power output",
+            &format!(
+                "{:.0} MW total  ({:.0} MW/plant)",
+                total_power, power_mw_per_plant
+            ),
+        );
+        fmt.field(
+            &format!("{} consumed", fuel_label),
+            &format!("{:.2}/min total", total_rods),
+        );
+        fmt.field(
+            "Water required",
+            &format!(
+                "{:.0} m³/min  →  {} Water Extractors at 100%",
+                total_water, water_extractors
+            ),
+        );
+        fmt.field(
+            &format!("{} produced", waste_item),
+            &format!("{:.0}/min total", total_waste),
+        );
         fmt.separator();
         println!("  To plan waste processing chain, run:");
-        println!("    {}", waste_processing_hint.replace("<waste/min>", &format!("{:.0}", total_waste)));
+        println!(
+            "    {}",
+            waste_processing_hint.replace("<waste/min>", &format!("{:.0}", total_waste))
+        );
     }
 
     Ok(())
@@ -602,7 +728,10 @@ fn cmd_bottleneck(
             println!("No issues found.");
         } else {
             for issue in &all_issues {
-                println!("[{}] {}/{}: {}", issue.severity, issue.factory_id, issue.machine_group_id, issue.message);
+                println!(
+                    "[{}] {}/{}: {}",
+                    issue.severity, issue.factory_id, issue.machine_group_id, issue.message
+                );
             }
         }
     }

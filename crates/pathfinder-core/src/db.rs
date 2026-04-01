@@ -108,7 +108,10 @@ impl Db {
     }
 
     pub fn resources_for_item(&self, item_id: &str) -> Vec<&ResourceNode> {
-        self.resources.iter().filter(|r| r.item == item_id).collect()
+        self.resources
+            .iter()
+            .filter(|r| r.item == item_id)
+            .collect()
     }
 
     /// Total extraction capacity (items/min) for an item at 100% clock with Mk.2 miners.
@@ -129,6 +132,5 @@ fn load_json<T: serde::de::DeserializeOwned>(path: impl AsRef<Path>) -> Result<T
     let path = path.as_ref();
     let content = std::fs::read_to_string(path)
         .with_context(|| format!("failed to read {}", path.display()))?;
-    serde_json::from_str(&content)
-        .with_context(|| format!("failed to parse {}", path.display()))
+    serde_json::from_str(&content).with_context(|| format!("failed to parse {}", path.display()))
 }

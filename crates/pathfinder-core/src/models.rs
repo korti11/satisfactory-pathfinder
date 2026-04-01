@@ -118,10 +118,19 @@ mod tests {
             is_alternate: false,
             machine: "constructor".to_string(),
             cycle_time_s: 6.0,
-            inputs: vec![RecipeIngredient { item: "iron_ingot".to_string(), amount: 3 }],
+            inputs: vec![RecipeIngredient {
+                item: "iron_ingot".to_string(),
+                amount: 3,
+            }],
             outputs: vec![
-                RecipeIngredient { item: "iron_rod".to_string(), amount: 2 },
-                RecipeIngredient { item: "scrap".to_string(), amount: 1 },
+                RecipeIngredient {
+                    item: "iron_rod".to_string(),
+                    amount: 2,
+                },
+                RecipeIngredient {
+                    item: "scrap".to_string(),
+                    amount: 1,
+                },
             ],
             unlock_tier: 0,
             notes: String::new(),

@@ -161,8 +161,14 @@ mod tests {
             is_alternate: false,
             machine: "constructor".to_string(),
             cycle_time_s: 4.0,
-            inputs: vec![RecipeIngredient { item: "iron_ingot".to_string(), amount: 1 }],
-            outputs: vec![RecipeIngredient { item: "iron_rod".to_string(), amount: 1 }],
+            inputs: vec![RecipeIngredient {
+                item: "iron_ingot".to_string(),
+                amount: 1,
+            }],
+            outputs: vec![RecipeIngredient {
+                item: "iron_rod".to_string(),
+                amount: 1,
+            }],
             unlock_tier: 0,
             notes: String::new(),
         }
@@ -215,7 +221,11 @@ mod tests {
     fn calculate_input_rate_scales_with_output() {
         // 30/min iron_rod requires 30/min iron_ingot (1:1 recipe)
         let result = calculate(&make_recipe(), "iron_rod", 30.0, 1.0, 4.0);
-        let ingot_input = result.inputs.iter().find(|i| i.item == "iron_ingot").unwrap();
+        let ingot_input = result
+            .inputs
+            .iter()
+            .find(|i| i.item == "iron_ingot")
+            .unwrap();
         assert!((ingot_input.rate - 30.0).abs() < 0.001);
     }
 

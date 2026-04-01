@@ -91,7 +91,11 @@ pub fn analyse_factory(db: &Db, factory: &Factory) -> Vec<Issue> {
         for factory_out in &factory.outputs {
             if factory_out.item == *primary_output {
                 let declared = factory_out.rate;
-                let ratio = if declared > 0.0 { effective_rate / declared } else { 1.0 };
+                let ratio = if declared > 0.0 {
+                    effective_rate / declared
+                } else {
+                    1.0
+                };
                 if ratio < 0.95 {
                     issues.push(Issue {
                         severity: Severity::Warning,
@@ -99,7 +103,11 @@ pub fn analyse_factory(db: &Db, factory: &Factory) -> Vec<Issue> {
                         machine_group_id: group.id.clone(),
                         message: format!(
                             "'{}' produces {:.1}/min but declares {:.1}/min for {} ({:.0}%)",
-                            group.id, effective_rate, declared, primary_output, ratio * 100.0
+                            group.id,
+                            effective_rate,
+                            declared,
+                            primary_output,
+                            ratio * 100.0
                         ),
                     });
                 } else if ratio > 1.05 {
@@ -109,7 +117,11 @@ pub fn analyse_factory(db: &Db, factory: &Factory) -> Vec<Issue> {
                         machine_group_id: group.id.clone(),
                         message: format!(
                             "'{}' produces {:.1}/min, exceeds declared {:.1}/min for {} ({:.0}%)",
-                            group.id, effective_rate, declared, primary_output, ratio * 100.0
+                            group.id,
+                            effective_rate,
+                            declared,
+                            primary_output,
+                            ratio * 100.0
                         ),
                     });
                 }
@@ -117,7 +129,13 @@ pub fn analyse_factory(db: &Db, factory: &Factory) -> Vec<Issue> {
         }
 
         // Check input supply vs required
-        let _ = calculate(recipe, primary_output, effective_rate, group.clock_speed, machine.power_mw);
+        let _ = calculate(
+            recipe,
+            primary_output,
+            effective_rate,
+            group.clock_speed,
+            machine.power_mw,
+        );
         for recipe_inp in &recipe.inputs {
             let required = (recipe_inp.amount as f64 / recipe.cycle_time_s)
                 * 60.0

@@ -1,8 +1,8 @@
-pub mod models;
-pub mod db;
+pub mod bottleneck;
 pub mod calculator;
 pub mod chain;
-pub mod bottleneck;
+pub mod db;
+pub mod models;
 
-pub use models::*;
 pub use db::Db;
+pub use models::*;
