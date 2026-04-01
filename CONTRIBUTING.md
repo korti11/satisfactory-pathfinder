@@ -49,7 +49,13 @@ cargo build
 cargo test
 ```
 
-**Run clippy before every commit — this is required:**
+**Format your code before every commit — CI will reject unformatted code:**
+
+```bash
+cargo fmt
+```
+
+**Run clippy before every commit — CI will reject warnings:**
 
 ```bash
 cargo clippy
@@ -115,7 +121,7 @@ External contributors should use the standard GitHub fork workflow:
    ```bash
    git checkout -b feat/my-new-command
    ```
-4. Make your changes, ensuring `cargo test`, `cargo clippy`, and `cargo build` all pass cleanly
+4. Make your changes, ensuring `cargo fmt`, `cargo test`, `cargo clippy`, and `cargo build` all pass cleanly
 5. If your change touches `data/`, run `node tools/validate_data.js`
 6. **Push** to your fork and open a Pull Request against `main` on this repository
 
@@ -142,7 +148,7 @@ Keep each PR focused — one feature or bug fix per PR. Write a clear descriptio
 4. Support both human-readable and `--json` output
 5. Add unit tests for any new core logic in the relevant `src/*.rs` file under `#[cfg(test)]`
 6. Add integration tests for the new command in `crates/pathfinder-cli/tests/cli.rs`
-7. Run `cargo test` and `cargo clippy` and fix all failures and warnings
+7. Run `cargo fmt`, `cargo test`, and `cargo clippy` and fix all failures and warnings
 8. Update the usage examples in `README.md`
 
 ## Adding or Updating an Agent Skill
