@@ -1,0 +1,1577 @@
+[
+  {
+    "id": "iron_ore",
+    "name": "Iron Ore",
+    "category": "raw",
+    "stack_size": 100,
+    "sink_value": 1,
+    "is_raw": true,
+    "notes": "Mined from iron ore nodes."
+  },
+  {
+    "id": "copper_ore",
+    "name": "Copper Ore",
+    "category": "raw",
+    "stack_size": 100,
+    "sink_value": 3,
+    "is_raw": true,
+    "notes": "Mined from copper ore nodes."
+  },
+  {
+    "id": "limestone",
+    "name": "Limestone",
+    "category": "raw",
+    "stack_size": 100,
+    "sink_value": 2,
+    "is_raw": true,
+    "notes": "Mined from limestone nodes."
+  },
+  {
+    "id": "coal",
+    "name": "Coal",
+    "category": "raw",
+    "stack_size": 100,
+    "sink_value": 3,
+    "is_raw": true,
+    "notes": "Mined from coal nodes."
+  },
+  {
+    "id": "caterium_ore",
+    "name": "Caterium Ore",
+    "category": "raw",
+    "stack_size": 100,
+    "sink_value": 7,
+    "is_raw": true,
+    "notes": "Mined from caterium ore nodes."
+  },
+  {
+    "id": "raw_quartz",
+    "name": "Raw Quartz",
+    "category": "raw",
+    "stack_size": 100,
+    "sink_value": 15,
+    "is_raw": true,
+    "notes": "Mined from quartz nodes."
+  },
+  {
+    "id": "sulfur",
+    "name": "Sulfur",
+    "category": "raw",
+    "stack_size": 100,
+    "sink_value": 11,
+    "is_raw": true,
+    "notes": "Mined from sulfur nodes."
+  },
+  {
+    "id": "bauxite",
+    "name": "Bauxite",
+    "category": "raw",
+    "stack_size": 100,
+    "sink_value": 8,
+    "is_raw": true,
+    "notes": "Mined from bauxite nodes."
+  },
+  {
+    "id": "uranium_ore",
+    "name": "Uranium Ore",
+    "category": "raw",
+    "stack_size": 100,
+    "sink_value": 35,
+    "is_raw": true,
+    "notes": "Mined from uranium nodes. Radioactive."
+  },
+  {
+    "id": "sam",
+    "name": "SAM",
+    "category": "raw",
+    "stack_size": 100,
+    "sink_value": 0,
+    "is_raw": true,
+    "notes": "Strange Alien Metal. Mined from SAM nodes."
+  },
+  {
+    "id": "crude_oil",
+    "name": "Crude Oil",
+    "category": "liquid",
+    "stack_size": 0,
+    "sink_value": 0,
+    "is_raw": true,
+    "notes": "Extracted from oil nodes. Transported via pipes."
+  },
+  {
+    "id": "water",
+    "name": "Water",
+    "category": "liquid",
+    "stack_size": 0,
+    "sink_value": 0,
+    "is_raw": true,
+    "notes": "Extracted via water extractors. Transported via pipes."
+  },
+  {
+    "id": "nitrogen_gas",
+    "name": "Nitrogen Gas",
+    "category": "gas",
+    "stack_size": 0,
+    "sink_value": 0,
+    "is_raw": true,
+    "notes": "Extracted from nitrogen nodes. Transported via pipes."
+  },
+  {
+    "id": "leaves",
+    "name": "Leaves",
+    "category": "raw",
+    "stack_size": 500,
+    "sink_value": 3,
+    "is_raw": true,
+    "notes": "Harvested from plants in the world."
+  },
+  {
+    "id": "wood",
+    "name": "Wood",
+    "category": "raw",
+    "stack_size": 200,
+    "sink_value": 30,
+    "is_raw": true,
+    "notes": "Harvested from trees in the world."
+  },
+  {
+    "id": "mycelia",
+    "name": "Mycelia",
+    "category": "raw",
+    "stack_size": 200,
+    "sink_value": 10,
+    "is_raw": true,
+    "notes": "Harvested from fungal plants."
+  },
+  {
+    "id": "beryl_nut",
+    "name": "Beryl Nut",
+    "category": "raw",
+    "stack_size": 100,
+    "sink_value": 10,
+    "is_raw": true,
+    "notes": "Harvested from beryl nut bushes."
+  },
+  {
+    "id": "paleberry",
+    "name": "Paleberry",
+    "category": "raw",
+    "stack_size": 100,
+    "sink_value": 10,
+    "is_raw": true,
+    "notes": "Harvested from paleberry plants."
+  },
+  {
+    "id": "bacon_agaric",
+    "name": "Bacon Agaric",
+    "category": "raw",
+    "stack_size": 50,
+    "sink_value": 10,
+    "is_raw": true,
+    "notes": "Harvested from bacon agaric mushrooms."
+  },
+  {
+    "id": "alien_protein",
+    "name": "Alien Protein",
+    "category": "raw",
+    "stack_size": 100,
+    "sink_value": 0,
+    "is_raw": true,
+    "notes": "Obtained from alien creature remains."
+  },
+  {
+    "id": "hog_remains",
+    "name": "Hog Remains",
+    "category": "raw",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": true,
+    "notes": "Dropped by Alpha Hogs."
+  },
+  {
+    "id": "hatcher_remains",
+    "name": "Hatcher Remains",
+    "category": "raw",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": true,
+    "notes": "Dropped by Hatchers."
+  },
+  {
+    "id": "stinger_remains",
+    "name": "Stinger Remains",
+    "category": "raw",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": true,
+    "notes": "Dropped by Stingers."
+  },
+  {
+    "id": "plasma_spitter_remains",
+    "name": "Plasma Spitter Remains",
+    "category": "raw",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": true,
+    "notes": "Dropped by Plasma Spitters."
+  },
+  {
+    "id": "blue_power_slug",
+    "name": "Blue Power Slug",
+    "category": "raw",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": true,
+    "notes": "Found in the world. Used to craft Power Shards (1 slug = 1 shard)."
+  },
+  {
+    "id": "yellow_power_slug",
+    "name": "Yellow Power Slug",
+    "category": "raw",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": true,
+    "notes": "Found in the world. Used to craft Power Shards (1 slug = 2 shards)."
+  },
+  {
+    "id": "purple_power_slug",
+    "name": "Purple Power Slug",
+    "category": "raw",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": true,
+    "notes": "Found in the world. Used to craft Power Shards (1 slug = 3 shards)."
+  },
+  {
+    "id": "hard_drive",
+    "name": "Hard Drive",
+    "category": "raw",
+    "stack_size": 100,
+    "sink_value": 0,
+    "is_raw": true,
+    "notes": "Found in crash sites. Used to unlock alternate recipes."
+  },
+  {
+    "id": "mercer_sphere",
+    "name": "Mercer Sphere",
+    "category": "raw",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": true,
+    "notes": "Special artifact found in the world. Used for dimensional depots."
+  },
+  {
+    "id": "somersloop",
+    "name": "Somersloop",
+    "category": "raw",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": true,
+    "notes": "Special artifact found in the world. Used for production amplification."
+  },
+  {
+    "id": "uranium_waste",
+    "name": "Uranium Waste",
+    "category": "raw",
+    "stack_size": 500,
+    "sink_value": 0,
+    "is_raw": true,
+    "notes": "Byproduct of uranium fuel rods in nuclear power plants. Radioactive."
+  },
+  {
+    "id": "plutonium_waste",
+    "name": "Plutonium Waste",
+    "category": "raw",
+    "stack_size": 500,
+    "sink_value": 0,
+    "is_raw": true,
+    "notes": "Byproduct of plutonium fuel rods in nuclear power plants. Radioactive."
+  },
+  {
+    "id": "iron_ingot",
+    "name": "Iron Ingot",
+    "category": "ingot",
+    "stack_size": 100,
+    "sink_value": 2,
+    "is_raw": false,
+    "notes": "Smelted from Iron Ore."
+  },
+  {
+    "id": "copper_ingot",
+    "name": "Copper Ingot",
+    "category": "ingot",
+    "stack_size": 100,
+    "sink_value": 6,
+    "is_raw": false,
+    "notes": "Smelted from Copper Ore."
+  },
+  {
+    "id": "caterium_ingot",
+    "name": "Caterium Ingot",
+    "category": "ingot",
+    "stack_size": 100,
+    "sink_value": 42,
+    "is_raw": false,
+    "notes": "Smelted from Caterium Ore."
+  },
+  {
+    "id": "steel_ingot",
+    "name": "Steel Ingot",
+    "category": "ingot",
+    "stack_size": 100,
+    "sink_value": 8,
+    "is_raw": false,
+    "notes": "Produced from Iron Ore and Coal in a Foundry."
+  },
+  {
+    "id": "aluminum_ingot",
+    "name": "Aluminum Ingot",
+    "category": "ingot",
+    "stack_size": 100,
+    "sink_value": 131,
+    "is_raw": false,
+    "notes": "Produced from Aluminum Scrap in a Foundry."
+  },
+  {
+    "id": "ficsite_ingot",
+    "name": "Ficsite Ingot",
+    "category": "ingot",
+    "stack_size": 100,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Phase 5 endgame ingot produced from Reanimated SAM in a Converter."
+  },
+  {
+    "id": "iron_plate",
+    "name": "Iron Plate",
+    "category": "part",
+    "stack_size": 200,
+    "sink_value": 6,
+    "is_raw": false,
+    "notes": "Basic iron component."
+  },
+  {
+    "id": "iron_rod",
+    "name": "Iron Rod",
+    "category": "part",
+    "stack_size": 200,
+    "sink_value": 4,
+    "is_raw": false,
+    "notes": "Basic iron component."
+  },
+  {
+    "id": "screw",
+    "name": "Screw",
+    "category": "part",
+    "stack_size": 500,
+    "sink_value": 2,
+    "is_raw": false,
+    "notes": "Small fastener made from Iron Rods."
+  },
+  {
+    "id": "wire",
+    "name": "Wire",
+    "category": "part",
+    "stack_size": 500,
+    "sink_value": 6,
+    "is_raw": false,
+    "notes": "Made from Copper Ingots."
+  },
+  {
+    "id": "cable",
+    "name": "Cable",
+    "category": "part",
+    "stack_size": 200,
+    "sink_value": 24,
+    "is_raw": false,
+    "notes": "Made from Wire."
+  },
+  {
+    "id": "reinforced_iron_plate",
+    "name": "Reinforced Iron Plate",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 120,
+    "is_raw": false,
+    "notes": "Mid-tier iron component assembled from Iron Plates and Screws."
+  },
+  {
+    "id": "modular_frame",
+    "name": "Modular Frame",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 408,
+    "is_raw": false,
+    "notes": "Structural component made from Reinforced Iron Plates and Iron Rods."
+  },
+  {
+    "id": "rotor",
+    "name": "Rotor",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 140,
+    "is_raw": false,
+    "notes": "Rotating mechanical component made from Iron Rods and Screws."
+  },
+  {
+    "id": "stator",
+    "name": "Stator",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 240,
+    "is_raw": false,
+    "notes": "Electromagnetic component made from Steel Pipes and Wire."
+  },
+  {
+    "id": "motor",
+    "name": "Motor",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 1520,
+    "is_raw": false,
+    "notes": "Electric motor assembled from Rotors and Stators."
+  },
+  {
+    "id": "smart_plating",
+    "name": "Smart Plating",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 413,
+    "is_raw": false,
+    "notes": "Space Elevator phase 1 component."
+  },
+  {
+    "id": "copper_sheet",
+    "name": "Copper Sheet",
+    "category": "part",
+    "stack_size": 200,
+    "sink_value": 22,
+    "is_raw": false,
+    "notes": "Rolled copper component."
+  },
+  {
+    "id": "concrete",
+    "name": "Concrete",
+    "category": "part",
+    "stack_size": 500,
+    "sink_value": 12,
+    "is_raw": false,
+    "notes": "Made from Limestone."
+  },
+  {
+    "id": "quartz_crystal",
+    "name": "Quartz Crystal",
+    "category": "part",
+    "stack_size": 200,
+    "sink_value": 50,
+    "is_raw": false,
+    "notes": "Processed from Raw Quartz."
+  },
+  {
+    "id": "silica",
+    "name": "Silica",
+    "category": "part",
+    "stack_size": 200,
+    "sink_value": 20,
+    "is_raw": false,
+    "notes": "Processed from Raw Quartz."
+  },
+  {
+    "id": "steel_beam",
+    "name": "Steel Beam",
+    "category": "part",
+    "stack_size": 200,
+    "sink_value": 24,
+    "is_raw": false,
+    "notes": "Structural steel component."
+  },
+  {
+    "id": "steel_pipe",
+    "name": "Steel Pipe",
+    "category": "part",
+    "stack_size": 200,
+    "sink_value": 24,
+    "is_raw": false,
+    "notes": "Hollow steel tube."
+  },
+  {
+    "id": "versatile_framework",
+    "name": "Versatile Framework",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 1176,
+    "is_raw": false,
+    "notes": "Space Elevator phase 2 component."
+  },
+  {
+    "id": "automated_wiring",
+    "name": "Automated Wiring",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 1440,
+    "is_raw": false,
+    "notes": "Space Elevator phase 2 component."
+  },
+  {
+    "id": "encased_industrial_beam",
+    "name": "Encased Industrial Beam",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 632,
+    "is_raw": false,
+    "notes": "Steel beam encased in concrete."
+  },
+  {
+    "id": "circuit_board",
+    "name": "Circuit Board",
+    "category": "part",
+    "stack_size": 200,
+    "sink_value": 696,
+    "is_raw": false,
+    "notes": "Electronic circuit board made from Copper Sheets and Plastic."
+  },
+  {
+    "id": "empty_canister",
+    "name": "Empty Canister",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 60,
+    "is_raw": false,
+    "notes": "Used for packaging liquids into belt-transportable form."
+  },
+  {
+    "id": "plastic",
+    "name": "Plastic",
+    "category": "part",
+    "stack_size": 200,
+    "sink_value": 75,
+    "is_raw": false,
+    "notes": "Produced from Crude Oil in a Refinery."
+  },
+  {
+    "id": "rubber",
+    "name": "Rubber",
+    "category": "part",
+    "stack_size": 200,
+    "sink_value": 60,
+    "is_raw": false,
+    "notes": "Produced from Crude Oil in a Refinery."
+  },
+  {
+    "id": "polymer_resin",
+    "name": "Polymer Resin",
+    "category": "part",
+    "stack_size": 200,
+    "sink_value": 12,
+    "is_raw": false,
+    "notes": "Byproduct of rubber/plastic production."
+  },
+  {
+    "id": "adaptive_control_unit",
+    "name": "Adaptive Control Unit",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 86120,
+    "is_raw": false,
+    "notes": "Space Elevator phase 3 component."
+  },
+  {
+    "id": "computer",
+    "name": "Computer",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 17260,
+    "is_raw": false,
+    "notes": "Advanced computing component."
+  },
+  {
+    "id": "heavy_modular_frame",
+    "name": "Heavy Modular Frame",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 3524,
+    "is_raw": false,
+    "notes": "Heavy-duty structural frame."
+  },
+  {
+    "id": "modular_engine",
+    "name": "Modular Engine",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 9960,
+    "is_raw": false,
+    "notes": "Space Elevator phase 3 component."
+  },
+  {
+    "id": "ai_limiter",
+    "name": "AI Limiter",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 920,
+    "is_raw": false,
+    "notes": "Caterium-based AI regulation component."
+  },
+  {
+    "id": "alclad_aluminum_sheet",
+    "name": "Alclad Aluminum Sheet",
+    "category": "part",
+    "stack_size": 200,
+    "sink_value": 266,
+    "is_raw": false,
+    "notes": "Aluminum-copper composite sheet."
+  },
+  {
+    "id": "aluminum_casing",
+    "name": "Aluminum Casing",
+    "category": "part",
+    "stack_size": 200,
+    "sink_value": 393,
+    "is_raw": false,
+    "notes": "Structural aluminum casing."
+  },
+  {
+    "id": "aluminum_scrap",
+    "name": "Aluminum Scrap",
+    "category": "part",
+    "stack_size": 500,
+    "sink_value": 27,
+    "is_raw": false,
+    "notes": "Intermediate product in aluminum production from Alumina Solution."
+  },
+  {
+    "id": "assembly_director_system",
+    "name": "Assembly Director System",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 543520,
+    "is_raw": false,
+    "notes": "Space Elevator phase 4 component."
+  },
+  {
+    "id": "battery",
+    "name": "Battery",
+    "category": "part",
+    "stack_size": 200,
+    "sink_value": 465,
+    "is_raw": false,
+    "notes": "Energy storage component made from Sulfuric Acid."
+  },
+  {
+    "id": "crystal_oscillator",
+    "name": "Crystal Oscillator",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 3072,
+    "is_raw": false,
+    "notes": "Precision timing component."
+  },
+  {
+    "id": "fabric",
+    "name": "Fabric",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 140,
+    "is_raw": false,
+    "notes": "Made from Mycelia and Biomass."
+  },
+  {
+    "id": "quickwire",
+    "name": "Quickwire",
+    "category": "part",
+    "stack_size": 500,
+    "sink_value": 17,
+    "is_raw": false,
+    "notes": "High-frequency wire made from Caterium Ingots."
+  },
+  {
+    "id": "high_speed_connector",
+    "name": "High-Speed Connector",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 3776,
+    "is_raw": false,
+    "notes": "High-frequency data connector."
+  },
+  {
+    "id": "radio_control_unit",
+    "name": "Radio Control Unit",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 19600,
+    "is_raw": false,
+    "notes": "Wireless communication component."
+  },
+  {
+    "id": "supercomputer",
+    "name": "Supercomputer",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 99576,
+    "is_raw": false,
+    "notes": "Advanced AI supercomputing unit."
+  },
+  {
+    "id": "cooling_system",
+    "name": "Cooling System",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 3024,
+    "is_raw": false,
+    "notes": "Thermal management component."
+  },
+  {
+    "id": "copper_powder",
+    "name": "Copper Powder",
+    "category": "part",
+    "stack_size": 500,
+    "sink_value": 6,
+    "is_raw": false,
+    "notes": "Fine copper powder used in advanced recipes."
+  },
+  {
+    "id": "electromagnetic_control_rod",
+    "name": "Electromagnetic Control Rod",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 2560,
+    "is_raw": false,
+    "notes": "Nuclear control component."
+  },
+  {
+    "id": "empty_fluid_tank",
+    "name": "Empty Fluid Tank",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 225,
+    "is_raw": false,
+    "notes": "Larger container for packaging gases and advanced liquids."
+  },
+  {
+    "id": "encased_plutonium_cell",
+    "name": "Encased Plutonium Cell",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Radioactive plutonium fuel cell."
+  },
+  {
+    "id": "encased_uranium_cell",
+    "name": "Encased Uranium Cell",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Radioactive uranium fuel cell."
+  },
+  {
+    "id": "fused_modular_frame",
+    "name": "Fused Modular Frame",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 62840,
+    "is_raw": false,
+    "notes": "Space Elevator phase 4 component."
+  },
+  {
+    "id": "heat_sink",
+    "name": "Heat Sink",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 2804,
+    "is_raw": false,
+    "notes": "Thermal dissipation component."
+  },
+  {
+    "id": "magnetic_field_generator",
+    "name": "Magnetic Field Generator",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 16,
+    "is_raw": false,
+    "notes": "Space Elevator phase 4 component."
+  },
+  {
+    "id": "pressure_conversion_cube",
+    "name": "Pressure Conversion Cube",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Space Elevator phase 4 component."
+  },
+  {
+    "id": "thermal_propulsion_rocket",
+    "name": "Thermal Propulsion Rocket",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Space Elevator phase 4 component."
+  },
+  {
+    "id": "turbo_motor",
+    "name": "Turbo Motor",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 153060,
+    "is_raw": false,
+    "notes": "High-output motor for advanced applications."
+  },
+  {
+    "id": "uranium_fuel_rod",
+    "name": "Uranium Fuel Rod",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Fuel for nuclear power plants."
+  },
+  {
+    "id": "plutonium_pellet",
+    "name": "Plutonium Pellet",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Radioactive pellet used in plutonium fuel rods."
+  },
+  {
+    "id": "non_fissile_uranium",
+    "name": "Non-Fissile Uranium",
+    "category": "part",
+    "stack_size": 200,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Processed uranium that cannot sustain a chain reaction."
+  },
+  {
+    "id": "nuclear_pasta",
+    "name": "Nuclear Pasta",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Dense pasta-like nuclear material. Space Elevator phase 4."
+  },
+  {
+    "id": "iodine_infused_filter",
+    "name": "Iodine-Infused Filter",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 2200,
+    "is_raw": false,
+    "notes": "Advanced filter for Hazmat Suit in radioactive environments."
+  },
+  {
+    "id": "gas_filter",
+    "name": "Gas Filter",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 230,
+    "is_raw": false,
+    "notes": "Filter cartridge for the Gas Mask."
+  },
+  {
+    "id": "iron_rebar",
+    "name": "Iron Rebar",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 4,
+    "is_raw": false,
+    "notes": "Used as ammunition in the Rebar Gun."
+  },
+  {
+    "id": "stun_rebar",
+    "name": "Stun Rebar",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Electrified rebar that stuns creatures."
+  },
+  {
+    "id": "shatter_rebar",
+    "name": "Shatter Rebar",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Rebar that shatters on impact for area damage."
+  },
+  {
+    "id": "explosive_rebar",
+    "name": "Explosive Rebar",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "High-explosive rebar ammunition."
+  },
+  {
+    "id": "black_powder",
+    "name": "Black Powder",
+    "category": "part",
+    "stack_size": 200,
+    "sink_value": 14,
+    "is_raw": false,
+    "notes": "Explosive powder used in ammunition and nobelisks."
+  },
+  {
+    "id": "smokeless_powder",
+    "name": "Smokeless Powder",
+    "category": "part",
+    "stack_size": 200,
+    "sink_value": 58,
+    "is_raw": false,
+    "notes": "Advanced propellant for rifle ammunition."
+  },
+  {
+    "id": "nobelisk",
+    "name": "Nobelisk",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 472,
+    "is_raw": false,
+    "notes": "Standard explosive device."
+  },
+  {
+    "id": "cluster_nobelisk",
+    "name": "Cluster Nobelisk",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Explosive that disperses cluster bomblets."
+  },
+  {
+    "id": "gas_nobelisk",
+    "name": "Gas Nobelisk",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Explosive that disperses toxic gas."
+  },
+  {
+    "id": "nuke_nobelisk",
+    "name": "Nuke Nobelisk",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Nuclear explosive device. Extremely powerful and radioactive."
+  },
+  {
+    "id": "rifle_ammo",
+    "name": "Rifle Ammo",
+    "category": "part",
+    "stack_size": 500,
+    "sink_value": 25,
+    "is_raw": false,
+    "notes": "Standard rifle ammunition."
+  },
+  {
+    "id": "homing_rifle_ammo",
+    "name": "Homing Rifle Ammo",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Self-guided rifle ammunition."
+  },
+  {
+    "id": "turbo_rifle_ammo",
+    "name": "Turbo Rifle Ammo",
+    "category": "part",
+    "stack_size": 500,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "High-velocity rifle ammunition requiring Turbofuel."
+  },
+  {
+    "id": "alien_dna_capsule",
+    "name": "Alien DNA Capsule",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Encapsulated alien genetic material made from creature remains."
+  },
+  {
+    "id": "power_shard",
+    "name": "Power Shard",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Overclocking component crafted from Power Slugs."
+  },
+  {
+    "id": "sam_fluctuator",
+    "name": "SAM Fluctuator",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Phase 5 component made from Reanimated SAM."
+  },
+  {
+    "id": "petroleum_coke",
+    "name": "Petroleum Coke",
+    "category": "fuel",
+    "stack_size": 200,
+    "sink_value": 20,
+    "is_raw": false,
+    "notes": "Carbon byproduct of heavy oil residue processing. Used as fuel."
+  },
+  {
+    "id": "biomass",
+    "name": "Biomass",
+    "category": "fuel",
+    "stack_size": 200,
+    "sink_value": 12,
+    "is_raw": false,
+    "notes": "Basic biomass fuel made from organic materials (leaves, wood, mycelia)."
+  },
+  {
+    "id": "solid_biofuel",
+    "name": "Solid Biofuel",
+    "category": "fuel",
+    "stack_size": 200,
+    "sink_value": 48,
+    "is_raw": false,
+    "notes": "Compressed biofuel blocks for biomass burners."
+  },
+  {
+    "id": "compacted_coal",
+    "name": "Compacted Coal",
+    "category": "fuel",
+    "stack_size": 100,
+    "sink_value": 28,
+    "is_raw": false,
+    "notes": "Dense coal used as high-energy fuel and in turbofuel production."
+  },
+  {
+    "id": "biocoal",
+    "name": "Biocoal",
+    "category": "fuel",
+    "stack_size": 200,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Coal substitute made from biomass. Alternate recipe."
+  },
+  {
+    "id": "charcoal",
+    "name": "Charcoal",
+    "category": "fuel",
+    "stack_size": 200,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Charcoal made from Wood. Alternate recipe."
+  },
+  {
+    "id": "fuel",
+    "name": "Fuel",
+    "category": "liquid",
+    "stack_size": 0,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Refined liquid fuel produced from Crude Oil. Transported via pipes."
+  },
+  {
+    "id": "turbofuel",
+    "name": "Turbofuel",
+    "category": "liquid",
+    "stack_size": 0,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "High-energy liquid fuel. Transported via pipes."
+  },
+  {
+    "id": "rocket_fuel",
+    "name": "Rocket Fuel",
+    "category": "liquid",
+    "stack_size": 0,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "High-thrust liquid rocket fuel. Transported via pipes."
+  },
+  {
+    "id": "ionized_fuel",
+    "name": "Ionized Fuel",
+    "category": "liquid",
+    "stack_size": 0,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Phase 5 ionized liquid fuel. Transported via pipes."
+  },
+  {
+    "id": "liquid_biofuel",
+    "name": "Liquid Biofuel",
+    "category": "liquid",
+    "stack_size": 0,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Liquid form of biofuel produced from Solid Biofuel. Transported via pipes."
+  },
+  {
+    "id": "heavy_oil_residue",
+    "name": "Heavy Oil Residue",
+    "category": "liquid",
+    "stack_size": 0,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Heavy byproduct of crude oil refining. Transported via pipes."
+  },
+  {
+    "id": "alumina_solution",
+    "name": "Alumina Solution",
+    "category": "liquid",
+    "stack_size": 0,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Aluminum oxide dissolved in water. Transported via pipes."
+  },
+  {
+    "id": "sulfuric_acid",
+    "name": "Sulfuric Acid",
+    "category": "liquid",
+    "stack_size": 0,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Corrosive acid used in advanced recipes. Transported via pipes."
+  },
+  {
+    "id": "nitric_acid",
+    "name": "Nitric Acid",
+    "category": "liquid",
+    "stack_size": 0,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Corrosive acid used in advanced recipes. Transported via pipes."
+  },
+  {
+    "id": "dissolved_silica",
+    "name": "Dissolved Silica",
+    "category": "liquid",
+    "stack_size": 0,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Silica dissolved in liquid form. Used in alternate aluminum recipes. Transported via pipes."
+  },
+  {
+    "id": "packaged_water",
+    "name": "Packaged Water",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 130,
+    "is_raw": false,
+    "notes": "Water packaged in an Empty Canister for belt transport."
+  },
+  {
+    "id": "packaged_oil",
+    "name": "Packaged Oil",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 320,
+    "is_raw": false,
+    "notes": "Crude Oil packaged in an Empty Canister for belt transport."
+  },
+  {
+    "id": "packaged_fuel",
+    "name": "Packaged Fuel",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 270,
+    "is_raw": false,
+    "notes": "Fuel packaged in an Empty Canister for belt transport."
+  },
+  {
+    "id": "packaged_heavy_oil_residue",
+    "name": "Packaged Heavy Oil Residue",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 180,
+    "is_raw": false,
+    "notes": "Heavy Oil Residue packaged in an Empty Canister for belt transport."
+  },
+  {
+    "id": "packaged_liquid_biofuel",
+    "name": "Packaged Liquid Biofuel",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 370,
+    "is_raw": false,
+    "notes": "Liquid Biofuel packaged in an Empty Canister for belt transport."
+  },
+  {
+    "id": "packaged_alumina_solution",
+    "name": "Packaged Alumina Solution",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 510,
+    "is_raw": false,
+    "notes": "Alumina Solution packaged in an Empty Canister for belt transport."
+  },
+  {
+    "id": "packaged_sulfuric_acid",
+    "name": "Packaged Sulfuric Acid",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 310,
+    "is_raw": false,
+    "notes": "Sulfuric Acid packaged in an Empty Canister for belt transport."
+  },
+  {
+    "id": "packaged_nitrogen_gas",
+    "name": "Packaged Nitrogen Gas",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 312,
+    "is_raw": false,
+    "notes": "Nitrogen Gas packaged in an Empty Fluid Tank for belt transport."
+  },
+  {
+    "id": "packaged_nitric_acid",
+    "name": "Packaged Nitric Acid",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Nitric Acid packaged in an Empty Fluid Tank for belt transport."
+  },
+  {
+    "id": "packaged_turbofuel",
+    "name": "Packaged Turbofuel",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Turbofuel packaged in an Empty Canister for belt transport."
+  },
+  {
+    "id": "packaged_rocket_fuel",
+    "name": "Packaged Rocket Fuel",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Rocket Fuel packaged in an Empty Fluid Tank for belt transport."
+  },
+  {
+    "id": "packaged_ionized_fuel",
+    "name": "Packaged Ionized Fuel",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Ionized Fuel packaged in an Empty Fluid Tank for belt transport."
+  },
+  {
+    "id": "chainsaw",
+    "name": "Chainsaw",
+    "category": "equipment",
+    "stack_size": 1,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Tool for harvesting wood and leaves quickly. Uses Solid Biofuel."
+  },
+  {
+    "id": "jetpack",
+    "name": "Jetpack",
+    "category": "equipment",
+    "stack_size": 1,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Fuel-powered personal flight equipment. Uses Fuel or Turbofuel."
+  },
+  {
+    "id": "hoverpack",
+    "name": "Hoverpack",
+    "category": "equipment",
+    "stack_size": 1,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Power grid-powered personal flight equipment."
+  },
+  {
+    "id": "gas_mask",
+    "name": "Gas Mask",
+    "category": "equipment",
+    "stack_size": 1,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Protective mask for toxic gas environments. Consumes Gas Filters."
+  },
+  {
+    "id": "hazmat_suit",
+    "name": "Hazmat Suit",
+    "category": "equipment",
+    "stack_size": 1,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Full protective suit for radioactive environments. Consumes Iodine-Infused Filters."
+  },
+  {
+    "id": "blade_runners",
+    "name": "Blade Runners",
+    "category": "equipment",
+    "stack_size": 1,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Leg equipment for significantly increased movement speed."
+  },
+  {
+    "id": "zipline",
+    "name": "Zipline",
+    "category": "equipment",
+    "stack_size": 1,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Equipment for traversing power lines as ziplines."
+  },
+  {
+    "id": "rebar_gun",
+    "name": "Rebar Gun",
+    "category": "equipment",
+    "stack_size": 1,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Ranged weapon that fires various rebar ammunition types."
+  },
+  {
+    "id": "object_scanner",
+    "name": "Object Scanner",
+    "category": "equipment",
+    "stack_size": 1,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Handheld scanner for locating resources and items in the world."
+  },
+  {
+    "id": "portable_miner",
+    "name": "Portable Miner",
+    "category": "equipment",
+    "stack_size": 1,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Deployable manual mining device placed on resource nodes."
+  },
+  {
+    "id": "nobelisk_detonator",
+    "name": "Nobelisk Detonator",
+    "category": "equipment",
+    "stack_size": 1,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Remote detonation device used with Nobelisk explosives."
+  },
+  {
+    "id": "xeno_basher",
+    "name": "Xeno-Basher",
+    "category": "equipment",
+    "stack_size": 1,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Upgraded melee weapon effective against wildlife."
+  },
+  {
+    "id": "xeno_zapper",
+    "name": "Xeno-Zapper",
+    "category": "equipment",
+    "stack_size": 1,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Electric melee weapon for stunning and damaging creatures."
+  },
+  {
+    "id": "nutritional_inhaler",
+    "name": "Nutritional Inhaler",
+    "category": "equipment",
+    "stack_size": 1,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Medical inhaler for restoring health (also called Medicinal Inhaler)."
+  },
+  {
+    "id": "parachute",
+    "name": "Parachute",
+    "category": "equipment",
+    "stack_size": 10,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Single-use deployable parachute for fall protection."
+  },
+  {
+    "id": "rifle",
+    "name": "Rifle",
+    "category": "equipment",
+    "stack_size": 1,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Ranged firearm that fires Rifle Ammo, Homing Ammo, and Turbo Rifle Ammo."
+  },
+  {
+    "id": "reanimated_sam",
+    "name": "Reanimated SAM",
+    "category": "special",
+    "stack_size": 100,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Phase 5 material produced from SAM ore in a Converter."
+  },
+  {
+    "id": "time_crystal",
+    "name": "Time Crystal",
+    "category": "special",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Phase 5 temporal crystal produced from Diamonds in a Converter."
+  },
+  {
+    "id": "dark_matter_residue",
+    "name": "Dark Matter Residue",
+    "category": "special",
+    "stack_size": 200,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Phase 5 dark matter byproduct produced in a Converter."
+  },
+  {
+    "id": "dark_matter_crystal",
+    "name": "Dark Matter Crystal",
+    "category": "special",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Phase 5 concentrated dark matter crystal."
+  },
+  {
+    "id": "excited_photonic_matter",
+    "name": "Excited Photonic Matter",
+    "category": "special",
+    "stack_size": 200,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Phase 5 photonic matter in an energetically excited state."
+  },
+  {
+    "id": "diamonds",
+    "name": "Diamonds",
+    "category": "special",
+    "stack_size": 100,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Phase 5 synthetic diamonds produced in a Converter."
+  },
+  {
+    "id": "ficsite_trigon",
+    "name": "Ficsite Trigon",
+    "category": "special",
+    "stack_size": 200,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Phase 5 geometric component produced from Ficsite Ingots."
+  },
+  {
+    "id": "ficsonium",
+    "name": "Ficsonium",
+    "category": "special",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Phase 5 exotic material produced from Plutonium Waste and SAM."
+  },
+  {
+    "id": "singularity_cell",
+    "name": "Singularity Cell",
+    "category": "special",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Phase 5 extreme-density energy cell."
+  },
+  {
+    "id": "superposition_oscillator",
+    "name": "Superposition Oscillator",
+    "category": "special",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Phase 5 quantum superposition oscillator."
+  },
+  {
+    "id": "neural_quantum_processor",
+    "name": "Neural-Quantum Processor",
+    "category": "special",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Phase 5 quantum neural processing unit."
+  },
+  {
+    "id": "ai_expansion_server",
+    "name": "AI Expansion Server",
+    "category": "special",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Phase 5 AI infrastructure expansion component."
+  },
+  {
+    "id": "alien_power_matrix",
+    "name": "Alien Power Matrix",
+    "category": "special",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Phase 5 alien energy matrix."
+  },
+  {
+    "id": "ballistic_warp_drive",
+    "name": "Ballistic Warp Drive",
+    "category": "special",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Phase 5 FTL propulsion system component."
+  },
+  {
+    "id": "ficsonium_fuel_rod",
+    "name": "Ficsonium Fuel Rod",
+    "category": "special",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Phase 5 exotic fuel rod made from Ficsonium."
+  },
+  {
+    "id": "biochemical_sculptor",
+    "name": "Biochemical Sculptor",
+    "category": "special",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Phase 5 biological engineering and sculpting component."
+  },
+  {
+    "id": "plutonium_fuel_rod",
+    "name": "Plutonium Fuel Rod",
+    "category": "part",
+    "stack_size": 50,
+    "sink_value": 0,
+    "is_raw": false,
+    "notes": "Fuel for nuclear power plants. Radioactive. Produces Plutonium Waste."
+  },
+  {
+    "id": "uranium",
+    "name": "Uranium",
+    "category": "part",
+    "stack_size": 100,
+    "sink_value": 35,
+    "is_raw": false,
+    "notes": "Processed uranium from Uranium Ore via Refinery"
+  }
+]

@@ -1,0 +1,602 @@
+{
+  "space_elevator_phases": [
+    {
+      "phase": 1,
+      "name": "Distribution Platform",
+      "requirements": [
+        { "item": "smart_plating", "amount": 50 }
+      ],
+      "unlocks": "Tiers 3 and 4"
+    },
+    {
+      "phase": 2,
+      "name": "Construction Dock",
+      "requirements": [
+        { "item": "smart_plating", "amount": 1000 },
+        { "item": "versatile_framework", "amount": 1000 },
+        { "item": "automated_wiring", "amount": 100 }
+      ],
+      "unlocks": "Tiers 5 and 6"
+    },
+    {
+      "phase": 3,
+      "name": "Main Body",
+      "requirements": [
+        { "item": "versatile_framework", "amount": 2500 },
+        { "item": "modular_engine", "amount": 500 },
+        { "item": "adaptive_control_unit", "amount": 100 }
+      ],
+      "unlocks": "Tiers 7 and 8"
+    },
+    {
+      "phase": 4,
+      "name": "Propulsion",
+      "requirements": [
+        { "item": "assembly_director_system", "amount": 500 },
+        { "item": "magnetic_field_generator", "amount": 500 },
+        { "item": "thermal_propulsion_rocket", "amount": 250 },
+        { "item": "nuclear_pasta", "amount": 100 }
+      ],
+      "unlocks": "Tier 9"
+    },
+    {
+      "phase": 5,
+      "name": "Assembly",
+      "requirements": [
+        { "item": "nuclear_pasta", "amount": 1000 },
+        { "item": "biochemical_sculptor", "amount": 1000 },
+        { "item": "ai_expansion_server", "amount": 256 },
+        { "item": "ballistic_warp_drive", "amount": 200 }
+      ],
+      "unlocks": "Game completion — Project Assembly launch"
+    }
+  ],
+  "tiers": [
+    {
+      "tier": 0,
+      "name": "Onboarding",
+      "milestones": [
+        {
+          "id": "hub_upgrade_1",
+          "name": "HUB Upgrade 1",
+          "cost": [{ "item": "iron_rod", "amount": 10 }],
+          "unlocks_machines": ["equipment_workshop"],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Portable Miner", "+1 Inventory Slot", "Personal Storage Box"]
+        },
+        {
+          "id": "hub_upgrade_2",
+          "name": "HUB Upgrade 2",
+          "cost": [{ "item": "iron_rod", "amount": 20 }, { "item": "iron_plate", "amount": 10 }],
+          "unlocks_machines": ["smelter"],
+          "unlocks_recipes": ["copper_ingot_default", "wire_default", "cable_default"],
+          "unlocks_other": ["Power Line", "Copper Ore scanner"]
+        },
+        {
+          "id": "hub_upgrade_3",
+          "name": "HUB Upgrade 3",
+          "cost": [{ "item": "iron_plate", "amount": 20 }, { "item": "iron_rod", "amount": 20 }, { "item": "wire", "amount": 20 }],
+          "unlocks_machines": ["constructor"],
+          "unlocks_recipes": ["concrete_default", "screw_default", "reinforced_iron_plate_default"],
+          "unlocks_other": ["Power Pole", "Limestone scanner"]
+        },
+        {
+          "id": "hub_upgrade_4",
+          "name": "HUB Upgrade 4",
+          "cost": [{ "item": "iron_plate", "amount": 75 }, { "item": "cable", "amount": 20 }, { "item": "concrete", "amount": 10 }],
+          "unlocks_machines": [],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Conveyor Belt Mk.1", "Conveyor Pole", "+3 Inventory Slots"]
+        },
+        {
+          "id": "hub_upgrade_5",
+          "name": "HUB Upgrade 5",
+          "cost": [{ "item": "iron_rod", "amount": 75 }, { "item": "cable", "amount": 50 }, { "item": "concrete", "amount": 20 }],
+          "unlocks_machines": ["miner_mk1"],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Storage Container", "+3 Inventory Slots"]
+        },
+        {
+          "id": "hub_upgrade_6",
+          "name": "HUB Upgrade 6",
+          "cost": [{ "item": "iron_rod", "amount": 100 }, { "item": "iron_plate", "amount": 100 }, { "item": "wire", "amount": 100 }, { "item": "concrete", "amount": 50 }],
+          "unlocks_machines": ["biomass_burner"],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Space Elevator", "FICSIT Freighter", "+3 Inventory Slots"]
+        }
+      ]
+    },
+    {
+      "tier": 1,
+      "name": "Tier 1",
+      "milestones": [
+        {
+          "id": "base_building",
+          "name": "Base Building",
+          "cost": [{ "item": "concrete", "amount": 200 }, { "item": "iron_plate", "amount": 100 }, { "item": "iron_rod", "amount": 100 }],
+          "unlocks_machines": [],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Lookout Tower", "Foundation variants", "Ramps", "Walls"]
+        },
+        {
+          "id": "logistics",
+          "name": "Logistics",
+          "cost": [{ "item": "iron_plate", "amount": 150 }, { "item": "iron_rod", "amount": 150 }, { "item": "wire", "amount": 300 }],
+          "unlocks_machines": [],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Conveyor Splitter", "Conveyor Merger", "Conveyor Lift", "Productivity Display"]
+        },
+        {
+          "id": "field_research",
+          "name": "Field Research",
+          "cost": [{ "item": "wire", "amount": 300 }, { "item": "screw", "amount": 300 }, { "item": "iron_plate", "amount": 100 }],
+          "unlocks_machines": [],
+          "unlocks_recipes": [],
+          "unlocks_other": ["MAM", "Object Scanner", "Map", "+3 Inventory Slots"]
+        }
+      ]
+    },
+    {
+      "tier": 2,
+      "name": "Tier 2",
+      "milestones": [
+        {
+          "id": "part_assembly",
+          "name": "Part Assembly",
+          "cost": [{ "item": "cable", "amount": 200 }, { "item": "iron_rod", "amount": 200 }, { "item": "screw", "amount": 500 }, { "item": "iron_plate", "amount": 300 }],
+          "unlocks_machines": ["assembler"],
+          "unlocks_recipes": ["copper_sheet_default", "rotor_default", "modular_frame_default", "smart_plating_default"],
+          "unlocks_other": []
+        },
+        {
+          "id": "obstacle_clearing",
+          "name": "Obstacle Clearing",
+          "cost": [{ "item": "screw", "amount": 500 }, { "item": "cable", "amount": 100 }, { "item": "concrete", "amount": 100 }],
+          "unlocks_machines": [],
+          "unlocks_recipes": ["solid_biofuel_default"],
+          "unlocks_other": ["Chainsaw", "+3 Inventory Slots"]
+        },
+        {
+          "id": "resource_sink_bonus_program",
+          "name": "Resource Sink Bonus Program",
+          "cost": [{ "item": "concrete", "amount": 400 }, { "item": "wire", "amount": 500 }, { "item": "iron_rod", "amount": 200 }, { "item": "iron_plate", "amount": 200 }],
+          "unlocks_machines": [],
+          "unlocks_recipes": [],
+          "unlocks_other": ["AWESOME Sink", "AWESOME Shop", "Customizer"]
+        },
+        {
+          "id": "logistics_mk2",
+          "name": "Logistics Mk.2",
+          "cost": [{ "item": "reinforced_iron_plate", "amount": 50 }, { "item": "concrete", "amount": 200 }, { "item": "iron_rod", "amount": 300 }, { "item": "iron_plate", "amount": 300 }],
+          "unlocks_machines": [],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Conveyor Belt Mk.2", "Conveyor Lift Mk.2"]
+        }
+      ]
+    },
+    {
+      "tier": 3,
+      "name": "Tier 3",
+      "note": "Requires Space Elevator Phase 1",
+      "milestones": [
+        {
+          "id": "coal_power",
+          "name": "Coal Power",
+          "cost": [{ "item": "reinforced_iron_plate", "amount": 150 }, { "item": "rotor", "amount": 50 }, { "item": "cable", "amount": 500 }],
+          "unlocks_machines": ["coal_generator", "water_extractor"],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Pipeline Mk.1", "Pipeline Pump", "Coal scanner"]
+        },
+        {
+          "id": "basic_steel_production",
+          "name": "Basic Steel Production",
+          "cost": [{ "item": "modular_frame", "amount": 50 }, { "item": "rotor", "amount": 150 }, { "item": "concrete", "amount": 500 }, { "item": "wire", "amount": 1000 }],
+          "unlocks_machines": ["foundry"],
+          "unlocks_recipes": ["steel_ingot_default", "steel_beam_default", "steel_pipe_default", "versatile_framework_default"],
+          "unlocks_other": []
+        },
+        {
+          "id": "vehicular_transport",
+          "name": "Vehicular Transport",
+          "cost": [{ "item": "modular_frame", "amount": 25 }, { "item": "rotor", "amount": 100 }, { "item": "cable", "amount": 200 }, { "item": "iron_plate", "amount": 400 }],
+          "unlocks_machines": [],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Truck Station", "Tractor", "+3 Inventory Slots"]
+        },
+        {
+          "id": "enhanced_asset_security",
+          "name": "Enhanced Asset Security",
+          "cost": [{ "item": "reinforced_iron_plate", "amount": 100 }, { "item": "iron_rod", "amount": 600 }, { "item": "wire", "amount": 1500 }],
+          "unlocks_machines": [],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Xeno-Basher", "+1 Hand Slot", "+3 Inventory Slots"]
+        }
+      ]
+    },
+    {
+      "tier": 4,
+      "name": "Tier 4",
+      "note": "Requires Space Elevator Phase 1",
+      "milestones": [
+        {
+          "id": "advanced_steel_production",
+          "name": "Advanced Steel Production",
+          "cost": [{ "item": "steel_pipe", "amount": 100 }, { "item": "modular_frame", "amount": 100 }, { "item": "rotor", "amount": 200 }, { "item": "concrete", "amount": 500 }],
+          "unlocks_machines": ["miner_mk2"],
+          "unlocks_recipes": ["encased_industrial_beam_default", "stator_default", "motor_default", "automated_wiring_default"],
+          "unlocks_other": []
+        },
+        {
+          "id": "logistics_mk3",
+          "name": "Logistics Mk.3",
+          "cost": [{ "item": "steel_beam", "amount": 200 }, { "item": "steel_pipe", "amount": 200 }, { "item": "reinforced_iron_plate", "amount": 400 }],
+          "unlocks_machines": [],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Conveyor Belt Mk.3", "Conveyor Lift Mk.3", "Industrial Storage Container"]
+        },
+        {
+          "id": "expanded_power_infrastructure",
+          "name": "Expanded Power Infrastructure",
+          "cost": [{ "item": "encased_industrial_beam", "amount": 50 }, { "item": "steel_beam", "amount": 100 }, { "item": "modular_frame", "amount": 200 }, { "item": "wire", "amount": 2000 }],
+          "unlocks_machines": [],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Power Storage", "Power Tower"]
+        },
+        {
+          "id": "hypertubes",
+          "name": "Hypertubes",
+          "cost": [{ "item": "encased_industrial_beam", "amount": 50 }, { "item": "steel_pipe", "amount": 300 }, { "item": "copper_sheet", "amount": 500 }],
+          "unlocks_machines": [],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Hypertube Entrance", "Hypertube"]
+        },
+        {
+          "id": "ficsit_blueprints",
+          "name": "FICSIT Blueprints",
+          "cost": [{ "item": "modular_frame", "amount": 100 }, { "item": "steel_beam", "amount": 200 }, { "item": "cable", "amount": 500 }, { "item": "concrete", "amount": 1000 }],
+          "unlocks_machines": [],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Blueprint Designer Mk.1"]
+        }
+      ]
+    },
+    {
+      "tier": 5,
+      "name": "Tier 5",
+      "note": "Requires Space Elevator Phase 2",
+      "milestones": [
+        {
+          "id": "oil_processing",
+          "name": "Oil Processing",
+          "cost": [{ "item": "motor", "amount": 50 }, { "item": "encased_industrial_beam", "amount": 100 }, { "item": "steel_pipe", "amount": 500 }, { "item": "copper_sheet", "amount": 500 }],
+          "unlocks_machines": ["refinery", "oil_extractor"],
+          "unlocks_recipes": ["plastic_default", "rubber_default", "fuel_default", "heavy_oil_residue_default", "polymer_resin_default", "petroleum_coke_default", "circuit_board_default"],
+          "unlocks_other": ["Valve", "Crude Oil scanner"]
+        },
+        {
+          "id": "petroleum_power",
+          "name": "Petroleum Power",
+          "cost": [{ "item": "motor", "amount": 100 }, { "item": "encased_industrial_beam", "amount": 100 }, { "item": "rubber", "amount": 200 }, { "item": "plastic", "amount": 200 }],
+          "unlocks_machines": ["fuel_generator"],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Industrial Fluid Buffer", "Caterium Ore scanner"]
+        },
+        {
+          "id": "logistics_mk4",
+          "name": "Logistics Mk.4",
+          "cost": [{ "item": "rubber", "amount": 200 }, { "item": "encased_industrial_beam", "amount": 300 }, { "item": "modular_frame", "amount": 400 }],
+          "unlocks_machines": [],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Conveyor Belt Mk.4", "Conveyor Lift Mk.4", "Truck"]
+        },
+        {
+          "id": "fluid_packaging",
+          "name": "Fluid Packaging",
+          "cost": [{ "item": "plastic", "amount": 200 }, { "item": "steel_beam", "amount": 400 }, { "item": "copper_sheet", "amount": 1000 }],
+          "unlocks_machines": ["packager"],
+          "unlocks_recipes": ["empty_canister_default", "liquid_biofuel_default"],
+          "unlocks_other": ["Packaged fluid variants"]
+        },
+        {
+          "id": "jetpack",
+          "name": "Jetpack",
+          "cost": [{ "item": "motor", "amount": 50 }, { "item": "cable", "amount": 1000 }, { "item": "iron_plate", "amount": 1000 }],
+          "unlocks_machines": [],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Jetpack", "+3 Inventory Slots"]
+        }
+      ]
+    },
+    {
+      "tier": 6,
+      "name": "Tier 6",
+      "note": "Requires Space Elevator Phase 2",
+      "milestones": [
+        {
+          "id": "industrial_manufacturing",
+          "name": "Industrial Manufacturing",
+          "cost": [{ "item": "motor", "amount": 200 }, { "item": "modular_frame", "amount": 200 }, { "item": "plastic", "amount": 400 }, { "item": "cable", "amount": 1000 }],
+          "unlocks_machines": ["manufacturer"],
+          "unlocks_recipes": ["computer_default", "heavy_modular_frame_default", "modular_engine_default", "adaptive_control_unit_default"],
+          "unlocks_other": []
+        },
+        {
+          "id": "monorail_train_technology",
+          "name": "Monorail Train Technology",
+          "cost": [{ "item": "motor", "amount": 250 }, { "item": "encased_industrial_beam", "amount": 500 }, { "item": "steel_beam", "amount": 1000 }, { "item": "steel_pipe", "amount": 1000 }],
+          "unlocks_machines": [],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Railway", "Train Station", "Electric Locomotive", "Freight Car"]
+        },
+        {
+          "id": "pipeline_engineering_mk2",
+          "name": "Pipeline Engineering Mk.2",
+          "cost": [{ "item": "heavy_modular_frame", "amount": 50 }, { "item": "plastic", "amount": 1000 }, { "item": "rubber", "amount": 1000 }],
+          "unlocks_machines": [],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Pipeline Mk.2", "Pipeline Pump Mk.2"]
+        },
+        {
+          "id": "railway_signalling",
+          "name": "Railway Signalling",
+          "cost": [{ "item": "computer", "amount": 50 }, { "item": "steel_pipe", "amount": 400 }, { "item": "copper_sheet", "amount": 1000 }],
+          "unlocks_machines": [],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Block Signal", "Path Signal"]
+        },
+        {
+          "id": "ficsit_blueprints_mk2",
+          "name": "FICSIT Blueprints Mk.2",
+          "cost": [{ "item": "heavy_modular_frame", "amount": 100 }, { "item": "computer", "amount": 100 }, { "item": "rubber", "amount": 400 }, { "item": "concrete", "amount": 1500 }],
+          "unlocks_machines": [],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Blueprint Designer Mk.2"]
+        }
+      ]
+    },
+    {
+      "tier": 7,
+      "name": "Tier 7",
+      "note": "Requires Space Elevator Phase 3",
+      "milestones": [
+        {
+          "id": "bauxite_refinement",
+          "name": "Bauxite Refinement",
+          "cost": [{ "item": "computer", "amount": 100 }, { "item": "heavy_modular_frame", "amount": 100 }, { "item": "motor", "amount": 250 }, { "item": "rubber", "amount": 500 }],
+          "unlocks_machines": [],
+          "unlocks_recipes": ["alumina_solution_default", "aluminum_scrap_default", "aluminum_ingot_default", "alclad_aluminum_sheet_default", "aluminum_casing_default"],
+          "unlocks_other": ["Bauxite scanner", "Raw Quartz scanner"]
+        },
+        {
+          "id": "control_system_development",
+          "name": "Control System Development",
+          "cost": [{ "item": "alclad_aluminum_sheet", "amount": 200 }, { "item": "aluminum_casing", "amount": 400 }, { "item": "computer", "amount": 200 }, { "item": "plastic", "amount": 1000 }],
+          "unlocks_machines": ["blender"],
+          "unlocks_recipes": ["battery_default", "radio_control_unit_default", "supercomputer_default", "assembly_director_system_default"],
+          "unlocks_other": ["Sulfur scanner"]
+        },
+        {
+          "id": "logistics_mk5",
+          "name": "Logistics Mk.5",
+          "cost": [{ "item": "alclad_aluminum_sheet", "amount": 200 }, { "item": "encased_industrial_beam", "amount": 400 }, { "item": "reinforced_iron_plate", "amount": 600 }],
+          "unlocks_machines": [],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Conveyor Belt Mk.5", "Conveyor Lift Mk.5"]
+        },
+        {
+          "id": "hoverpack",
+          "name": "Hoverpack",
+          "cost": [{ "item": "alclad_aluminum_sheet", "amount": 100 }, { "item": "heavy_modular_frame", "amount": 100 }, { "item": "computer", "amount": 100 }, { "item": "motor", "amount": 250 }],
+          "unlocks_machines": [],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Hoverpack", "+3 Inventory Slots"]
+        },
+        {
+          "id": "hazmat_suit",
+          "name": "Hazmat Suit",
+          "cost": [{ "item": "gas_filter", "amount": 50 }, { "item": "aluminum_casing", "amount": 100 }, { "item": "quickwire", "amount": 500 }],
+          "unlocks_machines": [],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Hazmat Suit", "+3 Inventory Slots"]
+        }
+      ]
+    },
+    {
+      "tier": 8,
+      "name": "Tier 8",
+      "note": "Requires Space Elevator Phase 3",
+      "milestones": [
+        {
+          "id": "nuclear_power",
+          "name": "Nuclear Power",
+          "cost": [{ "item": "supercomputer", "amount": 50 }, { "item": "heavy_modular_frame", "amount": 200 }, { "item": "cable", "amount": 1000 }, { "item": "concrete", "amount": 2000 }],
+          "unlocks_machines": ["nuclear_power_plant"],
+          "unlocks_recipes": ["encased_uranium_cell_default", "electromagnetic_control_rod_default", "uranium_fuel_rod_default", "magnetic_field_generator_default"],
+          "unlocks_other": ["Uranium scanner"]
+        },
+        {
+          "id": "advanced_aluminum_production",
+          "name": "Advanced Aluminum Production",
+          "cost": [{ "item": "radio_control_unit", "amount": 50 }, { "item": "aluminum_casing", "amount": 200 }, { "item": "alclad_aluminum_sheet", "amount": 400 }, { "item": "wire", "amount": 3000 }],
+          "unlocks_machines": ["resource_well_pressurizer", "resource_well_extractor"],
+          "unlocks_recipes": ["heat_sink_default", "cooling_system_default", "fused_modular_frame_default"],
+          "unlocks_other": ["Nitrogen Gas scanner"]
+        },
+        {
+          "id": "leading_edge_production",
+          "name": "Leading-edge Production",
+          "cost": [{ "item": "fused_modular_frame", "amount": 50 }, { "item": "supercomputer", "amount": 100 }, { "item": "steel_pipe", "amount": 1000 }],
+          "unlocks_machines": ["miner_mk3"],
+          "unlocks_recipes": ["turbo_motor_default", "thermal_propulsion_rocket_default"],
+          "unlocks_other": []
+        },
+        {
+          "id": "aeronautical_engineering",
+          "name": "Aeronautical Engineering",
+          "cost": [{ "item": "radio_control_unit", "amount": 50 }, { "item": "alclad_aluminum_sheet", "amount": 100 }, { "item": "aluminum_casing", "amount": 200 }, { "item": "motor", "amount": 300 }],
+          "unlocks_machines": [],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Drone Port", "Drone"]
+        },
+        {
+          "id": "particle_enrichment",
+          "name": "Particle Enrichment",
+          "cost": [{ "item": "turbo_motor", "amount": 50 }, { "item": "fused_modular_frame", "amount": 100 }, { "item": "cooling_system", "amount": 200 }, { "item": "quickwire", "amount": 2500 }],
+          "unlocks_machines": ["particle_accelerator"],
+          "unlocks_recipes": ["non_fissile_uranium_default", "plutonium_pellet_default", "encased_plutonium_cell_default", "plutonium_fuel_rod_default", "nuclear_pasta_default", "pressure_conversion_cube_default"],
+          "unlocks_other": ["Unlimited Hard Drive access"]
+        }
+      ]
+    },
+    {
+      "tier": 9,
+      "name": "Tier 9",
+      "note": "Requires Space Elevator Phase 4",
+      "milestones": [
+        {
+          "id": "matter_conversion",
+          "name": "Matter Conversion",
+          "cost": [{ "item": "fused_modular_frame", "amount": 100 }, { "item": "radio_control_unit", "amount": 250 }, { "item": "cooling_system", "amount": 500 }],
+          "unlocks_machines": ["converter"],
+          "unlocks_recipes": ["time_crystal_default", "ficsite_ingot_default", "ficsite_trigon_default", "reanimated_sam_default", "biochemical_sculptor_default"],
+          "unlocks_other": ["SAM scanner"]
+        },
+        {
+          "id": "quantum_encoding",
+          "name": "Quantum Encoding",
+          "cost": [{ "item": "time_crystal", "amount": 50 }, { "item": "superposition_oscillator", "amount": 100 }, { "item": "radio_control_unit", "amount": 250 }, { "item": "cooling_system", "amount": 500 }],
+          "unlocks_machines": ["quantum_encoder"],
+          "unlocks_recipes": ["dark_matter_crystal_default", "superposition_oscillator_default", "neural_quantum_processor_default", "ballistic_warp_drive_default", "ai_expansion_server_default"],
+          "unlocks_other": []
+        },
+        {
+          "id": "peak_efficiency",
+          "name": "Peak Efficiency",
+          "cost": [],
+          "unlocks_machines": [],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Conveyor Belt Mk.6", "Conveyor Lift Mk.6"]
+        }
+      ]
+    }
+  ],
+  "mam_trees": [
+    {
+      "id": "alien_megafauna",
+      "name": "Alien Megafauna",
+      "nodes": [
+        { "name": "Hog Research", "cost": [{ "item": "hog_remains", "amount": 1 }], "unlocks": ["Alien Protein recipe"] },
+        { "name": "Hatcher Research", "cost": [{ "item": "hatcher_remains", "amount": 1 }], "unlocks": ["Alien Protein recipe"] },
+        { "name": "Stinger Research", "cost": [{ "item": "stinger_remains", "amount": 1 }], "unlocks": ["Alien Protein recipe"] },
+        { "name": "Spitter Research", "cost": [{ "item": "plasma_spitter_remains", "amount": 1 }], "unlocks": ["Alien Protein recipe"] },
+        { "name": "Bio-Organic Properties", "cost": [{ "item": "alien_protein", "amount": 5 }], "unlocks": ["Alien DNA Capsule recipe", "Biomass from Alien Protein"] },
+        { "name": "Protein Inhaler", "cost": [{ "item": "alien_protein", "amount": 2 }], "unlocks": ["Medicinal Inhaler recipe"] },
+        { "name": "The Rebar Gun", "cost": [{ "item": "rotor", "amount": 25 }], "unlocks": ["Rebar Gun", "Iron Rebar recipe"] },
+        { "name": "Inflated Pocket Dimension", "cost": [{ "item": "alien_protein", "amount": 3 }], "unlocks": ["+6 Inventory Slots"] },
+        { "name": "Expanded Toolbelt", "cost": [{ "item": "alien_dna_capsule", "amount": 5 }], "unlocks": ["+1 Hand Slot"] },
+        { "name": "Hostile Organism Detection", "cost": [{ "item": "alien_dna_capsule", "amount": 10 }], "unlocks": ["Object Scanner enemies mode"] }
+      ]
+    },
+    {
+      "id": "alien_technology",
+      "name": "Alien Technology",
+      "nodes": [
+        { "name": "SAM Analysis", "cost": [{ "item": "sam", "amount": 10 }], "unlocks": ["Scannable SAM resource"] },
+        { "name": "SAM Reanimation", "cost": [{ "item": "sam", "amount": 20 }], "unlocks": ["Reanimated SAM recipe"] },
+        { "name": "SAM Fluctuator", "cost": [{ "item": "reanimated_sam", "amount": 10 }], "unlocks": ["SAM Fluctuator recipe"] },
+        { "name": "Mercer Sphere Analysis", "cost": [{ "item": "mercer_sphere", "amount": 1 }], "unlocks": ["Object Scanner Mercer Sphere mode"] },
+        { "name": "Somersloop Analysis", "cost": [{ "item": "somersloop", "amount": 1 }], "unlocks": ["Object Scanner Somersloop mode"] },
+        { "name": "Dimensional Depot", "cost": [{ "item": "mercer_sphere", "amount": 1 }], "unlocks": ["Dimensional Depot Uploader"] },
+        { "name": "Power Augmenter", "cost": [{ "item": "somersloop", "amount": 1 }], "unlocks": ["Alien Power Augmenter"] },
+        { "name": "Production Amplifier", "cost": [{ "item": "somersloop", "amount": 1 }], "unlocks": ["Production Amplifier"] }
+      ]
+    },
+    {
+      "id": "caterium",
+      "name": "Caterium",
+      "nodes": [
+        { "name": "Caterium", "cost": [{ "item": "caterium_ore", "amount": 10 }], "unlocks": ["Scannable Caterium Ore"] },
+        { "name": "Caterium Ingots", "cost": [{ "item": "caterium_ore", "amount": 50 }], "unlocks": ["Caterium Ingot recipe"] },
+        { "name": "Quickwire", "cost": [{ "item": "caterium_ingot", "amount": 50 }], "unlocks": ["Quickwire recipe"] },
+        { "name": "Zipline", "cost": [{ "item": "quickwire", "amount": 100 }], "unlocks": ["Zipline"] },
+        { "name": "AI Limiter", "cost": [{ "item": "quickwire", "amount": 200 }], "unlocks": ["AI Limiter recipe"] },
+        { "name": "High-Speed Connector", "cost": [{ "item": "quickwire", "amount": 500 }], "unlocks": ["High-Speed Connector recipe"] },
+        { "name": "Smart Splitter", "cost": [{ "item": "ai_limiter", "amount": 10 }], "unlocks": ["Smart Splitter"] },
+        { "name": "Power Switch", "cost": [{ "item": "steel_beam", "amount": 100 }], "unlocks": ["Power Switch"] },
+        { "name": "Power Poles Mk.2", "cost": [{ "item": "quickwire", "amount": 300 }], "unlocks": ["Power Pole Mk.2"] },
+        { "name": "Power Poles Mk.3", "cost": [{ "item": "high_speed_connector", "amount": 50 }], "unlocks": ["Power Pole Mk.3"] },
+        { "name": "Priority Power Switch", "cost": [{ "item": "high_speed_connector", "amount": 25 }], "unlocks": ["Priority Power Switch"] },
+        { "name": "Programmable Splitter", "cost": [{ "item": "ai_limiter", "amount": 100 }], "unlocks": ["Programmable Splitter"] },
+        { "name": "Geothermal Generator", "cost": [{ "item": "high_speed_connector", "amount": 100 }], "unlocks": ["Geothermal Generator", "Geyser scanning"] }
+      ]
+    },
+    {
+      "id": "mycelia",
+      "name": "Mycelia",
+      "nodes": [
+        { "name": "Mycelia", "cost": [{ "item": "mycelia", "amount": 5 }], "unlocks": ["Biomass from Mycelia"] },
+        { "name": "Fabric", "cost": [{ "item": "mycelia", "amount": 25 }], "unlocks": ["Fabric recipe"] },
+        { "name": "Parachute", "cost": [{ "item": "fabric", "amount": 10 }], "unlocks": ["Parachute"] },
+        { "name": "Expanded Toolbelt", "cost": [{ "item": "fabric", "amount": 50 }], "unlocks": ["+1 Hand Slot"] },
+        { "name": "Synthetic Polyester Fabric", "cost": [{ "item": "fabric", "amount": 25 }], "unlocks": ["Fabric from Polymer Resin recipe"] },
+        { "name": "Gas Mask", "cost": [{ "item": "coal", "amount": 10 }], "unlocks": ["Gas Mask", "Gas Filter recipe"] },
+        { "name": "Toxic Cellular Modification", "cost": [{ "item": "nobelisk", "amount": 10 }], "unlocks": ["Gas Nobelisk recipe"] }
+      ]
+    },
+    {
+      "id": "nutrients",
+      "name": "Nutrients",
+      "nodes": [
+        { "name": "Beryl Nut", "cost": [{ "item": "beryl_nut", "amount": 5 }], "unlocks": ["Object Scanner Beryl Nut mode"] },
+        { "name": "Paleberry", "cost": [{ "item": "paleberry", "amount": 2 }], "unlocks": ["Object Scanner Paleberry mode"] },
+        { "name": "Bacon Agaric", "cost": [{ "item": "bacon_agaric", "amount": 1 }], "unlocks": ["Object Scanner Bacon Agaric mode"] },
+        { "name": "Nutritional Inhaler", "cost": [{ "item": "bacon_agaric", "amount": 2 }], "unlocks": ["Medicinal Inhaler from nutrients"] }
+      ]
+    },
+    {
+      "id": "power_slugs",
+      "name": "Power Slugs",
+      "nodes": [
+        { "name": "Blue Power Slugs", "cost": [{ "item": "blue_power_slug", "amount": 1 }], "unlocks": ["Power Shard from Blue Slug"] },
+        { "name": "Slug Scanning", "cost": [{ "item": "iron_rod", "amount": 50 }], "unlocks": ["Object Scanner Power Slugs mode"] },
+        { "name": "Yellow Power Shards", "cost": [{ "item": "yellow_power_slug", "amount": 1 }], "unlocks": ["Power Shard from Yellow Slug"] },
+        { "name": "Overclock Production", "cost": [{ "item": "power_shard", "amount": 1 }], "unlocks": ["Overclocking"] },
+        { "name": "Purple Power Shards", "cost": [{ "item": "purple_power_slug", "amount": 1 }], "unlocks": ["Power Shard from Purple Slug"] },
+        { "name": "Synthetic Power Shards", "cost": [{ "item": "power_shard", "amount": 10 }], "unlocks": ["Power Shard from Quartz/Time/Dark Matter Crystals"] }
+      ]
+    },
+    {
+      "id": "quartz",
+      "name": "Quartz",
+      "nodes": [
+        { "name": "Quartz", "cost": [{ "item": "raw_quartz", "amount": 10 }], "unlocks": ["Scannable Raw Quartz"] },
+        { "name": "Quartz Crystals", "cost": [{ "item": "raw_quartz", "amount": 20 }], "unlocks": ["Quartz Crystal recipe"] },
+        { "name": "Silica", "cost": [{ "item": "raw_quartz", "amount": 20 }], "unlocks": ["Silica recipe"] },
+        { "name": "Crystal Oscillator", "cost": [{ "item": "quartz_crystal", "amount": 100 }], "unlocks": ["Crystal Oscillator recipe"] },
+        { "name": "Shatter Rebar", "cost": [{ "item": "quartz_crystal", "amount": 30 }], "unlocks": ["Shatter Rebar recipe"] },
+        { "name": "Blade Runners", "cost": [{ "item": "silica", "amount": 50 }], "unlocks": ["Blade Runners equipment"] },
+        { "name": "The Explorer", "cost": [{ "item": "crystal_oscillator", "amount": 10 }], "unlocks": ["Explorer vehicle"] },
+        { "name": "Radar Technology", "cost": [{ "item": "crystal_oscillator", "amount": 50 }], "unlocks": ["Radar Tower"] },
+        { "name": "Radio Signal Scanning", "cost": [{ "item": "crystal_oscillator", "amount": 100 }], "unlocks": ["Object Scanner crash sites mode"] },
+        { "name": "Material Resonance Screening", "cost": [{ "item": "crystal_oscillator", "amount": 15 }], "unlocks": ["Priority Merger"] }
+      ]
+    },
+    {
+      "id": "sulfur",
+      "name": "Sulfur",
+      "nodes": [
+        { "name": "Sulfur", "cost": [{ "item": "sulfur", "amount": 10 }], "unlocks": ["Scannable Sulfur"] },
+        { "name": "Black Powder", "cost": [{ "item": "sulfur", "amount": 50 }], "unlocks": ["Black Powder recipe"] },
+        { "name": "The Nobelisk Detonator", "cost": [{ "item": "black_powder", "amount": 50 }], "unlocks": ["Nobelisk Detonator", "Nobelisk recipe"] },
+        { "name": "Smokeless Powder", "cost": [{ "item": "black_powder", "amount": 100 }], "unlocks": ["Smokeless Powder recipe"] },
+        { "name": "Compacted Coal", "cost": [{ "item": "hard_drive", "amount": 1 }], "unlocks": ["Compacted Coal recipe"] },
+        { "name": "Turbofuel", "cost": [{ "item": "hard_drive", "amount": 1 }], "unlocks": ["Turbofuel recipe", "Packaged Turbofuel recipe"] },
+        { "name": "Rocket Fuel", "cost": [{ "item": "hard_drive", "amount": 1 }], "unlocks": ["Rocket Fuel recipe"] },
+        { "name": "Ionized Fuel", "cost": [{ "item": "hard_drive", "amount": 1 }], "unlocks": ["Ionized Fuel recipe"] },
+        { "name": "The Rifle", "cost": [{ "item": "smokeless_powder", "amount": 50 }], "unlocks": ["Rifle", "Rifle Ammo recipe"] },
+        { "name": "Nuclear Deterrent Development", "cost": [{ "item": "nobelisk", "amount": 500 }], "unlocks": ["Nuke Nobelisk recipe"] },
+        { "name": "Expanded Toolbelt", "cost": [{ "item": "black_powder", "amount": 100 }], "unlocks": ["+1 Hand Slot"] }
+      ]
+    }
+  ]
+}

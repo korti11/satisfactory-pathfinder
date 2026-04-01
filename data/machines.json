@@ -1,0 +1,242 @@
+[
+  {
+    "id": "smelter",
+    "name": "Smelter",
+    "category": "production",
+    "power_mw": 4.0,
+    "power_variable": true,
+    "input_slots": 1,
+    "output_slots": 1,
+    "notes": "Unlock: Tier 0 - HUB Upgrade 2"
+  },
+  {
+    "id": "constructor",
+    "name": "Constructor",
+    "category": "production",
+    "power_mw": 4.0,
+    "power_variable": true,
+    "input_slots": 1,
+    "output_slots": 1,
+    "notes": "Unlock: Tier 0 - HUB Upgrade 3"
+  },
+  {
+    "id": "foundry",
+    "name": "Foundry",
+    "category": "production",
+    "power_mw": 16.0,
+    "power_variable": true,
+    "input_slots": 2,
+    "output_slots": 1,
+    "notes": "Unlock: Tier 2 - Part Assembly"
+  },
+  {
+    "id": "assembler",
+    "name": "Assembler",
+    "category": "production",
+    "power_mw": 15.0,
+    "power_variable": true,
+    "input_slots": 2,
+    "output_slots": 1,
+    "notes": "Unlock: Tier 2 - Part Assembly"
+  },
+  {
+    "id": "manufacturer",
+    "name": "Manufacturer",
+    "category": "production",
+    "power_mw": 55.0,
+    "power_variable": true,
+    "input_slots": 4,
+    "output_slots": 1,
+    "notes": "Unlock: Tier 6 - Industrial Manufacturing"
+  },
+  {
+    "id": "refinery",
+    "name": "Refinery",
+    "category": "production",
+    "power_mw": 30.0,
+    "power_variable": true,
+    "input_slots": 2,
+    "output_slots": 2,
+    "notes": "Unlock: Tier 5 - Oil Processing. 1 belt + 1 pipe in, 1 belt + 1 pipe out"
+  },
+  {
+    "id": "blender",
+    "name": "Blender",
+    "category": "production",
+    "power_mw": 75.0,
+    "power_variable": true,
+    "input_slots": 4,
+    "output_slots": 2,
+    "notes": "Unlock: Tier 7 - Control System Development. 2 belts + 2 pipes in, 1 belt + 1 pipe out"
+  },
+  {
+    "id": "packager",
+    "name": "Packager",
+    "category": "production",
+    "power_mw": 10.0,
+    "power_variable": true,
+    "input_slots": 2,
+    "output_slots": 2,
+    "notes": "Unlock: Tier 5 - Fluid Packaging. 1 belt + 1 pipe in, 1 belt + 1 pipe out"
+  },
+  {
+    "id": "particle_accelerator",
+    "name": "Particle Accelerator",
+    "category": "production",
+    "power_mw": 1000.0,
+    "power_variable": true,
+    "input_slots": 2,
+    "output_slots": 1,
+    "notes": "Unlock: Tier 8 - Particle Enrichment. Power fluctuates 500–1500 MW per cycle"
+  },
+  {
+    "id": "quantum_encoder",
+    "name": "Quantum Encoder",
+    "category": "production",
+    "power_mw": 1000.0,
+    "power_variable": true,
+    "input_slots": 3,
+    "output_slots": 2,
+    "notes": "Unlock: Tier 9 - Quantum Encoding. Power 0–2000 MW avg 1000 MW, erratic. 2 belts + 1 pipe in, 1 belt + 1 pipe out"
+  },
+  {
+    "id": "converter",
+    "name": "Converter",
+    "category": "production",
+    "power_mw": 250.0,
+    "power_variable": true,
+    "input_slots": 2,
+    "output_slots": 1,
+    "notes": "Unlock: Tier 9 - Matter Conversion. Power 100–400 MW avg 250 MW, triangle wave pattern"
+  },
+  {
+    "id": "equipment_workshop",
+    "name": "Equipment Workshop",
+    "category": "production",
+    "power_mw": 0.0,
+    "power_variable": false,
+    "input_slots": 0,
+    "output_slots": 0,
+    "notes": "Manual crafting station. No power cost."
+  },
+  {
+    "id": "miner_mk1",
+    "name": "Miner Mk.1",
+    "category": "extraction",
+    "power_mw": 5.0,
+    "power_variable": true,
+    "input_slots": 0,
+    "output_slots": 1,
+    "notes": "Unlock: Tier 0. Impure 30/min, Normal 60/min, Pure 120/min"
+  },
+  {
+    "id": "miner_mk2",
+    "name": "Miner Mk.2",
+    "category": "extraction",
+    "power_mw": 15.0,
+    "power_variable": true,
+    "input_slots": 0,
+    "output_slots": 1,
+    "notes": "Unlock: Tier 4 - Advanced Steel Production. Impure 60/min, Normal 120/min, Pure 240/min"
+  },
+  {
+    "id": "miner_mk3",
+    "name": "Miner Mk.3",
+    "category": "extraction",
+    "power_mw": 45.0,
+    "power_variable": true,
+    "input_slots": 0,
+    "output_slots": 1,
+    "notes": "Unlock: Tier 8 - Leading-edge Production. Impure 120/min, Normal 240/min, Pure 480/min"
+  },
+  {
+    "id": "oil_extractor",
+    "name": "Oil Extractor",
+    "category": "extraction",
+    "power_mw": 40.0,
+    "power_variable": true,
+    "input_slots": 0,
+    "output_slots": 1,
+    "notes": "Unlock: Tier 5 - Oil Processing. Impure 60/min, Normal 120/min, Pure 240/min at 100%"
+  },
+  {
+    "id": "water_extractor",
+    "name": "Water Extractor",
+    "category": "extraction",
+    "power_mw": 20.0,
+    "power_variable": true,
+    "input_slots": 0,
+    "output_slots": 1,
+    "notes": "Unlock: Tier 3 - Coal Power. Fixed rate 120 m3/min at 100%"
+  },
+  {
+    "id": "resource_well_pressurizer",
+    "name": "Resource Well Pressurizer",
+    "category": "extraction",
+    "power_mw": 150.0,
+    "power_variable": true,
+    "input_slots": 0,
+    "output_slots": 0,
+    "notes": "Unlock: Tier 8 - Advanced Aluminum Production. Powers all attached extractors"
+  },
+  {
+    "id": "resource_well_extractor",
+    "name": "Resource Well Extractor",
+    "category": "extraction",
+    "power_mw": 0.0,
+    "power_variable": false,
+    "input_slots": 0,
+    "output_slots": 1,
+    "notes": "Unlock: Tier 8. Free to run. Rate depends on pressurizer clock speed and node purity"
+  },
+  {
+    "id": "biomass_burner",
+    "name": "Biomass Burner",
+    "category": "power",
+    "power_mw": 30.0,
+    "power_variable": false,
+    "input_slots": 1,
+    "output_slots": 0,
+    "notes": "Unlock: Tier 0 - HUB Upgrade 6. Scales consumption to demand"
+  },
+  {
+    "id": "coal_generator",
+    "name": "Coal Generator",
+    "category": "power",
+    "power_mw": 75.0,
+    "power_variable": false,
+    "input_slots": 2,
+    "output_slots": 0,
+    "notes": "Unlock: Tier 3 - Coal Power. Requires water 45 m3/min"
+  },
+  {
+    "id": "fuel_generator",
+    "name": "Fuel Generator",
+    "category": "power",
+    "power_mw": 250.0,
+    "power_variable": false,
+    "input_slots": 1,
+    "output_slots": 0,
+    "notes": "Unlock: Tier 5 - Petroleum Power. Always runs at full consumption"
+  },
+  {
+    "id": "geothermal_generator",
+    "name": "Geothermal Generator",
+    "category": "power",
+    "power_mw": 200.0,
+    "power_variable": false,
+    "input_slots": 0,
+    "output_slots": 0,
+    "notes": "MAM Caterium - Geothermal Generator. Cannot be overclocked. Impure avg 100 MW, Normal avg 200 MW, Pure avg 400 MW"
+  },
+  {
+    "id": "nuclear_power_plant",
+    "name": "Nuclear Power Plant",
+    "category": "power",
+    "power_mw": 2500.0,
+    "power_variable": false,
+    "input_slots": 2,
+    "output_slots": 1,
+    "notes": "Unlock: Tier 8 - Nuclear Power. 240 m3/min water. Produces nuclear waste"
+  }
+]

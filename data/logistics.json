@@ -1,0 +1,96 @@
+{
+  "conveyor_belts": [
+    {
+      "id": "belt_mk1",
+      "name": "Conveyor Belt Mk.1",
+      "tier": 1,
+      "rate_per_min": 60,
+      "unlock_tier": 0,
+      "unlock_milestone": "HUB Upgrade 4",
+      "build_cost": [
+        { "item": "iron_plate", "amount": 1 }
+      ]
+    },
+    {
+      "id": "belt_mk2",
+      "name": "Conveyor Belt Mk.2",
+      "tier": 2,
+      "rate_per_min": 120,
+      "unlock_tier": 2,
+      "unlock_milestone": "Logistics Mk.2",
+      "build_cost": [
+        { "item": "reinforced_iron_plate", "amount": 1 }
+      ]
+    },
+    {
+      "id": "belt_mk3",
+      "name": "Conveyor Belt Mk.3",
+      "tier": 3,
+      "rate_per_min": 270,
+      "unlock_tier": 4,
+      "unlock_milestone": "Logistics Mk.3",
+      "build_cost": [
+        { "item": "steel_beam", "amount": 1 }
+      ]
+    },
+    {
+      "id": "belt_mk4",
+      "name": "Conveyor Belt Mk.4",
+      "tier": 4,
+      "rate_per_min": 480,
+      "unlock_tier": 5,
+      "unlock_milestone": "Logistics Mk.4",
+      "build_cost": [
+        { "item": "encased_industrial_beam", "amount": 1 }
+      ]
+    },
+    {
+      "id": "belt_mk5",
+      "name": "Conveyor Belt Mk.5",
+      "tier": 5,
+      "rate_per_min": 780,
+      "unlock_tier": 7,
+      "unlock_milestone": "Logistics Mk.5",
+      "build_cost": [
+        { "item": "alclad_aluminum_sheet", "amount": 1 }
+      ]
+    },
+    {
+      "id": "belt_mk6",
+      "name": "Conveyor Belt Mk.6",
+      "tier": 6,
+      "rate_per_min": 1200,
+      "unlock_tier": 9,
+      "unlock_milestone": "Peak Efficiency",
+      "build_cost": [
+        { "item": "ficsite_trigon", "amount": 1 },
+        { "item": "time_crystal", "amount": 1 }
+      ]
+    }
+  ],
+  "pipelines": [
+    {
+      "id": "pipe_mk1",
+      "name": "Pipeline Mk.1",
+      "tier": 1,
+      "rate_per_min": 300,
+      "unlock_tier": 3,
+      "unlock_milestone": "Coal Power",
+      "build_cost": [
+        { "item": "copper_sheet", "amount": 1 }
+      ]
+    },
+    {
+      "id": "pipe_mk2",
+      "name": "Pipeline Mk.2",
+      "tier": 2,
+      "rate_per_min": 600,
+      "unlock_tier": 5,
+      "unlock_milestone": "Pipeline Engineering Mk.2",
+      "build_cost": [
+        { "item": "copper_sheet", "amount": 2 },
+        { "item": "plastic", "amount": 1 }
+      ]
+    }
+  ]
+}
