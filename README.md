@@ -17,6 +17,33 @@ You can use the CLI on its own or pair it with the agent for a conversational pl
 
 ## Installation
 
+### Homebrew (macOS and Linux)
+
+```bash
+brew tap korti11/tap
+brew install satisfactory-pathfinder
+```
+
+### Shell script (macOS and Linux)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/korti11/satisfactory-pathfinder/master/install/install.sh | bash
+```
+
+Installs to `~/.local/bin` by default. Override with `INSTALL_DIR`:
+
+```bash
+INSTALL_DIR=/usr/local/bin curl -fsSL https://raw.githubusercontent.com/korti11/satisfactory-pathfinder/master/install/install.sh | bash
+```
+
+### PowerShell (Windows)
+
+```powershell
+irm https://raw.githubusercontent.com/korti11/satisfactory-pathfinder/master/install/install.ps1 | iex
+```
+
+Installs to `%LOCALAPPDATA%\Programs\pathfinder` and adds it to your user PATH.
+
 ### Build from source
 
 Requires [Rust](https://rustup.rs/) (stable).
@@ -34,16 +61,8 @@ The binary will be at `target/release/pathfinder`. Copy it somewhere on your PAT
 cp target/release/pathfinder ~/.local/bin/pathfinder
 
 # Windows (PowerShell)
-Copy-Item target\release\pathfinder.exe "$env:USERPROFILE\bin\pathfinder.exe"
+Copy-Item target\release\pathfinder.exe "$env:LOCALAPPDATA\Programs\pathfinder\pathfinder.exe"
 ```
-
-The `data/` directory must be accessible when running commands. By default pathfinder looks for `./data` in the current working directory. Use `--data-dir` to point it elsewhere:
-
-```bash
-pathfinder --data-dir /path/to/satisfactory-pathfinder/data list items
-```
-
-> Pre-built binaries and an install script are planned for a future release.
 
 ---
 
@@ -155,17 +174,15 @@ The `agent/satisfactory-companion.md` file is a [Claude Code](https://claude.ai/
 
 ### Install the agent
 
-Copy `agent/satisfactory-companion.md` to your Claude Code agents directory:
+Once `pathfinder` is installed and on your PATH, run:
 
 ```bash
-# Linux / macOS
-cp agent/satisfactory-companion.md ~/.claude/agents/satisfactory-companion.md
+# Install globally (available in all Claude Code projects)
+pathfinder companion install --global
 
-# Windows (PowerShell)
-Copy-Item agent\satisfactory-companion.md "$env:USERPROFILE\.claude\agents\satisfactory-companion.md"
+# Install for the current project only
+pathfinder companion install
 ```
-
-The agent expects `pathfinder` to be on your PATH and `--data-dir` to be set if data is not at `./data`.
 
 ### Example prompts
 
