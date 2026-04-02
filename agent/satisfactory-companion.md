@@ -17,6 +17,19 @@ pathfinder list items --category ingot --json
 pathfinder list recipes --item iron_rod --json
 pathfinder list recipes --alternate --json
 pathfinder list machines --json
+pathfinder list resources --json
+pathfinder list resources --item iron_ore --json
+
+# Logistics data
+pathfinder list belts --json
+pathfinder list pipes --json
+
+# Milestone and progression data
+pathfinder list milestones --json
+pathfinder list milestones --tier 2 --json
+pathfinder list space-elevator --json
+pathfinder list mam --json
+pathfinder list mam --tree caterium --json
 
 # Single-machine rate calculation
 pathfinder calc "Iron Rod" --rate 30 --json
@@ -44,8 +57,6 @@ pathfinder sink --category part --json
 pathfinder nuclear --plants 4 --json
 pathfinder nuclear --plants 2 --fuel plutonium --json
 ```
-
-If the data directory is not at `./data`, add `--data-dir /path/to/data` to any command.
 
 ## Workflow for factory planning questions
 
@@ -135,25 +146,7 @@ Legend: ──MkN──> solid belt tier N  |  ══MkN══> pipe tier N  |  
 
 ## Conveyor belt and pipeline tiers
 
-Logistics capacity data lives in `data/logistics.json`. Read it when the user asks about belt/pipe tiers or when a calculated rate may exceed a connection's capacity.
-
-**Conveyor belts** (solid items):
-
-| Tier | Rate (items/min) | Unlocked at |
-|------|-----------------|-------------|
-| Mk.1 | 60  | Tier 0 — HUB Upgrade 4 |
-| Mk.2 | 120 | Tier 2 — Logistics Mk.2 |
-| Mk.3 | 270 | Tier 4 — Logistics Mk.3 |
-| Mk.4 | 480 | Tier 5 — Logistics Mk.4 |
-| Mk.5 | 780 | Tier 7 — Logistics Mk.5 |
-| Mk.6 | 1200 | Tier 9 — Peak Efficiency |
-
-**Pipelines** (liquids/gases, m³/min):
-
-| Tier | Rate (m³/min) | Unlocked at |
-|------|--------------|-------------|
-| Mk.1 | 300 | Tier 3 — Coal Power |
-| Mk.2 | 600 | Tier 5 — Pipeline Engineering Mk.2 |
+Run `pathfinder list belts --json` and `pathfinder list pipes --json` to get current tier data. Use this when the user asks about belt/pipe tiers or when a calculated rate may exceed a connection's capacity.
 
 When reporting machine counts or chain outputs, flag any single connection that exceeds a belt or pipe tier the user is likely to have unlocked, and recommend the minimum tier needed.
 
@@ -161,7 +154,7 @@ When reporting machine counts or chain outputs, flag any single connection that 
 
 When asked for a power budget, or automatically when presenting a factory design:
 1. Sum `power_mw` across all machine groups (count × base_mw × clock^1.321928)
-2. Look up available generators in `data/machines.json` (category: power):
+2. Run `pathfinder list machines --json` and filter by `category: power` to get generator stats:
    - Biomass Burner: 30 MW
    - Coal Generator: 75 MW (needs 45 m³/min water per generator)
    - Fuel Generator: 250 MW
@@ -175,7 +168,7 @@ Report as: total draw, generator count, and whether the factory is self-sufficie
 ## Resource node advisor
 
 When asked which nodes to tap for a factory's raw inputs, or automatically after a chain result:
-1. Read `data/resources.json` — each entry has `item`, `purity`, `node_count`, and `max_rate_per_node`
+1. Run `pathfinder list resources --item <item_id> --json` for each required raw resource — each entry has `item`, `purity`, `node_count`, and `max_rate_per_node`
 2. Purity rates (miner Mk.1 at 100% clock): impure 30/min, normal 60/min, pure 120/min
 3. Clock speed scales linearly: a normal node at 150% clock = 90/min
 4. Miner tiers multiply base rate: Mk.1 ×1, Mk.2 ×2, Mk.3 ×4
@@ -223,7 +216,7 @@ After writing, run `pathfinder bottleneck --factory <path> --json` on the new en
 
 When the user asks how to connect two points at a given rate, or when a chain result produces a rate that may need splitting:
 1. Determine item type — liquid/gas uses pipelines, solid uses conveyor belts
-2. Look up tiers in `data/logistics.json`
+2. Run `pathfinder list belts --json` or `pathfinder list pipes --json` to get tier data
 3. Find the minimum single-tier option that fits the rate; if none fits (rate > Mk.6 belt or Mk.2 pipe), calculate how many parallel connections of the highest tier are needed: `ceil(rate / max_tier_rate)`
 4. Report: minimum tier, its capacity, and number of parallel lines if splitting is required
 
@@ -233,18 +226,13 @@ Always flag if the required tier is not yet unlocked based on the user's stated 
 
 ## Unlock advisor
 
-Structured milestone data lives in `data/milestones.json`. It contains:
-- `space_elevator_phases` — Phase 1–5 requirements and what tiers they gate
-- `tiers[].milestones[]` — every HUB milestone with `unlocks_machines` and `unlocks_recipes` arrays
-- `mam_trees[]` — every MAM research tree with ordered nodes and their unlocks
-
 When asked "what do I need to unlock to build X", or when a factory design references machines or recipes the user may not have:
 1. Run `pathfinder chain <item> --rate <rate> --json` to get every recipe and machine in the chain
-2. For each machine in the chain, find its milestone in `milestones.json` by searching `unlocks_machines`
-3. For each recipe in the chain, find its milestone by searching `unlocks_recipes`; fall back to the recipe's `unlock_tier` if not listed
-4. Check if any tier requires a Space Elevator phase — note the phase requirements
+2. Run `pathfinder list milestones --json` to get all HUB tiers — search `unlocks_machines` and `unlocks_recipes` arrays
+3. For each recipe in the chain, fall back to the recipe's `unlock_tier` if not listed in milestones
+4. Run `pathfinder list space-elevator --json` to check which tiers are gated behind Space Elevator phases
 5. Alternate recipes (`is_alternate: true`) are unlocked via Hard Drive research in the AWESOME Shop
-6. MAM-unlocked items — find the tree and node in `mam_trees`
+6. MAM-unlocked items — run `pathfinder list mam --json` and search for the relevant tree and node
 
 Present as an ordered checklist from earliest to latest, including Space Elevator phases:
 ```
@@ -316,7 +304,7 @@ When the user has nuclear power plants and asks about waste management:
 ## Space Elevator progress tracker
 
 When asked how close the world is to completing the next Space Elevator phase:
-1. Read `data/milestones.json` → `space_elevator_phases` for the target phase requirements
+1. Run `pathfinder list space-elevator --json` to get phase requirements
 2. Read the world `factories.json` and sum output rates for each required item across all active factories
 3. For each required item calculate:
    - Current production rate going toward the phase (exclude amounts consumed downstream)
