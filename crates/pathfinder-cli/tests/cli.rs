@@ -38,6 +38,40 @@ fn embedded_data_loads_without_data_dir_flag() {
 // ---------------------------------------------------------------------------
 
 #[test]
+fn list_resources_returns_json_array() {
+    let output = pathfinder()
+        .args(["list", "resources", "--json"])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let resources: Vec<serde_json::Value> = serde_json::from_slice(&output).unwrap();
+    assert!(!resources.is_empty());
+    assert!(resources
+        .iter()
+        .all(|r| r["max_rate_per_node"].as_f64().unwrap() > 0.0));
+}
+
+#[test]
+fn list_resources_item_filter_returns_only_that_item() {
+    let output = pathfinder()
+        .args(["list", "resources", "--item", "iron_ore", "--json"])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let resources: Vec<serde_json::Value> = serde_json::from_slice(&output).unwrap();
+    assert!(!resources.is_empty());
+    assert!(resources
+        .iter()
+        .all(|r| r["item"].as_str().unwrap() == "iron_ore"));
+}
+
+#[test]
 fn list_items_returns_json_array() {
     pathfinder()
         .args(["list", "items", "--json"])
@@ -331,4 +365,159 @@ fn nuclear_plutonium_produces_less_waste_than_uranium() {
     let u: serde_json::Value = serde_json::from_slice(&uranium).unwrap();
     let p: serde_json::Value = serde_json::from_slice(&plutonium).unwrap();
     assert!(u["waste_per_min"].as_f64().unwrap() > p["waste_per_min"].as_f64().unwrap());
+}
+
+// ---------------------------------------------------------------------------
+// list belts
+// ---------------------------------------------------------------------------
+
+#[test]
+fn list_belts_returns_json_array() {
+    let output = pathfinder()
+        .args(["list", "belts", "--json"])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let belts: Vec<serde_json::Value> = serde_json::from_slice(&output).unwrap();
+    assert!(!belts.is_empty());
+    assert!(belts
+        .iter()
+        .all(|b| b["rate_per_min"].as_u64().unwrap() > 0));
+}
+
+#[test]
+fn list_belts_are_ordered_by_tier() {
+    let output = pathfinder()
+        .args(["list", "belts", "--json"])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let belts: Vec<serde_json::Value> = serde_json::from_slice(&output).unwrap();
+    let tiers: Vec<u64> = belts.iter().map(|b| b["tier"].as_u64().unwrap()).collect();
+    assert!(tiers.windows(2).all(|w| w[0] <= w[1]));
+}
+
+// ---------------------------------------------------------------------------
+// list pipes
+// ---------------------------------------------------------------------------
+
+#[test]
+fn list_pipes_returns_json_array() {
+    let output = pathfinder()
+        .args(["list", "pipes", "--json"])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let pipes: Vec<serde_json::Value> = serde_json::from_slice(&output).unwrap();
+    assert!(!pipes.is_empty());
+    assert!(pipes
+        .iter()
+        .all(|p| p["rate_per_min"].as_u64().unwrap() > 0));
+}
+
+// ---------------------------------------------------------------------------
+// list milestones
+// ---------------------------------------------------------------------------
+
+#[test]
+fn list_milestones_returns_all_tiers() {
+    let output = pathfinder()
+        .args(["list", "milestones", "--json"])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let tiers: Vec<serde_json::Value> = serde_json::from_slice(&output).unwrap();
+    assert!(!tiers.is_empty());
+}
+
+#[test]
+fn list_milestones_tier_filter_returns_single_tier() {
+    let output = pathfinder()
+        .args(["list", "milestones", "--tier", "0", "--json"])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let tiers: Vec<serde_json::Value> = serde_json::from_slice(&output).unwrap();
+    assert_eq!(tiers.len(), 1);
+    assert_eq!(tiers[0]["tier"].as_u64().unwrap(), 0);
+}
+
+// ---------------------------------------------------------------------------
+// list space-elevator
+// ---------------------------------------------------------------------------
+
+#[test]
+fn list_space_elevator_returns_five_phases() {
+    let output = pathfinder()
+        .args(["list", "space-elevator", "--json"])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let phases: Vec<serde_json::Value> = serde_json::from_slice(&output).unwrap();
+    assert_eq!(phases.len(), 5);
+}
+
+// ---------------------------------------------------------------------------
+// list mam
+// ---------------------------------------------------------------------------
+
+#[test]
+fn list_mam_returns_all_trees() {
+    let output = pathfinder()
+        .args(["list", "mam", "--json"])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let trees: Vec<serde_json::Value> = serde_json::from_slice(&output).unwrap();
+    assert!(!trees.is_empty());
+}
+
+#[test]
+fn list_mam_tree_filter_returns_single_tree() {
+    let output = pathfinder()
+        .args(["list", "mam", "--tree", "caterium", "--json"])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let trees: Vec<serde_json::Value> = serde_json::from_slice(&output).unwrap();
+    assert_eq!(trees.len(), 1);
+    assert_eq!(trees[0]["id"].as_str().unwrap(), "caterium");
+}
+
+#[test]
+fn list_mam_unknown_tree_returns_empty_array() {
+    let output = pathfinder()
+        .args(["list", "mam", "--tree", "nonexistent", "--json"])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let trees: Vec<serde_json::Value> = serde_json::from_slice(&output).unwrap();
+    assert!(trees.is_empty());
 }

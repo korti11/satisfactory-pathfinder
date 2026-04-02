@@ -4,7 +4,7 @@ use std::path::Path;
 use anyhow::{Context, Result};
 use rust_embed::Embed;
 
-use crate::models::{Factory, Item, Machine, Recipe, ResourceNode};
+use crate::models::{Factory, Item, LogisticsData, Machine, MilestonesData, Recipe, ResourceNode};
 
 #[derive(Embed)]
 #[folder = "../../data/"]
@@ -15,34 +15,39 @@ pub struct Db {
     machines: HashMap<String, Machine>,
     recipes: Vec<Recipe>,
     resources: Vec<ResourceNode>,
+    logistics: LogisticsData,
+    milestones: MilestonesData,
 }
 
 impl Db {
     /// Load game data from an optional directory override.
     /// Falls back to data embedded in the binary if no directory is given.
     pub fn load(data_dir: Option<&Path>) -> Result<Self> {
-        let items: Vec<Item> = match data_dir {
-            Some(dir) => load_json_file(dir.join("items.json"))?,
-            None => load_json_embedded("items.json")?,
+        let load = |filename: &str| -> Result<Vec<u8>> {
+            match data_dir {
+                Some(dir) => Ok(std::fs::read(dir.join(filename))
+                    .with_context(|| format!("failed to read {filename}"))?),
+                None => Ok(EmbeddedData::get(filename)
+                    .with_context(|| format!("embedded data file '{filename}' not found"))?
+                    .data
+                    .to_vec()),
+            }
         };
-        let machines: Vec<Machine> = match data_dir {
-            Some(dir) => load_json_file(dir.join("machines.json"))?,
-            None => load_json_embedded("machines.json")?,
-        };
-        let recipes: Vec<Recipe> = match data_dir {
-            Some(dir) => load_json_file(dir.join("recipes.json"))?,
-            None => load_json_embedded("recipes.json")?,
-        };
-        let resources: Vec<ResourceNode> = match data_dir {
-            Some(dir) => load_json_file(dir.join("resources.json"))?,
-            None => load_json_embedded("resources.json")?,
-        };
+
+        let items: Vec<Item> = parse_json(&load("items.json")?, "items.json")?;
+        let machines: Vec<Machine> = parse_json(&load("machines.json")?, "machines.json")?;
+        let recipes: Vec<Recipe> = parse_json(&load("recipes.json")?, "recipes.json")?;
+        let resources: Vec<ResourceNode> = parse_json(&load("resources.json")?, "resources.json")?;
+        let logistics: LogisticsData = parse_json(&load("logistics.json")?, "logistics.json")?;
+        let milestones: MilestonesData = parse_json(&load("milestones.json")?, "milestones.json")?;
 
         Ok(Self {
             items: items.into_iter().map(|i| (i.id.clone(), i)).collect(),
             machines: machines.into_iter().map(|m| (m.id.clone(), m)).collect(),
             recipes,
             resources,
+            logistics,
+            milestones,
         })
     }
 
@@ -140,25 +145,41 @@ impl Db {
             .map(|r| r.node_count as f64 * r.max_rate_per_node)
             .sum()
     }
+
+    // --- Logistics ---
+
+    pub fn conveyor_belts(&self) -> &[crate::models::ConveyorBelt] {
+        &self.logistics.conveyor_belts
+    }
+
+    pub fn pipelines(&self) -> &[crate::models::Pipeline] {
+        &self.logistics.pipelines
+    }
+
+    // --- Milestones ---
+
+    pub fn space_elevator_phases(&self) -> &[crate::models::SpaceElevatorPhase] {
+        &self.milestones.space_elevator_phases
+    }
+
+    pub fn hub_tiers(&self) -> &[crate::models::HubTier] {
+        &self.milestones.tiers
+    }
+
+    pub fn mam_trees(&self) -> &[crate::models::MamTree] {
+        &self.milestones.mam_trees
+    }
 }
 
-/// Load and deserialize a JSON file from disk (used for factory files and --data-dir override).
+/// Load and deserialize a JSON file from disk (used for factory files).
 pub fn load_factories(path: &Path) -> Result<Vec<Factory>> {
-    load_json_file(path)
-}
-
-fn load_json_file<T: serde::de::DeserializeOwned>(path: impl AsRef<Path>) -> Result<T> {
-    let path = path.as_ref();
     let content = std::fs::read_to_string(path)
         .with_context(|| format!("failed to read {}", path.display()))?;
     serde_json::from_str(&content).with_context(|| format!("failed to parse {}", path.display()))
 }
 
-fn load_json_embedded<T: serde::de::DeserializeOwned>(filename: &str) -> Result<T> {
-    let file = EmbeddedData::get(filename)
-        .with_context(|| format!("embedded data file '{}' not found", filename))?;
-    let content = std::str::from_utf8(file.data.as_ref())
-        .with_context(|| format!("embedded data file '{}' is not valid UTF-8", filename))?;
-    serde_json::from_str(content)
-        .with_context(|| format!("failed to parse embedded data file '{}'", filename))
+fn parse_json<T: serde::de::DeserializeOwned>(data: &[u8], name: &str) -> Result<T> {
+    let content =
+        std::str::from_utf8(data).with_context(|| format!("'{name}' is not valid UTF-8"))?;
+    serde_json::from_str(content).with_context(|| format!("failed to parse '{name}'"))
 }

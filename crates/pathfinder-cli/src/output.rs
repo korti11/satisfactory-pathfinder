@@ -10,7 +10,7 @@ impl Formatter {
         Self { json_mode }
     }
 
-    pub fn print_json<T: Serialize>(&self, value: &T) {
+    pub fn print_json<T: Serialize + ?Sized>(&self, value: &T) {
         println!("{}", serde_json::to_string_pretty(value).unwrap());
     }
 

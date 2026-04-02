@@ -107,6 +107,90 @@ pub struct Factory {
     pub notes: String,
 }
 
+// --- Logistics ---
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct BuildCost {
+    pub item: String,
+    pub amount: u32,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ConveyorBelt {
+    pub id: String,
+    pub name: String,
+    pub tier: u32,
+    pub rate_per_min: u32,
+    pub unlock_tier: u32,
+    pub unlock_milestone: String,
+    pub build_cost: Vec<BuildCost>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Pipeline {
+    pub id: String,
+    pub name: String,
+    pub tier: u32,
+    pub rate_per_min: u32,
+    pub unlock_tier: u32,
+    pub unlock_milestone: String,
+    pub build_cost: Vec<BuildCost>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct LogisticsData {
+    pub conveyor_belts: Vec<ConveyorBelt>,
+    pub pipelines: Vec<Pipeline>,
+}
+
+// --- Milestones ---
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct SpaceElevatorPhase {
+    pub phase: u32,
+    pub name: String,
+    pub requirements: Vec<BuildCost>,
+    pub unlocks: String,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct HubMilestone {
+    pub id: String,
+    pub name: String,
+    pub cost: Vec<BuildCost>,
+    pub unlocks_machines: Vec<String>,
+    pub unlocks_recipes: Vec<String>,
+    pub unlocks_other: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct HubTier {
+    pub tier: u32,
+    pub name: String,
+    pub milestones: Vec<HubMilestone>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct MamNode {
+    pub name: String,
+    pub cost: Vec<BuildCost>,
+    pub unlocks: Vec<String>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct MamTree {
+    pub id: String,
+    pub name: String,
+    pub nodes: Vec<MamNode>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct MilestonesData {
+    pub space_elevator_phases: Vec<SpaceElevatorPhase>,
+    pub tiers: Vec<HubTier>,
+    pub mam_trees: Vec<MamTree>,
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

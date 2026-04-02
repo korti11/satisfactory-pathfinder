@@ -125,6 +125,30 @@ enum ListTarget {
     },
     /// List machines
     Machines,
+    /// List resource nodes and their extraction rates
+    Resources {
+        /// Filter by item id (e.g. iron_ore)
+        #[arg(long)]
+        item: Option<String>,
+    },
+    /// List conveyor belt tiers and throughput rates
+    Belts,
+    /// List pipeline tiers and throughput rates
+    Pipes,
+    /// List HUB milestones, optionally filtered by tier
+    Milestones {
+        /// Show only milestones for this tier number
+        #[arg(long)]
+        tier: Option<u32>,
+    },
+    /// List Space Elevator phases and requirements
+    SpaceElevator,
+    /// List MAM research trees, optionally filtered by tree id
+    Mam {
+        /// Show only this research tree (e.g. caterium, quartz)
+        #[arg(long)]
+        tree: Option<String>,
+    },
 }
 
 fn main() -> Result<()> {
@@ -242,6 +266,140 @@ fn cmd_list(db: &Db, fmt: &Formatter, target: ListTarget) -> Result<()> {
                         "  {:<35} [{:<12}] {:.0} MW  in:{} out:{}",
                         m.name, m.category, m.power_mw, m.input_slots, m.output_slots
                     );
+                }
+            }
+        }
+
+        ListTarget::Resources { item } => {
+            let mut resources: Vec<_> = if let Some(id) = &item {
+                db.resources_for_item(id)
+            } else {
+                db.all_resources().collect()
+            };
+            resources.sort_by(|a, b| a.item.cmp(&b.item).then(a.purity.cmp(&b.purity)));
+
+            if fmt.json_mode {
+                fmt.print_json(resources.as_slice());
+            } else {
+                fmt.header(&format!("Resource Nodes ({})", resources.len()));
+                for r in &resources {
+                    println!(
+                        "  {:<20} {:<8} {:>2} nodes  {:>7.1}/min max per node",
+                        r.item, r.purity, r.node_count, r.max_rate_per_node
+                    );
+                }
+            }
+        }
+
+        ListTarget::Belts => {
+            let belts = db.conveyor_belts();
+            if fmt.json_mode {
+                fmt.print_json(belts);
+            } else {
+                fmt.header("Conveyor Belts");
+                for b in belts {
+                    println!(
+                        "  {:<25} {:>5}/min  (Tier {} — {})",
+                        b.name, b.rate_per_min, b.unlock_tier, b.unlock_milestone
+                    );
+                }
+            }
+        }
+
+        ListTarget::Pipes => {
+            let pipes = db.pipelines();
+            if fmt.json_mode {
+                fmt.print_json(pipes);
+            } else {
+                fmt.header("Pipelines");
+                for p in pipes {
+                    println!(
+                        "  {:<25} {:>5} m³/min  (Tier {} — {})",
+                        p.name, p.rate_per_min, p.unlock_tier, p.unlock_milestone
+                    );
+                }
+            }
+        }
+
+        ListTarget::Milestones { tier } => {
+            let tiers: Vec<_> = db
+                .hub_tiers()
+                .iter()
+                .filter(|t| tier.is_none_or(|n| t.tier == n))
+                .collect();
+            if fmt.json_mode {
+                fmt.print_json(&tiers);
+            } else {
+                for t in &tiers {
+                    fmt.header(&format!("Tier {} — {}", t.tier, t.name));
+                    for m in &t.milestones {
+                        let cost: Vec<String> = m
+                            .cost
+                            .iter()
+                            .map(|c| format!("{}×{}", c.amount, c.item))
+                            .collect();
+                        println!("  {:<35} [{}]", m.name, cost.join(", "));
+                        if !m.unlocks_machines.is_empty() {
+                            println!("    machines: {}", m.unlocks_machines.join(", "));
+                        }
+                        if !m.unlocks_recipes.is_empty() {
+                            println!("    recipes:  {}", m.unlocks_recipes.join(", "));
+                        }
+                        if !m.unlocks_other.is_empty() {
+                            println!("    other:    {}", m.unlocks_other.join(", "));
+                        }
+                    }
+                }
+            }
+        }
+
+        ListTarget::SpaceElevator => {
+            let phases = db.space_elevator_phases();
+            if fmt.json_mode {
+                fmt.print_json(phases);
+            } else {
+                fmt.header("Space Elevator Phases");
+                for p in phases {
+                    let reqs: Vec<String> = p
+                        .requirements
+                        .iter()
+                        .map(|r| format!("{}×{}", r.amount, r.item))
+                        .collect();
+                    println!(
+                        "  Phase {} — {:<25} [{}]  → {}",
+                        p.phase,
+                        p.name,
+                        reqs.join(", "),
+                        p.unlocks
+                    );
+                }
+            }
+        }
+
+        ListTarget::Mam { tree } => {
+            let trees: Vec<_> = db
+                .mam_trees()
+                .iter()
+                .filter(|t| tree.as_deref().is_none_or(|id| t.id == id))
+                .collect();
+            if fmt.json_mode {
+                fmt.print_json(&trees);
+            } else {
+                for t in &trees {
+                    fmt.header(&format!("MAM — {}", t.name));
+                    for node in &t.nodes {
+                        let cost: Vec<String> = node
+                            .cost
+                            .iter()
+                            .map(|c| format!("{}×{}", c.amount, c.item))
+                            .collect();
+                        println!(
+                            "  {:<35} [{}]  → {}",
+                            node.name,
+                            cost.join(", "),
+                            node.unlocks.join(", ")
+                        );
+                    }
                 }
             }
         }
