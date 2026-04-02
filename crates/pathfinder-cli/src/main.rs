@@ -3,7 +3,7 @@ mod output;
 use std::collections::HashMap;
 use std::path::PathBuf;
 
-use anyhow::{bail, Result};
+use anyhow::{bail, Context, Result};
 use clap::{Parser, Subcommand};
 use serde_json::json;
 
@@ -105,6 +105,21 @@ enum Commands {
         #[arg(long, default_value = "uranium")]
         fuel: String,
     },
+    /// Manage the Satisfactory companion agent
+    Companion {
+        #[command(subcommand)]
+        action: CompanionAction,
+    },
+}
+
+#[derive(Subcommand)]
+enum CompanionAction {
+    /// Install the companion agent to .claude/agents/ (or ~/.claude/agents/ with --global)
+    Install {
+        /// Install to ~/.claude/agents/ instead of .claude/agents/ in the current directory
+        #[arg(long)]
+        global: bool,
+    },
 }
 
 #[derive(Subcommand)]
@@ -181,6 +196,7 @@ fn main() -> Result<()> {
             category,
         } => cmd_sink(&db, &fmt, item.as_deref(), rate, category.as_deref()),
         Commands::Nuclear { plants, fuel } => cmd_nuclear(&fmt, plants, &fuel),
+        Commands::Companion { action } => cmd_companion(&fmt, action),
     }
 }
 
@@ -840,6 +856,43 @@ fn cmd_nuclear(fmt: &Formatter, plants: u64, fuel: &str) -> Result<()> {
     }
 
     Ok(())
+}
+
+// ---------------------------------------------------------------------------
+// companion
+// ---------------------------------------------------------------------------
+
+const AGENT_CONTENT: &str = include_str!("../../../agent/satisfactory-companion.md");
+const AGENT_FILENAME: &str = "satisfactory-companion.md";
+
+fn cmd_companion(fmt: &Formatter, action: CompanionAction) -> Result<()> {
+    match action {
+        CompanionAction::Install { global } => {
+            let agents_dir = if global {
+                let home = std::env::var_os("HOME")
+                    .or_else(|| std::env::var_os("USERPROFILE"))
+                    .map(std::path::PathBuf::from)
+                    .ok_or_else(|| anyhow::anyhow!("could not determine home directory"))?;
+                home.join(".claude").join("agents")
+            } else {
+                std::path::PathBuf::from(".claude").join("agents")
+            };
+
+            std::fs::create_dir_all(&agents_dir)
+                .with_context(|| format!("failed to create {}", agents_dir.display()))?;
+
+            let dest = agents_dir.join(AGENT_FILENAME);
+            std::fs::write(&dest, AGENT_CONTENT)
+                .with_context(|| format!("failed to write {}", dest.display()))?;
+
+            if fmt.json_mode {
+                fmt.print_json(&json!({ "installed": dest.to_string_lossy() }));
+            } else {
+                println!("Companion agent installed to {}", dest.display());
+            }
+            Ok(())
+        }
+    }
 }
 
 // ---------------------------------------------------------------------------

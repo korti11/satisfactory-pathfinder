@@ -521,3 +521,87 @@ fn list_mam_unknown_tree_returns_empty_array() {
     let trees: Vec<serde_json::Value> = serde_json::from_slice(&output).unwrap();
     assert!(trees.is_empty());
 }
+
+// ---------------------------------------------------------------------------
+// companion install
+// ---------------------------------------------------------------------------
+
+#[test]
+fn companion_install_project_creates_agent_file() {
+    let tmp = std::env::temp_dir().join(format!("pathfinder_test_{}", std::process::id()));
+    std::fs::create_dir_all(&tmp).unwrap();
+
+    pathfinder()
+        .args(["companion", "install"])
+        .current_dir(&tmp)
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("satisfactory-companion.md"));
+
+    let agent_path = tmp
+        .join(".claude")
+        .join("agents")
+        .join("satisfactory-companion.md");
+    assert!(
+        agent_path.exists(),
+        "agent file should exist at {}",
+        agent_path.display()
+    );
+
+    let content = std::fs::read_to_string(&agent_path).unwrap();
+    assert!(
+        content.contains("satisfactory-companion"),
+        "agent file should contain valid content"
+    );
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
+
+#[test]
+fn companion_install_global_creates_agent_file() {
+    let tmp = std::env::temp_dir().join(format!("pathfinder_test_global_{}", std::process::id()));
+    std::fs::create_dir_all(&tmp).unwrap();
+
+    pathfinder()
+        .args(["companion", "install", "--global"])
+        .env("HOME", &tmp)
+        .env("USERPROFILE", &tmp)
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("satisfactory-companion.md"));
+
+    let agent_path = tmp
+        .join(".claude")
+        .join("agents")
+        .join("satisfactory-companion.md");
+    assert!(
+        agent_path.exists(),
+        "agent file should exist at {}",
+        agent_path.display()
+    );
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
+
+#[test]
+fn companion_install_json_reports_install_path() {
+    let tmp = std::env::temp_dir().join(format!("pathfinder_test_json_{}", std::process::id()));
+    std::fs::create_dir_all(&tmp).unwrap();
+
+    let output = pathfinder()
+        .args(["companion", "install", "--json"])
+        .current_dir(&tmp)
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let result: serde_json::Value = serde_json::from_slice(&output).unwrap();
+    assert!(result["installed"]
+        .as_str()
+        .unwrap()
+        .contains("satisfactory-companion.md"));
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
