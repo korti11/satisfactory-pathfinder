@@ -72,3 +72,46 @@ jobs:
         with:
           files: artifacts/*
           generate_release_notes: true
+
+  update-tap:
+    name: Update Homebrew Tap
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Compute version
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
+
+      - name: Download release archives
+        run: |
+          curl -sLO "https://github.com/korti11/satisfactory-pathfinder/releases/download/${{ github.ref_name }}/pathfinder-macos-arm64.tar.gz"
+          curl -sLO "https://github.com/korti11/satisfactory-pathfinder/releases/download/${{ github.ref_name }}/pathfinder-macos-x86_64.tar.gz"
+          curl -sLO "https://github.com/korti11/satisfactory-pathfinder/releases/download/${{ github.ref_name }}/pathfinder-linux-x86_64.tar.gz"
+
+      - name: Compute SHA256
+        id: sha
+        run: |
+          echo "macos_arm64=$(sha256sum pathfinder-macos-arm64.tar.gz | cut -d' ' -f1)" >> $GITHUB_OUTPUT
+          echo "macos_x86_64=$(sha256sum pathfinder-macos-x86_64.tar.gz | cut -d' ' -f1)" >> $GITHUB_OUTPUT
+          echo "linux_x86_64=$(sha256sum pathfinder-linux-x86_64.tar.gz | cut -d' ' -f1)" >> $GITHUB_OUTPUT
+
+      - name: Checkout tap
+        uses: actions/checkout@v4
+        with:
+          repository: korti11/homebrew-tap
+          token: ${{ secrets.TAP_TOKEN }}
+
+      - name: Update formula
+        run: |
+          sed -i 's/version "[^"]*"/version "${{ steps.version.outputs.version }}"/' Formula/satisfactory-pathfinder.rb
+          sed -i '/macos-arm64/{n;s/sha256 "[^"]*"/sha256 "${{ steps.sha.outputs.macos_arm64 }}"/}' Formula/satisfactory-pathfinder.rb
+          sed -i '/macos-x86_64/{n;s/sha256 "[^"]*"/sha256 "${{ steps.sha.outputs.macos_x86_64 }}"/}' Formula/satisfactory-pathfinder.rb
+          sed -i '/linux-x86_64/{n;s/sha256 "[^"]*"/sha256 "${{ steps.sha.outputs.linux_x86_64 }}"/}' Formula/satisfactory-pathfinder.rb
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/satisfactory-pathfinder.rb
+          git commit -m "chore: update satisfactory-pathfinder to ${{ github.ref_name }}"
+          git push
