@@ -16,6 +16,23 @@ fn pathfinder() -> Command {
     cmd
 }
 
+fn pathfinder_embedded() -> Command {
+    Command::cargo_bin("pathfinder").unwrap()
+}
+
+// ---------------------------------------------------------------------------
+// embedded data
+// ---------------------------------------------------------------------------
+
+#[test]
+fn embedded_data_loads_without_data_dir_flag() {
+    pathfinder_embedded()
+        .args(["list", "items", "--json"])
+        .assert()
+        .success()
+        .stdout(predicate::str::starts_with("["));
+}
+
 // ---------------------------------------------------------------------------
 // list
 // ---------------------------------------------------------------------------

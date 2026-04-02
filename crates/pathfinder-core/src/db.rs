@@ -2,8 +2,13 @@ use std::collections::HashMap;
 use std::path::Path;
 
 use anyhow::{Context, Result};
+use rust_embed::Embed;
 
 use crate::models::{Factory, Item, Machine, Recipe, ResourceNode};
+
+#[derive(Embed)]
+#[folder = "../../data/"]
+struct EmbeddedData;
 
 pub struct Db {
     items: HashMap<String, Item>,
@@ -13,11 +18,25 @@ pub struct Db {
 }
 
 impl Db {
-    pub fn load(data_dir: &Path) -> Result<Self> {
-        let items: Vec<Item> = load_json(data_dir.join("items.json"))?;
-        let machines: Vec<Machine> = load_json(data_dir.join("machines.json"))?;
-        let recipes: Vec<Recipe> = load_json(data_dir.join("recipes.json"))?;
-        let resources: Vec<ResourceNode> = load_json(data_dir.join("resources.json"))?;
+    /// Load game data from an optional directory override.
+    /// Falls back to data embedded in the binary if no directory is given.
+    pub fn load(data_dir: Option<&Path>) -> Result<Self> {
+        let items: Vec<Item> = match data_dir {
+            Some(dir) => load_json_file(dir.join("items.json"))?,
+            None => load_json_embedded("items.json")?,
+        };
+        let machines: Vec<Machine> = match data_dir {
+            Some(dir) => load_json_file(dir.join("machines.json"))?,
+            None => load_json_embedded("machines.json")?,
+        };
+        let recipes: Vec<Recipe> = match data_dir {
+            Some(dir) => load_json_file(dir.join("recipes.json"))?,
+            None => load_json_embedded("recipes.json")?,
+        };
+        let resources: Vec<ResourceNode> = match data_dir {
+            Some(dir) => load_json_file(dir.join("resources.json"))?,
+            None => load_json_embedded("resources.json")?,
+        };
 
         Ok(Self {
             items: items.into_iter().map(|i| (i.id.clone(), i)).collect(),
@@ -123,14 +142,23 @@ impl Db {
     }
 }
 
-/// Load and deserialize a JSON file.
+/// Load and deserialize a JSON file from disk (used for factory files and --data-dir override).
 pub fn load_factories(path: &Path) -> Result<Vec<Factory>> {
-    load_json(path)
+    load_json_file(path)
 }
 
-fn load_json<T: serde::de::DeserializeOwned>(path: impl AsRef<Path>) -> Result<T> {
+fn load_json_file<T: serde::de::DeserializeOwned>(path: impl AsRef<Path>) -> Result<T> {
     let path = path.as_ref();
     let content = std::fs::read_to_string(path)
         .with_context(|| format!("failed to read {}", path.display()))?;
     serde_json::from_str(&content).with_context(|| format!("failed to parse {}", path.display()))
+}
+
+fn load_json_embedded<T: serde::de::DeserializeOwned>(filename: &str) -> Result<T> {
+    let file = EmbeddedData::get(filename)
+        .with_context(|| format!("embedded data file '{}' not found", filename))?;
+    let content = std::str::from_utf8(file.data.as_ref())
+        .with_context(|| format!("embedded data file '{}' is not valid UTF-8", filename))?;
+    serde_json::from_str(content)
+        .with_context(|| format!("failed to parse embedded data file '{}'", filename))
 }

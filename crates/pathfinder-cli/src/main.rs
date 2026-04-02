@@ -20,9 +20,9 @@ use pathfinder_core::db::{load_factories, Db};
     about = "Satisfactory factory planning companion"
 )]
 struct Cli {
-    /// Path to the data directory containing JSON game data files
-    #[arg(long, default_value = "./data")]
-    data_dir: PathBuf,
+    /// Path to a data directory to override the embedded game data
+    #[arg(long)]
+    data_dir: Option<PathBuf>,
 
     /// Output machine-readable JSON (for programmatic use)
     #[arg(long, global = true)]
@@ -130,7 +130,7 @@ enum ListTarget {
 fn main() -> Result<()> {
     let cli = Cli::parse();
     let fmt = Formatter::new(cli.json);
-    let db = Db::load(&cli.data_dir)?;
+    let db = Db::load(cli.data_dir.as_deref())?;
 
     match cli.command {
         Commands::List { target } => cmd_list(&db, &fmt, target),
