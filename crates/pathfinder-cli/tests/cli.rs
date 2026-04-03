@@ -915,3 +915,135 @@ fn progress_lock_mam_removes_entry() {
 
     std::fs::remove_dir_all(&tmp).unwrap();
 }
+
+// ---------------------------------------------------------------------------
+// progress unlock/lock phase
+// ---------------------------------------------------------------------------
+
+#[test]
+fn progress_unlock_phase_adds_entry() {
+    let (tmp, file) = temp_progress_file("phase_unlock");
+
+    let result = pathfinder()
+        .args([
+            "--progress-file",
+            file.to_str().unwrap(),
+            "progress",
+            "unlock",
+            "phase",
+            "1",
+            "--json",
+        ])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let json: serde_json::Value = serde_json::from_slice(&result).unwrap();
+    assert_eq!(json["phase"].as_u64().unwrap(), 1);
+    assert_eq!(json["status"].as_str().unwrap(), "unlocked");
+
+    let state: serde_json::Value =
+        serde_json::from_str(&std::fs::read_to_string(&file).unwrap()).unwrap();
+    assert!(state["space_elevator_phases"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .any(|p| p.as_u64() == Some(1)));
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
+
+#[test]
+fn progress_unlock_phase_is_idempotent() {
+    let (tmp, file) = temp_progress_file("phase_idempotent");
+
+    let args = [
+        "--progress-file",
+        file.to_str().unwrap(),
+        "progress",
+        "unlock",
+        "phase",
+        "2",
+        "--json",
+    ];
+    pathfinder().args(args).assert().success();
+
+    let result = pathfinder()
+        .args(args)
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let json: serde_json::Value = serde_json::from_slice(&result).unwrap();
+    assert_eq!(json["status"].as_str().unwrap(), "already_unlocked");
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
+
+#[test]
+fn progress_unlock_phase_rejects_out_of_range() {
+    let (tmp, file) = temp_progress_file("phase_range");
+
+    pathfinder()
+        .args([
+            "--progress-file",
+            file.to_str().unwrap(),
+            "progress",
+            "unlock",
+            "phase",
+            "6",
+        ])
+        .assert()
+        .failure();
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
+
+#[test]
+fn progress_lock_phase_removes_entry() {
+    let (tmp, file) = temp_progress_file("phase_lock");
+
+    pathfinder()
+        .args([
+            "--progress-file",
+            file.to_str().unwrap(),
+            "progress",
+            "unlock",
+            "phase",
+            "3",
+        ])
+        .assert()
+        .success();
+
+    let result = pathfinder()
+        .args([
+            "--progress-file",
+            file.to_str().unwrap(),
+            "progress",
+            "lock",
+            "phase",
+            "3",
+            "--json",
+        ])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let json: serde_json::Value = serde_json::from_slice(&result).unwrap();
+    assert_eq!(json["status"].as_str().unwrap(), "locked");
+
+    let state: serde_json::Value =
+        serde_json::from_str(&std::fs::read_to_string(&file).unwrap()).unwrap();
+    assert!(state["space_elevator_phases"]
+        .as_array()
+        .unwrap()
+        .is_empty());
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}

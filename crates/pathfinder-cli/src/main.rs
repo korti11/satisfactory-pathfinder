@@ -150,6 +150,11 @@ enum ProgressTarget {
         /// MAM node id
         id: String,
     },
+    /// A Space Elevator phase (1–5)
+    Phase {
+        /// Phase number (1–5)
+        number: u32,
+    },
 }
 
 #[derive(Subcommand)]
@@ -1033,6 +1038,29 @@ fn cmd_progress(fmt: &Formatter, path: &std::path::Path, action: ProgressAction)
                         println!("MAM node '{id}' researched.");
                     }
                 }
+                ProgressTarget::Phase { number } => {
+                    if !(1..=5).contains(&number) {
+                        bail!("Phase number must be between 1 and 5, got {number}");
+                    }
+                    if state.space_elevator_phases.contains(&number) {
+                        if fmt.json_mode {
+                            fmt.print_json(&serde_json::json!({ "phase": number, "status": "already_unlocked" }));
+                        } else {
+                            println!("Space Elevator phase {number} is already submitted.");
+                        }
+                        return Ok(());
+                    }
+                    state.space_elevator_phases.push(number);
+                    state.space_elevator_phases.sort();
+                    progress::save(path, &state)?;
+                    if fmt.json_mode {
+                        fmt.print_json(
+                            &serde_json::json!({ "phase": number, "status": "unlocked" }),
+                        );
+                    } else {
+                        println!("Space Elevator phase {number} submitted.");
+                    }
+                }
             }
             Ok(())
         }
@@ -1076,6 +1104,25 @@ fn cmd_progress(fmt: &Formatter, path: &std::path::Path, action: ProgressAction)
                         fmt.print_json(&serde_json::json!({ "mam_node": id, "status": "locked" }));
                     } else {
                         println!("MAM node '{id}' locked (removed).");
+                    }
+                }
+                ProgressTarget::Phase { number } => {
+                    if !state.space_elevator_phases.contains(&number) {
+                        if fmt.json_mode {
+                            fmt.print_json(
+                                &serde_json::json!({ "phase": number, "status": "not_found" }),
+                            );
+                        } else {
+                            println!("Space Elevator phase {number} was not submitted.");
+                        }
+                        return Ok(());
+                    }
+                    state.space_elevator_phases.retain(|p| p != &number);
+                    progress::save(path, &state)?;
+                    if fmt.json_mode {
+                        fmt.print_json(&serde_json::json!({ "phase": number, "status": "locked" }));
+                    } else {
+                        println!("Space Elevator phase {number} locked (removed).");
                     }
                 }
             }
