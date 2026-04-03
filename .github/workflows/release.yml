@@ -38,6 +38,8 @@ jobs:
         if: matrix.target == 'x86_64-unknown-linux-musl'
         run: sudo apt-get install -y musl-tools
       - name: Build
+        env:
+          RELEASE_VERSION: ${{ github.ref_name }}
         run: cargo build --release --target ${{ matrix.target }}
       - name: Package (Windows)
         if: matrix.os == 'windows-latest'

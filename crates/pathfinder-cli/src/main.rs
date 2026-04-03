@@ -16,7 +16,7 @@ use pathfinder_core::db::{load_factories, Db};
 #[derive(Parser)]
 #[command(
     name = "pathfinder",
-    version,
+    version = env!("APP_VERSION"),
     about = "Satisfactory factory planning companion"
 )]
 struct Cli {
