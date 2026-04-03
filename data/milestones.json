@@ -485,117 +485,117 @@
       "id": "alien_megafauna",
       "name": "Alien Megafauna",
       "nodes": [
-        { "name": "Hog Research", "cost": [{ "item": "hog_remains", "amount": 1 }], "unlocks": ["Alien Protein recipe"] },
-        { "name": "Hatcher Research", "cost": [{ "item": "hatcher_remains", "amount": 1 }], "unlocks": ["Alien Protein recipe"] },
-        { "name": "Stinger Research", "cost": [{ "item": "stinger_remains", "amount": 1 }], "unlocks": ["Alien Protein recipe"] },
-        { "name": "Spitter Research", "cost": [{ "item": "plasma_spitter_remains", "amount": 1 }], "unlocks": ["Alien Protein recipe"] },
-        { "name": "Bio-Organic Properties", "cost": [{ "item": "alien_protein", "amount": 5 }], "unlocks": ["Alien DNA Capsule recipe", "Biomass from Alien Protein"] },
-        { "name": "Protein Inhaler", "cost": [{ "item": "alien_protein", "amount": 2 }], "unlocks": ["Medicinal Inhaler recipe"] },
-        { "name": "The Rebar Gun", "cost": [{ "item": "rotor", "amount": 25 }], "unlocks": ["Rebar Gun", "Iron Rebar recipe"] },
-        { "name": "Inflated Pocket Dimension", "cost": [{ "item": "alien_protein", "amount": 3 }], "unlocks": ["+6 Inventory Slots"] },
-        { "name": "Expanded Toolbelt", "cost": [{ "item": "alien_dna_capsule", "amount": 5 }], "unlocks": ["+1 Hand Slot"] },
-        { "name": "Hostile Organism Detection", "cost": [{ "item": "alien_dna_capsule", "amount": 10 }], "unlocks": ["Object Scanner enemies mode"] }
+        { "id": "alien_megafauna_hog_research", "name": "Hog Research", "cost": [{ "item": "hog_remains", "amount": 1 }], "unlocks": ["Alien Protein recipe"] },
+        { "id": "alien_megafauna_hatcher_research", "name": "Hatcher Research", "cost": [{ "item": "hatcher_remains", "amount": 1 }], "unlocks": ["Alien Protein recipe"] },
+        { "id": "alien_megafauna_stinger_research", "name": "Stinger Research", "cost": [{ "item": "stinger_remains", "amount": 1 }], "unlocks": ["Alien Protein recipe"] },
+        { "id": "alien_megafauna_spitter_research", "name": "Spitter Research", "cost": [{ "item": "plasma_spitter_remains", "amount": 1 }], "unlocks": ["Alien Protein recipe"] },
+        { "id": "alien_megafauna_bio_organic_properties", "name": "Bio-Organic Properties", "cost": [{ "item": "alien_protein", "amount": 5 }], "unlocks": ["Alien DNA Capsule recipe", "Biomass from Alien Protein"] },
+        { "id": "alien_megafauna_protein_inhaler", "name": "Protein Inhaler", "cost": [{ "item": "alien_protein", "amount": 2 }], "unlocks": ["Medicinal Inhaler recipe"] },
+        { "id": "alien_megafauna_rebar_gun", "name": "The Rebar Gun", "cost": [{ "item": "rotor", "amount": 25 }], "unlocks": ["Rebar Gun", "Iron Rebar recipe"] },
+        { "id": "alien_megafauna_inflated_pocket_dimension", "name": "Inflated Pocket Dimension", "cost": [{ "item": "alien_protein", "amount": 3 }], "unlocks": ["+6 Inventory Slots"] },
+        { "id": "alien_megafauna_expanded_toolbelt", "name": "Expanded Toolbelt", "cost": [{ "item": "alien_dna_capsule", "amount": 5 }], "unlocks": ["+1 Hand Slot"] },
+        { "id": "alien_megafauna_hostile_organism_detection", "name": "Hostile Organism Detection", "cost": [{ "item": "alien_dna_capsule", "amount": 10 }], "unlocks": ["Object Scanner enemies mode"] }
       ]
     },
     {
       "id": "alien_technology",
       "name": "Alien Technology",
       "nodes": [
-        { "name": "SAM Analysis", "cost": [{ "item": "sam", "amount": 10 }], "unlocks": ["Scannable SAM resource"] },
-        { "name": "SAM Reanimation", "cost": [{ "item": "sam", "amount": 20 }], "unlocks": ["Reanimated SAM recipe"] },
-        { "name": "SAM Fluctuator", "cost": [{ "item": "reanimated_sam", "amount": 10 }], "unlocks": ["SAM Fluctuator recipe"] },
-        { "name": "Mercer Sphere Analysis", "cost": [{ "item": "mercer_sphere", "amount": 1 }], "unlocks": ["Object Scanner Mercer Sphere mode"] },
-        { "name": "Somersloop Analysis", "cost": [{ "item": "somersloop", "amount": 1 }], "unlocks": ["Object Scanner Somersloop mode"] },
-        { "name": "Dimensional Depot", "cost": [{ "item": "mercer_sphere", "amount": 1 }], "unlocks": ["Dimensional Depot Uploader"] },
-        { "name": "Power Augmenter", "cost": [{ "item": "somersloop", "amount": 1 }], "unlocks": ["Alien Power Augmenter"] },
-        { "name": "Production Amplifier", "cost": [{ "item": "somersloop", "amount": 1 }], "unlocks": ["Production Amplifier"] }
+        { "id": "alien_technology_sam_analysis", "name": "SAM Analysis", "cost": [{ "item": "sam", "amount": 10 }], "unlocks": ["Scannable SAM resource"] },
+        { "id": "alien_technology_sam_reanimation", "name": "SAM Reanimation", "cost": [{ "item": "sam", "amount": 20 }], "unlocks": ["Reanimated SAM recipe"] },
+        { "id": "alien_technology_sam_fluctuator", "name": "SAM Fluctuator", "cost": [{ "item": "reanimated_sam", "amount": 10 }], "unlocks": ["SAM Fluctuator recipe"] },
+        { "id": "alien_technology_mercer_sphere_analysis", "name": "Mercer Sphere Analysis", "cost": [{ "item": "mercer_sphere", "amount": 1 }], "unlocks": ["Object Scanner Mercer Sphere mode"] },
+        { "id": "alien_technology_somersloop_analysis", "name": "Somersloop Analysis", "cost": [{ "item": "somersloop", "amount": 1 }], "unlocks": ["Object Scanner Somersloop mode"] },
+        { "id": "alien_technology_dimensional_depot", "name": "Dimensional Depot", "cost": [{ "item": "mercer_sphere", "amount": 1 }], "unlocks": ["Dimensional Depot Uploader"] },
+        { "id": "alien_technology_power_augmenter", "name": "Power Augmenter", "cost": [{ "item": "somersloop", "amount": 1 }], "unlocks": ["Alien Power Augmenter"] },
+        { "id": "alien_technology_production_amplifier", "name": "Production Amplifier", "cost": [{ "item": "somersloop", "amount": 1 }], "unlocks": ["Production Amplifier"] }
       ]
     },
     {
       "id": "caterium",
       "name": "Caterium",
       "nodes": [
-        { "name": "Caterium", "cost": [{ "item": "caterium_ore", "amount": 10 }], "unlocks": ["Scannable Caterium Ore"] },
-        { "name": "Caterium Ingots", "cost": [{ "item": "caterium_ore", "amount": 50 }], "unlocks": ["Caterium Ingot recipe"] },
-        { "name": "Quickwire", "cost": [{ "item": "caterium_ingot", "amount": 50 }], "unlocks": ["Quickwire recipe"] },
-        { "name": "Zipline", "cost": [{ "item": "quickwire", "amount": 100 }], "unlocks": ["Zipline"] },
-        { "name": "AI Limiter", "cost": [{ "item": "quickwire", "amount": 200 }], "unlocks": ["AI Limiter recipe"] },
-        { "name": "High-Speed Connector", "cost": [{ "item": "quickwire", "amount": 500 }], "unlocks": ["High-Speed Connector recipe"] },
-        { "name": "Smart Splitter", "cost": [{ "item": "ai_limiter", "amount": 10 }], "unlocks": ["Smart Splitter"] },
-        { "name": "Power Switch", "cost": [{ "item": "steel_beam", "amount": 100 }], "unlocks": ["Power Switch"] },
-        { "name": "Power Poles Mk.2", "cost": [{ "item": "quickwire", "amount": 300 }], "unlocks": ["Power Pole Mk.2"] },
-        { "name": "Power Poles Mk.3", "cost": [{ "item": "high_speed_connector", "amount": 50 }], "unlocks": ["Power Pole Mk.3"] },
-        { "name": "Priority Power Switch", "cost": [{ "item": "high_speed_connector", "amount": 25 }], "unlocks": ["Priority Power Switch"] },
-        { "name": "Programmable Splitter", "cost": [{ "item": "ai_limiter", "amount": 100 }], "unlocks": ["Programmable Splitter"] },
-        { "name": "Geothermal Generator", "cost": [{ "item": "high_speed_connector", "amount": 100 }], "unlocks": ["Geothermal Generator", "Geyser scanning"] }
+        { "id": "caterium_ore_scan", "name": "Caterium", "cost": [{ "item": "caterium_ore", "amount": 10 }], "unlocks": ["Scannable Caterium Ore"] },
+        { "id": "caterium_ingots", "name": "Caterium Ingots", "cost": [{ "item": "caterium_ore", "amount": 50 }], "unlocks": ["Caterium Ingot recipe"] },
+        { "id": "caterium_quickwire", "name": "Quickwire", "cost": [{ "item": "caterium_ingot", "amount": 50 }], "unlocks": ["Quickwire recipe"] },
+        { "id": "caterium_zipline", "name": "Zipline", "cost": [{ "item": "quickwire", "amount": 100 }], "unlocks": ["Zipline"] },
+        { "id": "caterium_ai_limiter", "name": "AI Limiter", "cost": [{ "item": "quickwire", "amount": 200 }], "unlocks": ["AI Limiter recipe"] },
+        { "id": "caterium_high_speed_connector", "name": "High-Speed Connector", "cost": [{ "item": "quickwire", "amount": 500 }], "unlocks": ["High-Speed Connector recipe"] },
+        { "id": "caterium_smart_splitter", "name": "Smart Splitter", "cost": [{ "item": "ai_limiter", "amount": 10 }], "unlocks": ["Smart Splitter"] },
+        { "id": "caterium_power_switch", "name": "Power Switch", "cost": [{ "item": "steel_beam", "amount": 100 }], "unlocks": ["Power Switch"] },
+        { "id": "caterium_power_poles_mk2", "name": "Power Poles Mk.2", "cost": [{ "item": "quickwire", "amount": 300 }], "unlocks": ["Power Pole Mk.2"] },
+        { "id": "caterium_power_poles_mk3", "name": "Power Poles Mk.3", "cost": [{ "item": "high_speed_connector", "amount": 50 }], "unlocks": ["Power Pole Mk.3"] },
+        { "id": "caterium_priority_power_switch", "name": "Priority Power Switch", "cost": [{ "item": "high_speed_connector", "amount": 25 }], "unlocks": ["Priority Power Switch"] },
+        { "id": "caterium_programmable_splitter", "name": "Programmable Splitter", "cost": [{ "item": "ai_limiter", "amount": 100 }], "unlocks": ["Programmable Splitter"] },
+        { "id": "caterium_geothermal_generator", "name": "Geothermal Generator", "cost": [{ "item": "high_speed_connector", "amount": 100 }], "unlocks": ["Geothermal Generator", "Geyser scanning"] }
       ]
     },
     {
       "id": "mycelia",
       "name": "Mycelia",
       "nodes": [
-        { "name": "Mycelia", "cost": [{ "item": "mycelia", "amount": 5 }], "unlocks": ["Biomass from Mycelia"] },
-        { "name": "Fabric", "cost": [{ "item": "mycelia", "amount": 25 }], "unlocks": ["Fabric recipe"] },
-        { "name": "Parachute", "cost": [{ "item": "fabric", "amount": 10 }], "unlocks": ["Parachute"] },
-        { "name": "Expanded Toolbelt", "cost": [{ "item": "fabric", "amount": 50 }], "unlocks": ["+1 Hand Slot"] },
-        { "name": "Synthetic Polyester Fabric", "cost": [{ "item": "fabric", "amount": 25 }], "unlocks": ["Fabric from Polymer Resin recipe"] },
-        { "name": "Gas Mask", "cost": [{ "item": "coal", "amount": 10 }], "unlocks": ["Gas Mask", "Gas Filter recipe"] },
-        { "name": "Toxic Cellular Modification", "cost": [{ "item": "nobelisk", "amount": 10 }], "unlocks": ["Gas Nobelisk recipe"] }
+        { "id": "mycelia_biomass", "name": "Mycelia", "cost": [{ "item": "mycelia", "amount": 5 }], "unlocks": ["Biomass from Mycelia"] },
+        { "id": "mycelia_fabric", "name": "Fabric", "cost": [{ "item": "mycelia", "amount": 25 }], "unlocks": ["Fabric recipe"] },
+        { "id": "mycelia_parachute", "name": "Parachute", "cost": [{ "item": "fabric", "amount": 10 }], "unlocks": ["Parachute"] },
+        { "id": "mycelia_expanded_toolbelt", "name": "Expanded Toolbelt", "cost": [{ "item": "fabric", "amount": 50 }], "unlocks": ["+1 Hand Slot"] },
+        { "id": "mycelia_synthetic_polyester_fabric", "name": "Synthetic Polyester Fabric", "cost": [{ "item": "fabric", "amount": 25 }], "unlocks": ["Fabric from Polymer Resin recipe"] },
+        { "id": "mycelia_gas_mask", "name": "Gas Mask", "cost": [{ "item": "coal", "amount": 10 }], "unlocks": ["Gas Mask", "Gas Filter recipe"] },
+        { "id": "mycelia_toxic_cellular_modification", "name": "Toxic Cellular Modification", "cost": [{ "item": "nobelisk", "amount": 10 }], "unlocks": ["Gas Nobelisk recipe"] }
       ]
     },
     {
       "id": "nutrients",
       "name": "Nutrients",
       "nodes": [
-        { "name": "Beryl Nut", "cost": [{ "item": "beryl_nut", "amount": 5 }], "unlocks": ["Object Scanner Beryl Nut mode"] },
-        { "name": "Paleberry", "cost": [{ "item": "paleberry", "amount": 2 }], "unlocks": ["Object Scanner Paleberry mode"] },
-        { "name": "Bacon Agaric", "cost": [{ "item": "bacon_agaric", "amount": 1 }], "unlocks": ["Object Scanner Bacon Agaric mode"] },
-        { "name": "Nutritional Inhaler", "cost": [{ "item": "bacon_agaric", "amount": 2 }], "unlocks": ["Medicinal Inhaler from nutrients"] }
+        { "id": "nutrients_beryl_nut", "name": "Beryl Nut", "cost": [{ "item": "beryl_nut", "amount": 5 }], "unlocks": ["Object Scanner Beryl Nut mode"] },
+        { "id": "nutrients_paleberry", "name": "Paleberry", "cost": [{ "item": "paleberry", "amount": 2 }], "unlocks": ["Object Scanner Paleberry mode"] },
+        { "id": "nutrients_bacon_agaric", "name": "Bacon Agaric", "cost": [{ "item": "bacon_agaric", "amount": 1 }], "unlocks": ["Object Scanner Bacon Agaric mode"] },
+        { "id": "nutrients_nutritional_inhaler", "name": "Nutritional Inhaler", "cost": [{ "item": "bacon_agaric", "amount": 2 }], "unlocks": ["Medicinal Inhaler from nutrients"] }
       ]
     },
     {
       "id": "power_slugs",
       "name": "Power Slugs",
       "nodes": [
-        { "name": "Blue Power Slugs", "cost": [{ "item": "blue_power_slug", "amount": 1 }], "unlocks": ["Power Shard from Blue Slug"] },
-        { "name": "Slug Scanning", "cost": [{ "item": "iron_rod", "amount": 50 }], "unlocks": ["Object Scanner Power Slugs mode"] },
-        { "name": "Yellow Power Shards", "cost": [{ "item": "yellow_power_slug", "amount": 1 }], "unlocks": ["Power Shard from Yellow Slug"] },
-        { "name": "Overclock Production", "cost": [{ "item": "power_shard", "amount": 1 }], "unlocks": ["Overclocking"] },
-        { "name": "Purple Power Shards", "cost": [{ "item": "purple_power_slug", "amount": 1 }], "unlocks": ["Power Shard from Purple Slug"] },
-        { "name": "Synthetic Power Shards", "cost": [{ "item": "power_shard", "amount": 10 }], "unlocks": ["Power Shard from Quartz/Time/Dark Matter Crystals"] }
+        { "id": "power_slugs_blue", "name": "Blue Power Slugs", "cost": [{ "item": "blue_power_slug", "amount": 1 }], "unlocks": ["Power Shard from Blue Slug"] },
+        { "id": "power_slugs_slug_scanning", "name": "Slug Scanning", "cost": [{ "item": "iron_rod", "amount": 50 }], "unlocks": ["Object Scanner Power Slugs mode"] },
+        { "id": "power_slugs_yellow", "name": "Yellow Power Shards", "cost": [{ "item": "yellow_power_slug", "amount": 1 }], "unlocks": ["Power Shard from Yellow Slug"] },
+        { "id": "power_slugs_overclock_production", "name": "Overclock Production", "cost": [{ "item": "power_shard", "amount": 1 }], "unlocks": ["Overclocking"] },
+        { "id": "power_slugs_purple", "name": "Purple Power Shards", "cost": [{ "item": "purple_power_slug", "amount": 1 }], "unlocks": ["Power Shard from Purple Slug"] },
+        { "id": "power_slugs_synthetic", "name": "Synthetic Power Shards", "cost": [{ "item": "power_shard", "amount": 10 }], "unlocks": ["Power Shard from Quartz/Time/Dark Matter Crystals"] }
       ]
     },
     {
       "id": "quartz",
       "name": "Quartz",
       "nodes": [
-        { "name": "Quartz", "cost": [{ "item": "raw_quartz", "amount": 10 }], "unlocks": ["Scannable Raw Quartz"] },
-        { "name": "Quartz Crystals", "cost": [{ "item": "raw_quartz", "amount": 20 }], "unlocks": ["Quartz Crystal recipe"] },
-        { "name": "Silica", "cost": [{ "item": "raw_quartz", "amount": 20 }], "unlocks": ["Silica recipe"] },
-        { "name": "Crystal Oscillator", "cost": [{ "item": "quartz_crystal", "amount": 100 }], "unlocks": ["Crystal Oscillator recipe"] },
-        { "name": "Shatter Rebar", "cost": [{ "item": "quartz_crystal", "amount": 30 }], "unlocks": ["Shatter Rebar recipe"] },
-        { "name": "Blade Runners", "cost": [{ "item": "silica", "amount": 50 }], "unlocks": ["Blade Runners equipment"] },
-        { "name": "The Explorer", "cost": [{ "item": "crystal_oscillator", "amount": 10 }], "unlocks": ["Explorer vehicle"] },
-        { "name": "Radar Technology", "cost": [{ "item": "crystal_oscillator", "amount": 50 }], "unlocks": ["Radar Tower"] },
-        { "name": "Radio Signal Scanning", "cost": [{ "item": "crystal_oscillator", "amount": 100 }], "unlocks": ["Object Scanner crash sites mode"] },
-        { "name": "Material Resonance Screening", "cost": [{ "item": "crystal_oscillator", "amount": 15 }], "unlocks": ["Priority Merger"] }
+        { "id": "quartz_ore_scan", "name": "Quartz", "cost": [{ "item": "raw_quartz", "amount": 10 }], "unlocks": ["Scannable Raw Quartz"] },
+        { "id": "quartz_crystals", "name": "Quartz Crystals", "cost": [{ "item": "raw_quartz", "amount": 20 }], "unlocks": ["Quartz Crystal recipe"] },
+        { "id": "quartz_silica", "name": "Silica", "cost": [{ "item": "raw_quartz", "amount": 20 }], "unlocks": ["Silica recipe"] },
+        { "id": "quartz_crystal_oscillator", "name": "Crystal Oscillator", "cost": [{ "item": "quartz_crystal", "amount": 100 }], "unlocks": ["Crystal Oscillator recipe"] },
+        { "id": "quartz_shatter_rebar", "name": "Shatter Rebar", "cost": [{ "item": "quartz_crystal", "amount": 30 }], "unlocks": ["Shatter Rebar recipe"] },
+        { "id": "quartz_blade_runners", "name": "Blade Runners", "cost": [{ "item": "silica", "amount": 50 }], "unlocks": ["Blade Runners equipment"] },
+        { "id": "quartz_explorer", "name": "The Explorer", "cost": [{ "item": "crystal_oscillator", "amount": 10 }], "unlocks": ["Explorer vehicle"] },
+        { "id": "quartz_radar_technology", "name": "Radar Technology", "cost": [{ "item": "crystal_oscillator", "amount": 50 }], "unlocks": ["Radar Tower"] },
+        { "id": "quartz_radio_signal_scanning", "name": "Radio Signal Scanning", "cost": [{ "item": "crystal_oscillator", "amount": 100 }], "unlocks": ["Object Scanner crash sites mode"] },
+        { "id": "quartz_material_resonance_screening", "name": "Material Resonance Screening", "cost": [{ "item": "crystal_oscillator", "amount": 15 }], "unlocks": ["Priority Merger"] }
       ]
     },
     {
       "id": "sulfur",
       "name": "Sulfur",
       "nodes": [
-        { "name": "Sulfur", "cost": [{ "item": "sulfur", "amount": 10 }], "unlocks": ["Scannable Sulfur"] },
-        { "name": "Black Powder", "cost": [{ "item": "sulfur", "amount": 50 }], "unlocks": ["Black Powder recipe"] },
-        { "name": "The Nobelisk Detonator", "cost": [{ "item": "black_powder", "amount": 50 }], "unlocks": ["Nobelisk Detonator", "Nobelisk recipe"] },
-        { "name": "Smokeless Powder", "cost": [{ "item": "black_powder", "amount": 100 }], "unlocks": ["Smokeless Powder recipe"] },
-        { "name": "Compacted Coal", "cost": [{ "item": "hard_drive", "amount": 1 }], "unlocks": ["Compacted Coal recipe"] },
-        { "name": "Turbofuel", "cost": [{ "item": "hard_drive", "amount": 1 }], "unlocks": ["Turbofuel recipe", "Packaged Turbofuel recipe"] },
-        { "name": "Rocket Fuel", "cost": [{ "item": "hard_drive", "amount": 1 }], "unlocks": ["Rocket Fuel recipe"] },
-        { "name": "Ionized Fuel", "cost": [{ "item": "hard_drive", "amount": 1 }], "unlocks": ["Ionized Fuel recipe"] },
-        { "name": "The Rifle", "cost": [{ "item": "smokeless_powder", "amount": 50 }], "unlocks": ["Rifle", "Rifle Ammo recipe"] },
-        { "name": "Nuclear Deterrent Development", "cost": [{ "item": "nobelisk", "amount": 500 }], "unlocks": ["Nuke Nobelisk recipe"] },
-        { "name": "Expanded Toolbelt", "cost": [{ "item": "black_powder", "amount": 100 }], "unlocks": ["+1 Hand Slot"] }
+        { "id": "sulfur_ore_scan", "name": "Sulfur", "cost": [{ "item": "sulfur", "amount": 10 }], "unlocks": ["Scannable Sulfur"] },
+        { "id": "sulfur_black_powder", "name": "Black Powder", "cost": [{ "item": "sulfur", "amount": 50 }], "unlocks": ["Black Powder recipe"] },
+        { "id": "sulfur_nobelisk_detonator", "name": "The Nobelisk Detonator", "cost": [{ "item": "black_powder", "amount": 50 }], "unlocks": ["Nobelisk Detonator", "Nobelisk recipe"] },
+        { "id": "sulfur_smokeless_powder", "name": "Smokeless Powder", "cost": [{ "item": "black_powder", "amount": 100 }], "unlocks": ["Smokeless Powder recipe"] },
+        { "id": "sulfur_compacted_coal", "name": "Compacted Coal", "cost": [{ "item": "hard_drive", "amount": 1 }], "unlocks": ["Compacted Coal recipe"] },
+        { "id": "sulfur_turbofuel", "name": "Turbofuel", "cost": [{ "item": "hard_drive", "amount": 1 }], "unlocks": ["Turbofuel recipe", "Packaged Turbofuel recipe"] },
+        { "id": "sulfur_rocket_fuel", "name": "Rocket Fuel", "cost": [{ "item": "hard_drive", "amount": 1 }], "unlocks": ["Rocket Fuel recipe"] },
+        { "id": "sulfur_ionized_fuel", "name": "Ionized Fuel", "cost": [{ "item": "hard_drive", "amount": 1 }], "unlocks": ["Ionized Fuel recipe"] },
+        { "id": "sulfur_rifle", "name": "The Rifle", "cost": [{ "item": "smokeless_powder", "amount": 50 }], "unlocks": ["Rifle", "Rifle Ammo recipe"] },
+        { "id": "sulfur_nuclear_deterrent", "name": "Nuclear Deterrent Development", "cost": [{ "item": "nobelisk", "amount": 500 }], "unlocks": ["Nuke Nobelisk recipe"] },
+        { "id": "sulfur_expanded_toolbelt", "name": "Expanded Toolbelt", "cost": [{ "item": "black_powder", "amount": 100 }], "unlocks": ["+1 Hand Slot"] }
       ]
     }
   ]

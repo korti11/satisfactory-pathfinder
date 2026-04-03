@@ -172,6 +172,7 @@ pub struct HubTier {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct MamNode {
+    pub id: String,
     pub name: String,
     pub cost: Vec<BuildCost>,
     pub unlocks: Vec<String>,

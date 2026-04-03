@@ -464,8 +464,9 @@ fn cmd_list(db: &Db, fmt: &Formatter, target: ListTarget) -> Result<()> {
                             .map(|c| format!("{}×{}", c.amount, c.item))
                             .collect();
                         println!(
-                            "  {:<35} [{}]  → {}",
+                            "  {:<35} ({})  [{}]  → {}",
                             node.name,
+                            node.id,
                             cost.join(", "),
                             node.unlocks.join(", ")
                         );
