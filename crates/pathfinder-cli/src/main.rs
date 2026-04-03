@@ -969,16 +969,32 @@ fn cmd_progress(
                 fmt.header("World Progress");
                 fmt.separator();
                 fmt.field("Milestones unlocked", &state.milestones.len().to_string());
-                if !state.milestones.is_empty() {
-                    for id in &state.milestones {
-                        println!("    {id}");
-                    }
+                for id in &state.milestones {
+                    let label = db
+                        .hub_tiers()
+                        .iter()
+                        .find_map(|t| {
+                            t.milestones
+                                .iter()
+                                .find(|m| m.id == *id)
+                                .map(|m| format!("[Tier {}] {}", t.tier, m.name))
+                        })
+                        .unwrap_or_else(|| id.clone());
+                    println!("    {label}");
                 }
                 fmt.field("MAM nodes researched", &state.mam_nodes.len().to_string());
-                if !state.mam_nodes.is_empty() {
-                    for id in &state.mam_nodes {
-                        println!("    {id}");
-                    }
+                for id in &state.mam_nodes {
+                    let label = db
+                        .mam_trees()
+                        .iter()
+                        .find_map(|t| {
+                            t.nodes
+                                .iter()
+                                .find(|n| n.id == *id)
+                                .map(|n| format!("[{}] {}", t.name, n.name))
+                        })
+                        .unwrap_or_else(|| id.clone());
+                    println!("    {label}");
                 }
                 fmt.field(
                     "Space Elevator phases",
@@ -993,14 +1009,26 @@ fn cmd_progress(
                             .join(", ")
                     },
                 );
+                for number in &state.space_elevator_phases {
+                    let label = db
+                        .space_elevator_phases()
+                        .iter()
+                        .find(|p| p.phase == *number)
+                        .map(|p| format!("Phase {} — {}", p.phase, p.name))
+                        .unwrap_or_else(|| format!("Phase {number}"));
+                    println!("    {label}");
+                }
                 fmt.field(
                     "Alternate recipes found",
                     &state.alternate_recipes.len().to_string(),
                 );
-                if !state.alternate_recipes.is_empty() {
-                    for id in &state.alternate_recipes {
-                        println!("    {id}");
-                    }
+                for id in &state.alternate_recipes {
+                    let label = db
+                        .all_recipes()
+                        .find(|r| r.id == *id)
+                        .map(|r| r.name.clone())
+                        .unwrap_or_else(|| id.clone());
+                    println!("    {label}");
                 }
             }
             Ok(())
