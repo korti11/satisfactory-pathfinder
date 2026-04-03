@@ -640,10 +640,7 @@ fn progress_show_returns_empty_state_when_no_file_exists() {
 
 #[test]
 fn progress_show_reads_existing_file() {
-    let tmp = std::env::temp_dir().join(format!(
-        "pathfinder_progress_read_{}",
-        std::process::id()
-    ));
+    let tmp = std::env::temp_dir().join(format!("pathfinder_progress_read_{}", std::process::id()));
     std::fs::create_dir_all(&tmp).unwrap();
     let progress_file = tmp.join("progress.json");
 
@@ -678,6 +675,130 @@ fn progress_show_reads_existing_file() {
         result["alternate_recipes"][0].as_str().unwrap(),
         "alt_cast_screw"
     );
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
+
+// ---------------------------------------------------------------------------
+// progress unlock/lock milestone
+// ---------------------------------------------------------------------------
+
+fn temp_progress_file(suffix: &str) -> (std::path::PathBuf, std::path::PathBuf) {
+    let tmp = std::env::temp_dir().join(format!(
+        "pathfinder_milestone_{}_{}",
+        suffix,
+        std::process::id()
+    ));
+    std::fs::create_dir_all(&tmp).unwrap();
+    let file = tmp.join("progress.json");
+    (tmp, file)
+}
+
+#[test]
+fn progress_unlock_milestone_adds_entry() {
+    let (tmp, file) = temp_progress_file("unlock");
+
+    let result = pathfinder()
+        .args([
+            "--progress-file",
+            file.to_str().unwrap(),
+            "progress",
+            "unlock",
+            "milestone",
+            "basic_steel_production",
+            "--json",
+        ])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let json: serde_json::Value = serde_json::from_slice(&result).unwrap();
+    assert_eq!(json["milestone"].as_str().unwrap(), "basic_steel_production");
+    assert_eq!(json["status"].as_str().unwrap(), "unlocked");
+
+    // verify file was written
+    let state: serde_json::Value =
+        serde_json::from_str(&std::fs::read_to_string(&file).unwrap()).unwrap();
+    assert!(state["milestones"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .any(|m| m.as_str() == Some("basic_steel_production")));
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
+
+#[test]
+fn progress_unlock_milestone_is_idempotent() {
+    let (tmp, file) = temp_progress_file("idempotent");
+
+    let args = [
+        "--progress-file",
+        file.to_str().unwrap(),
+        "progress",
+        "unlock",
+        "milestone",
+        "basic_steel_production",
+        "--json",
+    ];
+    pathfinder().args(args).assert().success();
+
+    let result = pathfinder()
+        .args(args)
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let json: serde_json::Value = serde_json::from_slice(&result).unwrap();
+    assert_eq!(json["status"].as_str().unwrap(), "already_unlocked");
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
+
+#[test]
+fn progress_lock_milestone_removes_entry() {
+    let (tmp, file) = temp_progress_file("lock");
+
+    // unlock first
+    pathfinder()
+        .args([
+            "--progress-file",
+            file.to_str().unwrap(),
+            "progress",
+            "unlock",
+            "milestone",
+            "basic_steel_production",
+        ])
+        .assert()
+        .success();
+
+    // then lock
+    let result = pathfinder()
+        .args([
+            "--progress-file",
+            file.to_str().unwrap(),
+            "progress",
+            "lock",
+            "milestone",
+            "basic_steel_production",
+            "--json",
+        ])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let json: serde_json::Value = serde_json::from_slice(&result).unwrap();
+    assert_eq!(json["status"].as_str().unwrap(), "locked");
+
+    let state: serde_json::Value =
+        serde_json::from_str(&std::fs::read_to_string(&file).unwrap()).unwrap();
+    assert!(state["milestones"].as_array().unwrap().is_empty());
 
     std::fs::remove_dir_all(&tmp).unwrap();
 }

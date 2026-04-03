@@ -126,6 +126,25 @@ enum Commands {
 enum ProgressAction {
     /// Show current world progress
     Show,
+    /// Mark something as unlocked/completed
+    Unlock {
+        #[command(subcommand)]
+        target: ProgressTarget,
+    },
+    /// Undo a previously recorded unlock
+    Lock {
+        #[command(subcommand)]
+        target: ProgressTarget,
+    },
+}
+
+#[derive(Subcommand, Clone)]
+enum ProgressTarget {
+    /// A HUB milestone (by id, e.g. basic_steel_production)
+    Milestone {
+        /// Milestone id
+        id: String,
+    },
 }
 
 #[derive(Subcommand)]
@@ -960,6 +979,59 @@ fn cmd_progress(fmt: &Formatter, path: &std::path::Path, action: ProgressAction)
                 if !state.alternate_recipes.is_empty() {
                     for id in &state.alternate_recipes {
                         println!("    {id}");
+                    }
+                }
+            }
+            Ok(())
+        }
+
+        ProgressAction::Unlock { target } => {
+            let mut state = progress::load(path)?;
+            match target {
+                ProgressTarget::Milestone { id } => {
+                    if state.milestones.contains(&id) {
+                        if fmt.json_mode {
+                            fmt.print_json(&serde_json::json!({ "milestone": id, "status": "already_unlocked" }));
+                        } else {
+                            println!("Milestone '{id}' is already unlocked.");
+                        }
+                        return Ok(());
+                    }
+                    state.milestones.push(id.clone());
+                    state.milestones.sort();
+                    progress::save(path, &state)?;
+                    if fmt.json_mode {
+                        fmt.print_json(
+                            &serde_json::json!({ "milestone": id, "status": "unlocked" }),
+                        );
+                    } else {
+                        println!("Milestone '{id}' unlocked.");
+                    }
+                }
+            }
+            Ok(())
+        }
+
+        ProgressAction::Lock { target } => {
+            let mut state = progress::load(path)?;
+            match target {
+                ProgressTarget::Milestone { id } => {
+                    if !state.milestones.contains(&id) {
+                        if fmt.json_mode {
+                            fmt.print_json(
+                                &serde_json::json!({ "milestone": id, "status": "not_found" }),
+                            );
+                        } else {
+                            println!("Milestone '{id}' was not unlocked.");
+                        }
+                        return Ok(());
+                    }
+                    state.milestones.retain(|m| m != &id);
+                    progress::save(path, &state)?;
+                    if fmt.json_mode {
+                        fmt.print_json(&serde_json::json!({ "milestone": id, "status": "locked" }));
+                    } else {
+                        println!("Milestone '{id}' locked (removed).");
                     }
                 }
             }
