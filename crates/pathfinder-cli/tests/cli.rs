@@ -715,7 +715,10 @@ fn progress_unlock_milestone_adds_entry() {
         .clone();
 
     let json: serde_json::Value = serde_json::from_slice(&result).unwrap();
-    assert_eq!(json["milestone"].as_str().unwrap(), "basic_steel_production");
+    assert_eq!(
+        json["milestone"].as_str().unwrap(),
+        "basic_steel_production"
+    );
     assert_eq!(json["status"].as_str().unwrap(), "unlocked");
 
     // verify file was written
@@ -799,6 +802,116 @@ fn progress_lock_milestone_removes_entry() {
     let state: serde_json::Value =
         serde_json::from_str(&std::fs::read_to_string(&file).unwrap()).unwrap();
     assert!(state["milestones"].as_array().unwrap().is_empty());
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
+
+// ---------------------------------------------------------------------------
+// progress unlock/lock mam
+// ---------------------------------------------------------------------------
+
+#[test]
+fn progress_unlock_mam_adds_entry() {
+    let (tmp, file) = temp_progress_file("mam_unlock");
+
+    let result = pathfinder()
+        .args([
+            "--progress-file",
+            file.to_str().unwrap(),
+            "progress",
+            "unlock",
+            "mam",
+            "caterium_research",
+            "--json",
+        ])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let json: serde_json::Value = serde_json::from_slice(&result).unwrap();
+    assert_eq!(json["mam_node"].as_str().unwrap(), "caterium_research");
+    assert_eq!(json["status"].as_str().unwrap(), "unlocked");
+
+    let state: serde_json::Value =
+        serde_json::from_str(&std::fs::read_to_string(&file).unwrap()).unwrap();
+    assert!(state["mam_nodes"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .any(|m| m.as_str() == Some("caterium_research")));
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
+
+#[test]
+fn progress_unlock_mam_is_idempotent() {
+    let (tmp, file) = temp_progress_file("mam_idempotent");
+
+    let args = [
+        "--progress-file",
+        file.to_str().unwrap(),
+        "progress",
+        "unlock",
+        "mam",
+        "caterium_research",
+        "--json",
+    ];
+    pathfinder().args(args).assert().success();
+
+    let result = pathfinder()
+        .args(args)
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let json: serde_json::Value = serde_json::from_slice(&result).unwrap();
+    assert_eq!(json["status"].as_str().unwrap(), "already_unlocked");
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
+
+#[test]
+fn progress_lock_mam_removes_entry() {
+    let (tmp, file) = temp_progress_file("mam_lock");
+
+    pathfinder()
+        .args([
+            "--progress-file",
+            file.to_str().unwrap(),
+            "progress",
+            "unlock",
+            "mam",
+            "caterium_research",
+        ])
+        .assert()
+        .success();
+
+    let result = pathfinder()
+        .args([
+            "--progress-file",
+            file.to_str().unwrap(),
+            "progress",
+            "lock",
+            "mam",
+            "caterium_research",
+            "--json",
+        ])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let json: serde_json::Value = serde_json::from_slice(&result).unwrap();
+    assert_eq!(json["status"].as_str().unwrap(), "locked");
+
+    let state: serde_json::Value =
+        serde_json::from_str(&std::fs::read_to_string(&file).unwrap()).unwrap();
+    assert!(state["mam_nodes"].as_array().unwrap().is_empty());
 
     std::fs::remove_dir_all(&tmp).unwrap();
 }

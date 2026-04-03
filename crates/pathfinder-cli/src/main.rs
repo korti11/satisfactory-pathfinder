@@ -145,6 +145,11 @@ enum ProgressTarget {
         /// Milestone id
         id: String,
     },
+    /// A MAM research node (by id, e.g. caterium_research)
+    Mam {
+        /// MAM node id
+        id: String,
+    },
 }
 
 #[derive(Subcommand)]
@@ -1008,6 +1013,26 @@ fn cmd_progress(fmt: &Formatter, path: &std::path::Path, action: ProgressAction)
                         println!("Milestone '{id}' unlocked.");
                     }
                 }
+                ProgressTarget::Mam { id } => {
+                    if state.mam_nodes.contains(&id) {
+                        if fmt.json_mode {
+                            fmt.print_json(&serde_json::json!({ "mam_node": id, "status": "already_unlocked" }));
+                        } else {
+                            println!("MAM node '{id}' is already researched.");
+                        }
+                        return Ok(());
+                    }
+                    state.mam_nodes.push(id.clone());
+                    state.mam_nodes.sort();
+                    progress::save(path, &state)?;
+                    if fmt.json_mode {
+                        fmt.print_json(
+                            &serde_json::json!({ "mam_node": id, "status": "unlocked" }),
+                        );
+                    } else {
+                        println!("MAM node '{id}' researched.");
+                    }
+                }
             }
             Ok(())
         }
@@ -1032,6 +1057,25 @@ fn cmd_progress(fmt: &Formatter, path: &std::path::Path, action: ProgressAction)
                         fmt.print_json(&serde_json::json!({ "milestone": id, "status": "locked" }));
                     } else {
                         println!("Milestone '{id}' locked (removed).");
+                    }
+                }
+                ProgressTarget::Mam { id } => {
+                    if !state.mam_nodes.contains(&id) {
+                        if fmt.json_mode {
+                            fmt.print_json(
+                                &serde_json::json!({ "mam_node": id, "status": "not_found" }),
+                            );
+                        } else {
+                            println!("MAM node '{id}' was not researched.");
+                        }
+                        return Ok(());
+                    }
+                    state.mam_nodes.retain(|m| m != &id);
+                    progress::save(path, &state)?;
+                    if fmt.json_mode {
+                        fmt.print_json(&serde_json::json!({ "mam_node": id, "status": "locked" }));
+                    } else {
+                        println!("MAM node '{id}' locked (removed).");
                     }
                 }
             }
