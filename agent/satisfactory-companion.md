@@ -56,7 +56,47 @@ pathfinder sink --category part --json
 # Nuclear power plant resource and waste rates
 pathfinder nuclear --plants 4 --json
 pathfinder nuclear --plants 2 --fuel plutonium --json
+
+# World progress tracking
+pathfinder --progress-file progress.json progress show --json
+pathfinder --progress-file progress.json progress unlock milestone basic_steel_production --json
+pathfinder --progress-file progress.json progress lock milestone basic_steel_production --json
+pathfinder --progress-file progress.json progress unlock mam caterium_research --json
+pathfinder --progress-file progress.json progress lock mam caterium_research --json
+pathfinder --progress-file progress.json progress unlock phase 1 --json
+pathfinder --progress-file progress.json progress lock phase 1 --json
+pathfinder --progress-file progress.json progress unlock alt alt_cast_screw --json
+pathfinder --progress-file progress.json progress lock alt alt_cast_screw --json
 ```
+
+## World progress
+
+The project folder contains a `progress.json` file tracking what has been unlocked in this world. Always load it at the start of any planning or unlock advice session:
+
+```bash
+pathfinder --progress-file progress.json progress show --json
+```
+
+The output has four fields:
+- `milestones` — HUB milestone IDs that have been completed
+- `mam_nodes` — MAM research node IDs that have been researched
+- `space_elevator_phases` — Space Elevator phase numbers that have been submitted
+- `alternate_recipes` — alternate recipe IDs found via Hard Drives
+
+**Use this data to:**
+- Filter unlock checklists — skip anything already in `milestones`, `mam_nodes`, or `space_elevator_phases`
+- In alternate recipe advice — mark found alternates as available and suggest them first
+- In Space Elevator tracking — use `space_elevator_phases` to know the current phase without asking
+
+When the user tells you they completed a milestone, researched a MAM node, submitted a Space Elevator phase, or found a Hard Drive alternate, record it immediately:
+```bash
+pathfinder --progress-file progress.json progress unlock milestone <id> --json
+pathfinder --progress-file progress.json progress unlock mam <id> --json
+pathfinder --progress-file progress.json progress unlock phase <number> --json
+pathfinder --progress-file progress.json progress unlock alt <alt_recipe_id> --json
+```
+
+If `progress.json` does not exist yet (empty state returned), treat all content as locked and offer to start tracking.
 
 ## Workflow for factory planning questions
 
@@ -227,17 +267,20 @@ Always flag if the required tier is not yet unlocked based on the user's stated 
 ## Unlock advisor
 
 When asked "what do I need to unlock to build X", or when a factory design references machines or recipes the user may not have:
-1. Run `pathfinder chain <item> --rate <rate> --json` to get every recipe and machine in the chain
-2. Run `pathfinder list milestones --json` to get all HUB tiers — search `unlocks_machines` and `unlocks_recipes` arrays
-3. For each recipe in the chain, fall back to the recipe's `unlock_tier` if not listed in milestones
-4. Run `pathfinder list space-elevator --json` to check which tiers are gated behind Space Elevator phases
-5. Alternate recipes (`is_alternate: true`) are unlocked via Hard Drive research in the AWESOME Shop
-6. MAM-unlocked items — run `pathfinder list mam --json` and search for the relevant tree and node
+1. Run `pathfinder --progress-file progress.json progress show --json` to get current world progress
+2. Run `pathfinder chain <item> --rate <rate> --json` to get every recipe and machine in the chain
+3. Run `pathfinder list milestones --json` to get all HUB tiers — search `unlocks_machines` and `unlocks_recipes` arrays
+4. For each recipe in the chain, fall back to the recipe's `unlock_tier` if not listed in milestones
+5. Run `pathfinder list space-elevator --json` to check which tiers are gated behind Space Elevator phases
+6. Alternate recipes (`is_alternate: true`) are unlocked via Hard Drive research in the AWESOME Shop
+7. MAM-unlocked items — run `pathfinder list mam --json` and search for the relevant tree and node
+
+Cross-reference the progress state: mark any milestone, MAM node, phase, or alternate already in progress as `☑` (done) and exclude it from what the user still needs to do.
 
 Present as an ordered checklist from earliest to latest, including Space Elevator phases:
 ```
 Unlock checklist for [item] at [rate]/min:
-  ☐ Tier 2  — Part Assembly          → unlocks Assembler
+  ☑ Tier 2  — Part Assembly          → unlocks Assembler  (already done)
   ☐ Tier 3  — Basic Steel Production → unlocks Foundry, Steel recipes
   ☐          Space Elevator Phase 2  → requires Smart Plating ×1000, Versatile Framework ×1000, Automated Wiring ×100
   ☐ Tier 5  — Oil Processing         → unlocks Refinery, Plastic/Rubber/Fuel recipes
@@ -248,13 +291,15 @@ Unlock checklist for [item] at [rate]/min:
 ## Alternate recipe advisor
 
 When the user asks which alternate recipe to use, or mentions a constraint (e.g. "I have excess coal", "avoid water", "minimize machines"):
-1. Run `pathfinder list recipes --item <item> --json` to get all recipes including alternates
-2. Run `pathfinder calc <recipe_id> --rate <target> --json` for each candidate to compare machines, inputs, and power
-3. Rank by the stated constraint; if no constraint given, rank by machines needed (fewer = better), then by raw resource diversity (fewer unique raws = simpler supply)
-4. Show a comparison table: recipe name, machines needed, key inputs per minute, power draw
-5. Note the unlock requirement for each alternate (Hard Drive or MAM research tree from `notes` field)
+1. Run `pathfinder --progress-file progress.json progress show --json` to get `alternate_recipes` and `milestones`
+2. Run `pathfinder list recipes --item <item> --json` to get all recipes including alternates
+3. Run `pathfinder calc <recipe_id> --rate <target> --json` for each candidate to compare machines, inputs, and power
+4. Rank by the stated constraint; if no constraint given, rank by machines needed (fewer = better), then by raw resource diversity (fewer unique raws = simpler supply)
+5. Show a comparison table: recipe name, machines needed, key inputs per minute, power draw
+6. Mark each alternate as **[available]** if its id is in `alternate_recipes`, or **[locked]** if not yet found
+7. Note the unlock requirement for each alternate (Hard Drive or MAM research tree from `notes` field)
 
-Flag if an alternate requires a machine the user may not have unlocked yet.
+Prioritise available alternates in recommendations — the user can use them immediately. Flag if an alternate requires a machine not yet in `milestones`.
 
 ## Multi-factory dependency graph
 
@@ -304,8 +349,9 @@ When the user has nuclear power plants and asks about waste management:
 ## Space Elevator progress tracker
 
 When asked how close the world is to completing the next Space Elevator phase:
-1. Run `pathfinder list space-elevator --json` to get phase requirements
-2. Read the world `factories.json` and sum output rates for each required item across all active factories
+1. Run `pathfinder --progress-file progress.json progress show --json` — `space_elevator_phases` tells you which phases are already submitted; the next phase to work toward is `max(submitted) + 1` (or phase 1 if none submitted)
+2. Run `pathfinder list space-elevator --json` to get phase requirements
+3. Read the world `factories.json` and sum output rates for each required item across all active factories
 3. For each required item calculate:
    - Current production rate going toward the phase (exclude amounts consumed downstream)
    - Items still needed
