@@ -679,6 +679,75 @@ fn progress_show_reads_existing_file() {
     std::fs::remove_dir_all(&tmp).unwrap();
 }
 
+#[test]
+fn progress_show_locked_excludes_unlocked_milestones() {
+    let (tmp, file) = temp_progress_file("show_locked");
+
+    // Unlock one milestone
+    pathfinder()
+        .args([
+            "--progress-file",
+            file.to_str().unwrap(),
+            "progress",
+            "unlock",
+            "milestone",
+            "hub_upgrade_1",
+        ])
+        .assert()
+        .success();
+
+    // --locked should not include hub_upgrade_1
+    pathfinder()
+        .args([
+            "--progress-file",
+            file.to_str().unwrap(),
+            "progress",
+            "show",
+            "--locked",
+            "--milestones",
+        ])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("HUB Upgrade 1").not())
+        .stdout(predicate::str::contains("HUB Upgrade 2"));
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
+
+#[test]
+fn progress_show_milestones_filter_shows_only_milestones() {
+    let (tmp, file) = temp_progress_file("show_milestones");
+
+    pathfinder()
+        .args([
+            "--progress-file",
+            file.to_str().unwrap(),
+            "progress",
+            "unlock",
+            "milestone",
+            "hub_upgrade_1",
+        ])
+        .assert()
+        .success();
+
+    pathfinder()
+        .args([
+            "--progress-file",
+            file.to_str().unwrap(),
+            "progress",
+            "show",
+            "--milestones",
+        ])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("Milestones"))
+        .stdout(predicate::str::contains("MAM nodes").not())
+        .stdout(predicate::str::contains("Space Elevator").not())
+        .stdout(predicate::str::contains("Alternate").not());
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
+
 // ---------------------------------------------------------------------------
 // progress unlock/lock milestone
 // ---------------------------------------------------------------------------
@@ -1120,7 +1189,10 @@ fn progress_lock_phase_removes_entry() {
         .map(|p| p.as_u64().unwrap())
         .collect();
     assert!(!phases.contains(&3), "phase 3 should have been removed");
-    assert!(phases.contains(&1) && phases.contains(&2), "phases 1 and 2 should remain");
+    assert!(
+        phases.contains(&1) && phases.contains(&2),
+        "phases 1 and 2 should remain"
+    );
 
     std::fs::remove_dir_all(&tmp).unwrap();
 }

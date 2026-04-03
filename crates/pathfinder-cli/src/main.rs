@@ -125,7 +125,23 @@ enum Commands {
 #[derive(Subcommand)]
 enum ProgressAction {
     /// Show current world progress
-    Show,
+    Show {
+        /// Show only items not yet unlocked
+        #[arg(long)]
+        locked: bool,
+        /// Show only the milestones section
+        #[arg(long)]
+        milestones: bool,
+        /// Show only the MAM nodes section
+        #[arg(long)]
+        mam: bool,
+        /// Show only the Space Elevator phases section
+        #[arg(long)]
+        phases: bool,
+        /// Show only the alternate recipes section
+        #[arg(long)]
+        alternates: bool,
+    },
     /// Mark something as unlocked/completed
     Unlock {
         #[command(subcommand)]
@@ -961,74 +977,154 @@ fn cmd_progress(
     action: ProgressAction,
 ) -> Result<()> {
     match action {
-        ProgressAction::Show => {
+        ProgressAction::Show {
+            locked,
+            milestones,
+            mam,
+            phases,
+            alternates,
+        } => {
             let state = progress::load(path)?;
+            // If no category flag is set, show all categories
+            let show_all = !milestones && !mam && !phases && !alternates;
+            let show_milestones = show_all || milestones;
+            let show_mam = show_all || mam;
+            let show_phases = show_all || phases;
+            let show_alternates = show_all || alternates;
+
             if fmt.json_mode {
+                // JSON always returns the full state; filters are human-output only
                 fmt.print_json(&state);
             } else {
-                fmt.header("World Progress");
+                fmt.header(if locked {
+                    "World Progress — Locked"
+                } else {
+                    "World Progress"
+                });
                 fmt.separator();
-                fmt.field("Milestones unlocked", &state.milestones.len().to_string());
-                for id in &state.milestones {
-                    let label = db
+
+                if show_milestones {
+                    let all_milestones: Vec<_> = db
                         .hub_tiers()
                         .iter()
-                        .find_map(|t| {
-                            t.milestones
-                                .iter()
-                                .find(|m| m.id == *id)
-                                .map(|m| format!("[Tier {}] {}", t.tier, m.name))
+                        .flat_map(|t| t.milestones.iter().map(move |m| (t.tier, m)))
+                        .collect();
+                    let displayed: Vec<_> = all_milestones
+                        .iter()
+                        .filter(|(_, m)| {
+                            if locked {
+                                !state.milestones.contains(&m.id)
+                            } else {
+                                state.milestones.contains(&m.id)
+                            }
                         })
-                        .unwrap_or_else(|| id.clone());
-                    println!("    {label}");
+                        .collect();
+                    fmt.field(
+                        "Milestones",
+                        &format!(
+                            "{}/{}",
+                            if locked {
+                                all_milestones.len() - state.milestones.len()
+                            } else {
+                                state.milestones.len()
+                            },
+                            all_milestones.len()
+                        ),
+                    );
+                    for (tier, m) in &displayed {
+                        println!("    [Tier {tier}] {}", m.name);
+                    }
                 }
-                fmt.field("MAM nodes researched", &state.mam_nodes.len().to_string());
-                for id in &state.mam_nodes {
-                    let label = db
+
+                if show_mam {
+                    let all_nodes: Vec<_> = db
                         .mam_trees()
                         .iter()
-                        .find_map(|t| {
-                            t.nodes
-                                .iter()
-                                .find(|n| n.id == *id)
-                                .map(|n| format!("[{}] {}", t.name, n.name))
-                        })
-                        .unwrap_or_else(|| id.clone());
-                    println!("    {label}");
-                }
-                fmt.field(
-                    "Space Elevator phases",
-                    &if state.space_elevator_phases.is_empty() {
-                        "none".to_string()
-                    } else {
-                        state
-                            .space_elevator_phases
-                            .iter()
-                            .map(|p| p.to_string())
-                            .collect::<Vec<_>>()
-                            .join(", ")
-                    },
-                );
-                for number in &state.space_elevator_phases {
-                    let label = db
-                        .space_elevator_phases()
+                        .flat_map(|t| t.nodes.iter().map(move |n| (&t.name, n)))
+                        .collect();
+                    let displayed: Vec<_> = all_nodes
                         .iter()
-                        .find(|p| p.phase == *number)
-                        .map(|p| format!("Phase {} — {}", p.phase, p.name))
-                        .unwrap_or_else(|| format!("Phase {number}"));
-                    println!("    {label}");
+                        .filter(|(_, n)| {
+                            if locked {
+                                !state.mam_nodes.contains(&n.id)
+                            } else {
+                                state.mam_nodes.contains(&n.id)
+                            }
+                        })
+                        .collect();
+                    fmt.field(
+                        "MAM nodes",
+                        &format!(
+                            "{}/{}",
+                            if locked {
+                                all_nodes.len() - state.mam_nodes.len()
+                            } else {
+                                state.mam_nodes.len()
+                            },
+                            all_nodes.len()
+                        ),
+                    );
+                    for (tree, n) in &displayed {
+                        println!("    [{}] {}", tree, n.name);
+                    }
                 }
-                fmt.field(
-                    "Alternate recipes found",
-                    &state.alternate_recipes.len().to_string(),
-                );
-                for id in &state.alternate_recipes {
-                    let label = db
-                        .all_recipes()
-                        .find(|r| r.id == *id)
-                        .map(|r| r.name.clone())
-                        .unwrap_or_else(|| id.clone());
-                    println!("    {label}");
+
+                if show_phases {
+                    let all_phases = db.space_elevator_phases();
+                    let displayed: Vec<_> = all_phases
+                        .iter()
+                        .filter(|p| {
+                            if locked {
+                                !state.space_elevator_phases.contains(&p.phase)
+                            } else {
+                                state.space_elevator_phases.contains(&p.phase)
+                            }
+                        })
+                        .collect();
+                    fmt.field(
+                        "Space Elevator phases",
+                        &format!(
+                            "{}/{}",
+                            if locked {
+                                all_phases.len() - state.space_elevator_phases.len()
+                            } else {
+                                state.space_elevator_phases.len()
+                            },
+                            all_phases.len()
+                        ),
+                    );
+                    for p in &displayed {
+                        println!("    Phase {} — {}", p.phase, p.name);
+                    }
+                }
+
+                if show_alternates {
+                    let all_alts: Vec<_> = db.all_recipes().filter(|r| r.is_alternate).collect();
+                    let displayed: Vec<_> = all_alts
+                        .iter()
+                        .filter(|r| {
+                            if locked {
+                                !state.alternate_recipes.contains(&r.id)
+                            } else {
+                                state.alternate_recipes.contains(&r.id)
+                            }
+                        })
+                        .collect();
+                    fmt.field(
+                        "Alternate recipes",
+                        &format!(
+                            "{}/{}",
+                            if locked {
+                                all_alts.len() - state.alternate_recipes.len()
+                            } else {
+                                state.alternate_recipes.len()
+                            },
+                            all_alts.len()
+                        ),
+                    );
+                    for r in &displayed {
+                        println!("    {}", r.name);
+                    }
                 }
             }
             Ok(())
