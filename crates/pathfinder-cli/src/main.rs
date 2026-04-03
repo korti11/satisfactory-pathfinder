@@ -12,6 +12,7 @@ use pathfinder_core::bottleneck::analyse_factory;
 use pathfinder_core::calculator::{calculate, overclock};
 use pathfinder_core::chain::{resolve_chain, ChainNode, ChainOptions};
 use pathfinder_core::db::{load_factories, Db};
+use pathfinder_core::progress;
 
 #[derive(Parser)]
 #[command(
@@ -23,6 +24,10 @@ struct Cli {
     /// Path to a data directory to override the embedded game data
     #[arg(long)]
     data_dir: Option<PathBuf>,
+
+    /// Path to the world progress file (default: ./progress.json)
+    #[arg(long)]
+    progress_file: Option<PathBuf>,
 
     /// Output machine-readable JSON (for programmatic use)
     #[arg(long, global = true)]
@@ -110,6 +115,17 @@ enum Commands {
         #[command(subcommand)]
         action: CompanionAction,
     },
+    /// Track world progress (milestones, MAM, Space Elevator, alternate recipes)
+    Progress {
+        #[command(subcommand)]
+        action: ProgressAction,
+    },
+}
+
+#[derive(Subcommand)]
+enum ProgressAction {
+    /// Show current world progress
+    Show,
 }
 
 #[derive(Subcommand)]
@@ -170,6 +186,9 @@ fn main() -> Result<()> {
     let cli = Cli::parse();
     let fmt = Formatter::new(cli.json);
     let db = Db::load(cli.data_dir.as_deref())?;
+    let progress_path = cli
+        .progress_file
+        .unwrap_or_else(|| PathBuf::from(progress::PROGRESS_FILENAME));
 
     match cli.command {
         Commands::List { target } => cmd_list(&db, &fmt, target),
@@ -197,6 +216,7 @@ fn main() -> Result<()> {
         } => cmd_sink(&db, &fmt, item.as_deref(), rate, category.as_deref()),
         Commands::Nuclear { plants, fuel } => cmd_nuclear(&fmt, plants, &fuel),
         Commands::Companion { action } => cmd_companion(&fmt, action),
+        Commands::Progress { action } => cmd_progress(&fmt, &progress_path, action),
     }
 }
 
@@ -889,6 +909,59 @@ fn cmd_companion(fmt: &Formatter, action: CompanionAction) -> Result<()> {
                 fmt.print_json(&json!({ "installed": dest.to_string_lossy() }));
             } else {
                 println!("Companion agent installed to {}", dest.display());
+            }
+            Ok(())
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// progress
+// ---------------------------------------------------------------------------
+
+fn cmd_progress(fmt: &Formatter, path: &std::path::Path, action: ProgressAction) -> Result<()> {
+    match action {
+        ProgressAction::Show => {
+            let state = progress::load(path)?;
+            if fmt.json_mode {
+                fmt.print_json(&state);
+            } else {
+                fmt.header("World Progress");
+                fmt.separator();
+                fmt.field("Milestones unlocked", &state.milestones.len().to_string());
+                if !state.milestones.is_empty() {
+                    for id in &state.milestones {
+                        println!("    {id}");
+                    }
+                }
+                fmt.field("MAM nodes researched", &state.mam_nodes.len().to_string());
+                if !state.mam_nodes.is_empty() {
+                    for id in &state.mam_nodes {
+                        println!("    {id}");
+                    }
+                }
+                fmt.field(
+                    "Space Elevator phases",
+                    &if state.space_elevator_phases.is_empty() {
+                        "none".to_string()
+                    } else {
+                        state
+                            .space_elevator_phases
+                            .iter()
+                            .map(|p| p.to_string())
+                            .collect::<Vec<_>>()
+                            .join(", ")
+                    },
+                );
+                fmt.field(
+                    "Alternate recipes found",
+                    &state.alternate_recipes.len().to_string(),
+                );
+                if !state.alternate_recipes.is_empty() {
+                    for id in &state.alternate_recipes {
+                        println!("    {id}");
+                    }
+                }
             }
             Ok(())
         }

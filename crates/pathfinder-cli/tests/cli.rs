@@ -605,3 +605,79 @@ fn companion_install_json_reports_install_path() {
 
     std::fs::remove_dir_all(&tmp).unwrap();
 }
+
+// ---------------------------------------------------------------------------
+// progress show
+// ---------------------------------------------------------------------------
+
+#[test]
+fn progress_show_returns_empty_state_when_no_file_exists() {
+    let tmp = std::env::temp_dir().join(format!("pathfinder_progress_{}", std::process::id()));
+    std::fs::create_dir_all(&tmp).unwrap();
+
+    let output = pathfinder()
+        .args([
+            "--progress-file",
+            tmp.join("progress.json").to_str().unwrap(),
+            "progress",
+            "show",
+            "--json",
+        ])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let result: serde_json::Value = serde_json::from_slice(&output).unwrap();
+    assert_eq!(result["milestones"].as_array().unwrap().len(), 0);
+    assert_eq!(result["mam_nodes"].as_array().unwrap().len(), 0);
+    assert_eq!(result["space_elevator_phases"].as_array().unwrap().len(), 0);
+    assert_eq!(result["alternate_recipes"].as_array().unwrap().len(), 0);
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
+
+#[test]
+fn progress_show_reads_existing_file() {
+    let tmp = std::env::temp_dir().join(format!(
+        "pathfinder_progress_read_{}",
+        std::process::id()
+    ));
+    std::fs::create_dir_all(&tmp).unwrap();
+    let progress_file = tmp.join("progress.json");
+
+    std::fs::write(
+        &progress_file,
+        r#"{"milestones":["basic_steel_production"],"mam_nodes":[],"space_elevator_phases":[1],"alternate_recipes":["alt_cast_screw"]}"#,
+    )
+    .unwrap();
+
+    let output = pathfinder()
+        .args([
+            "--progress-file",
+            progress_file.to_str().unwrap(),
+            "progress",
+            "show",
+            "--json",
+        ])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let result: serde_json::Value = serde_json::from_slice(&output).unwrap();
+    assert_eq!(result["milestones"].as_array().unwrap().len(), 1);
+    assert_eq!(
+        result["milestones"][0].as_str().unwrap(),
+        "basic_steel_production"
+    );
+    assert_eq!(result["space_elevator_phases"][0].as_u64().unwrap(), 1);
+    assert_eq!(
+        result["alternate_recipes"][0].as_str().unwrap(),
+        "alt_cast_screw"
+    );
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
