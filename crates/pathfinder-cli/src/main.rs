@@ -186,6 +186,8 @@ enum CompanionAction {
         #[arg(long)]
         global: bool,
     },
+    /// Check whether the installed companion agent is up to date
+    Status,
 }
 
 #[derive(Subcommand)]
@@ -936,30 +938,95 @@ fn cmd_nuclear(fmt: &Formatter, plants: u64, fuel: &str) -> Result<()> {
 const AGENT_CONTENT: &str = include_str!("../../../agent/satisfactory-companion.md");
 const AGENT_FILENAME: &str = "satisfactory-companion.md";
 
+fn agents_dir(global: bool) -> Result<std::path::PathBuf> {
+    if global {
+        let home = std::env::var_os("HOME")
+            .or_else(|| std::env::var_os("USERPROFILE"))
+            .map(std::path::PathBuf::from)
+            .ok_or_else(|| anyhow::anyhow!("could not determine home directory"))?;
+        Ok(home.join(".claude").join("agents"))
+    } else {
+        Ok(std::path::PathBuf::from(".claude").join("agents"))
+    }
+}
+
+fn agent_status(path: &std::path::Path) -> &'static str {
+    match std::fs::read_to_string(path) {
+        Ok(content) if content == AGENT_CONTENT => "up_to_date",
+        Ok(_) => "outdated",
+        Err(_) => "not_installed",
+    }
+}
+
 fn cmd_companion(fmt: &Formatter, action: CompanionAction) -> Result<()> {
     match action {
         CompanionAction::Install { global } => {
-            let agents_dir = if global {
-                let home = std::env::var_os("HOME")
-                    .or_else(|| std::env::var_os("USERPROFILE"))
-                    .map(std::path::PathBuf::from)
-                    .ok_or_else(|| anyhow::anyhow!("could not determine home directory"))?;
-                home.join(".claude").join("agents")
-            } else {
-                std::path::PathBuf::from(".claude").join("agents")
-            };
+            let dir = agents_dir(global)?;
+            std::fs::create_dir_all(&dir)
+                .with_context(|| format!("failed to create {}", dir.display()))?;
 
-            std::fs::create_dir_all(&agents_dir)
-                .with_context(|| format!("failed to create {}", agents_dir.display()))?;
-
-            let dest = agents_dir.join(AGENT_FILENAME);
+            let dest = dir.join(AGENT_FILENAME);
+            let status = agent_status(&dest);
             std::fs::write(&dest, AGENT_CONTENT)
                 .with_context(|| format!("failed to write {}", dest.display()))?;
 
-            if fmt.json_mode {
-                fmt.print_json(&json!({ "installed": dest.to_string_lossy() }));
+            let action_taken = if status == "not_installed" {
+                "installed"
+            } else if status == "outdated" {
+                "updated"
             } else {
-                println!("Companion agent installed to {}", dest.display());
+                "already_up_to_date"
+            };
+
+            if fmt.json_mode {
+                fmt.print_json(&json!({ "path": dest.to_string_lossy(), "status": action_taken }));
+            } else {
+                match action_taken {
+                    "installed" => println!("Companion agent installed to {}", dest.display()),
+                    "updated" => println!("Companion agent updated at {}", dest.display()),
+                    _ => println!(
+                        "Companion agent is already up to date at {}",
+                        dest.display()
+                    ),
+                }
+            }
+            Ok(())
+        }
+
+        CompanionAction::Status => {
+            let project_dest = std::path::PathBuf::from(".claude")
+                .join("agents")
+                .join(AGENT_FILENAME);
+            let global_dest = agents_dir(true)?.join(AGENT_FILENAME);
+
+            let project_status = agent_status(&project_dest);
+            let global_status = agent_status(&global_dest);
+
+            if fmt.json_mode {
+                fmt.print_json(&json!({
+                    "project": { "path": project_dest.to_string_lossy(), "status": project_status },
+                    "global":  { "path": global_dest.to_string_lossy(),  "status": global_status },
+                }));
+            } else {
+                fmt.header("Companion Agent Status");
+                fmt.separator();
+                let fmt_status = |s: &str| match s {
+                    "up_to_date" => "up to date",
+                    "outdated" => "OUTDATED — run: pathfinder companion install",
+                    _ => "not installed",
+                };
+                fmt.field(
+                    "Project",
+                    &format!(
+                        "{}  ({})",
+                        project_dest.display(),
+                        fmt_status(project_status)
+                    ),
+                );
+                fmt.field(
+                    "Global",
+                    &format!("{}  ({})", global_dest.display(), fmt_status(global_status)),
+                );
             }
             Ok(())
         }

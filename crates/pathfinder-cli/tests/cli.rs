@@ -598,10 +598,146 @@ fn companion_install_json_reports_install_path() {
         .clone();
 
     let result: serde_json::Value = serde_json::from_slice(&output).unwrap();
-    assert!(result["installed"]
+    assert!(result["path"]
         .as_str()
         .unwrap()
         .contains("satisfactory-companion.md"));
+    assert_eq!(result["status"].as_str().unwrap(), "installed");
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
+
+// ---------------------------------------------------------------------------
+// companion status
+// ---------------------------------------------------------------------------
+
+#[test]
+fn companion_status_json_not_installed() {
+    let tmp = std::env::temp_dir().join(format!(
+        "pathfinder_test_status_none_{}",
+        std::process::id()
+    ));
+    std::fs::create_dir_all(&tmp).unwrap();
+
+    let output = pathfinder()
+        .args(["companion", "status", "--json"])
+        .current_dir(&tmp)
+        .env("HOME", &tmp)
+        .env("USERPROFILE", &tmp)
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let result: serde_json::Value = serde_json::from_slice(&output).unwrap();
+    assert_eq!(
+        result["project"]["status"].as_str().unwrap(),
+        "not_installed"
+    );
+    assert_eq!(
+        result["global"]["status"].as_str().unwrap(),
+        "not_installed"
+    );
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
+
+#[test]
+fn companion_status_json_shows_up_to_date_after_install() {
+    let tmp = std::env::temp_dir().join(format!(
+        "pathfinder_test_status_uptodate_{}",
+        std::process::id()
+    ));
+    // Separate home dir so project and global paths don't collide.
+    let home = std::env::temp_dir().join(format!(
+        "pathfinder_test_status_home_{}",
+        std::process::id()
+    ));
+    std::fs::create_dir_all(&tmp).unwrap();
+    std::fs::create_dir_all(&home).unwrap();
+
+    // Install to project (CWD = tmp)
+    pathfinder()
+        .args(["companion", "install"])
+        .current_dir(&tmp)
+        .env("HOME", &home)
+        .env("USERPROFILE", &home)
+        .assert()
+        .success();
+
+    // Check status
+    let output = pathfinder()
+        .args(["companion", "status", "--json"])
+        .current_dir(&tmp)
+        .env("HOME", &home)
+        .env("USERPROFILE", &home)
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let result: serde_json::Value = serde_json::from_slice(&output).unwrap();
+    assert_eq!(result["project"]["status"].as_str().unwrap(), "up_to_date");
+    assert_eq!(
+        result["global"]["status"].as_str().unwrap(),
+        "not_installed"
+    );
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+    std::fs::remove_dir_all(&home).unwrap();
+}
+
+#[test]
+fn companion_status_human_readable_output() {
+    let tmp = std::env::temp_dir().join(format!(
+        "pathfinder_test_status_human_{}",
+        std::process::id()
+    ));
+    std::fs::create_dir_all(&tmp).unwrap();
+
+    pathfinder()
+        .args(["companion", "status"])
+        .current_dir(&tmp)
+        .env("HOME", &tmp)
+        .env("USERPROFILE", &tmp)
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("Project"))
+        .stdout(predicate::str::contains("Global"))
+        .stdout(predicate::str::contains("not installed"));
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
+
+#[test]
+fn companion_install_twice_reports_already_up_to_date() {
+    let tmp = std::env::temp_dir().join(format!(
+        "pathfinder_test_install_idempotent_{}",
+        std::process::id()
+    ));
+    std::fs::create_dir_all(&tmp).unwrap();
+
+    // First install
+    pathfinder()
+        .args(["companion", "install", "--json"])
+        .current_dir(&tmp)
+        .assert()
+        .success();
+
+    // Second install
+    let output = pathfinder()
+        .args(["companion", "install", "--json"])
+        .current_dir(&tmp)
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let result: serde_json::Value = serde_json::from_slice(&output).unwrap();
+    assert_eq!(result["status"].as_str().unwrap(), "already_up_to_date");
 
     std::fs::remove_dir_all(&tmp).unwrap();
 }
