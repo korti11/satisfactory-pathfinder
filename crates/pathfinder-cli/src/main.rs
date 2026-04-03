@@ -155,6 +155,11 @@ enum ProgressTarget {
         /// Phase number (1–5)
         number: u32,
     },
+    /// A Hard Drive alternate recipe (by id, e.g. alt_cast_screw)
+    Alt {
+        /// Alternate recipe id (must start with alt_)
+        id: String,
+    },
 }
 
 #[derive(Subcommand)]
@@ -1061,6 +1066,29 @@ fn cmd_progress(fmt: &Formatter, path: &std::path::Path, action: ProgressAction)
                         println!("Space Elevator phase {number} submitted.");
                     }
                 }
+                ProgressTarget::Alt { id } => {
+                    if !id.starts_with("alt_") {
+                        bail!("Alternate recipe id must start with 'alt_', got '{id}'");
+                    }
+                    if state.alternate_recipes.contains(&id) {
+                        if fmt.json_mode {
+                            fmt.print_json(&serde_json::json!({ "alt_recipe": id, "status": "already_unlocked" }));
+                        } else {
+                            println!("Alternate recipe '{id}' is already recorded.");
+                        }
+                        return Ok(());
+                    }
+                    state.alternate_recipes.push(id.clone());
+                    state.alternate_recipes.sort();
+                    progress::save(path, &state)?;
+                    if fmt.json_mode {
+                        fmt.print_json(
+                            &serde_json::json!({ "alt_recipe": id, "status": "unlocked" }),
+                        );
+                    } else {
+                        println!("Alternate recipe '{id}' recorded.");
+                    }
+                }
             }
             Ok(())
         }
@@ -1123,6 +1151,27 @@ fn cmd_progress(fmt: &Formatter, path: &std::path::Path, action: ProgressAction)
                         fmt.print_json(&serde_json::json!({ "phase": number, "status": "locked" }));
                     } else {
                         println!("Space Elevator phase {number} locked (removed).");
+                    }
+                }
+                ProgressTarget::Alt { id } => {
+                    if !state.alternate_recipes.contains(&id) {
+                        if fmt.json_mode {
+                            fmt.print_json(
+                                &serde_json::json!({ "alt_recipe": id, "status": "not_found" }),
+                            );
+                        } else {
+                            println!("Alternate recipe '{id}' was not recorded.");
+                        }
+                        return Ok(());
+                    }
+                    state.alternate_recipes.retain(|r| r != &id);
+                    progress::save(path, &state)?;
+                    if fmt.json_mode {
+                        fmt.print_json(
+                            &serde_json::json!({ "alt_recipe": id, "status": "locked" }),
+                        );
+                    } else {
+                        println!("Alternate recipe '{id}' locked (removed).");
                     }
                 }
             }

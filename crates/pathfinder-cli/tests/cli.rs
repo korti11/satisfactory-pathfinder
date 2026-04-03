@@ -1047,3 +1047,132 @@ fn progress_lock_phase_removes_entry() {
 
     std::fs::remove_dir_all(&tmp).unwrap();
 }
+
+// ---------------------------------------------------------------------------
+// progress unlock/lock alt
+// ---------------------------------------------------------------------------
+
+#[test]
+fn progress_unlock_alt_adds_entry() {
+    let (tmp, file) = temp_progress_file("alt_unlock");
+
+    let result = pathfinder()
+        .args([
+            "--progress-file",
+            file.to_str().unwrap(),
+            "progress",
+            "unlock",
+            "alt",
+            "alt_cast_screw",
+            "--json",
+        ])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let json: serde_json::Value = serde_json::from_slice(&result).unwrap();
+    assert_eq!(json["alt_recipe"].as_str().unwrap(), "alt_cast_screw");
+    assert_eq!(json["status"].as_str().unwrap(), "unlocked");
+
+    let state: serde_json::Value =
+        serde_json::from_str(&std::fs::read_to_string(&file).unwrap()).unwrap();
+    assert!(state["alternate_recipes"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .any(|r| r.as_str() == Some("alt_cast_screw")));
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
+
+#[test]
+fn progress_unlock_alt_is_idempotent() {
+    let (tmp, file) = temp_progress_file("alt_idempotent");
+
+    let args = [
+        "--progress-file",
+        file.to_str().unwrap(),
+        "progress",
+        "unlock",
+        "alt",
+        "alt_cast_screw",
+        "--json",
+    ];
+    pathfinder().args(args).assert().success();
+
+    let result = pathfinder()
+        .args(args)
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let json: serde_json::Value = serde_json::from_slice(&result).unwrap();
+    assert_eq!(json["status"].as_str().unwrap(), "already_unlocked");
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
+
+#[test]
+fn progress_unlock_alt_rejects_missing_prefix() {
+    let (tmp, file) = temp_progress_file("alt_prefix");
+
+    pathfinder()
+        .args([
+            "--progress-file",
+            file.to_str().unwrap(),
+            "progress",
+            "unlock",
+            "alt",
+            "cast_screw",
+        ])
+        .assert()
+        .failure();
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
+
+#[test]
+fn progress_lock_alt_removes_entry() {
+    let (tmp, file) = temp_progress_file("alt_lock");
+
+    pathfinder()
+        .args([
+            "--progress-file",
+            file.to_str().unwrap(),
+            "progress",
+            "unlock",
+            "alt",
+            "alt_cast_screw",
+        ])
+        .assert()
+        .success();
+
+    let result = pathfinder()
+        .args([
+            "--progress-file",
+            file.to_str().unwrap(),
+            "progress",
+            "lock",
+            "alt",
+            "alt_cast_screw",
+            "--json",
+        ])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let json: serde_json::Value = serde_json::from_slice(&result).unwrap();
+    assert_eq!(json["status"].as_str().unwrap(), "locked");
+
+    let state: serde_json::Value =
+        serde_json::from_str(&std::fs::read_to_string(&file).unwrap()).unwrap();
+    assert!(state["alternate_recipes"].as_array().unwrap().is_empty());
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
