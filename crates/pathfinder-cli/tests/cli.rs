@@ -646,7 +646,7 @@ fn progress_show_reads_existing_file() {
 
     std::fs::write(
         &progress_file,
-        r#"{"milestones":["basic_steel_production"],"mam_nodes":[],"space_elevator_phases":[1],"alternate_recipes":["alt_cast_screw"]}"#,
+        r#"{"milestones":["basic_steel_production"],"mam_nodes":[],"space_elevator_phases":[1],"alternate_recipes":["alt_pure_iron_ingot"]}"#,
     )
     .unwrap();
 
@@ -673,7 +673,7 @@ fn progress_show_reads_existing_file() {
     assert_eq!(result["space_elevator_phases"][0].as_u64().unwrap(), 1);
     assert_eq!(
         result["alternate_recipes"][0].as_str().unwrap(),
-        "alt_cast_screw"
+        "alt_pure_iron_ingot"
     );
 
     std::fs::remove_dir_all(&tmp).unwrap();
@@ -821,7 +821,7 @@ fn progress_unlock_mam_adds_entry() {
             "progress",
             "unlock",
             "mam",
-            "caterium_research",
+            "caterium_ore_scan",
             "--json",
         ])
         .assert()
@@ -831,7 +831,7 @@ fn progress_unlock_mam_adds_entry() {
         .clone();
 
     let json: serde_json::Value = serde_json::from_slice(&result).unwrap();
-    assert_eq!(json["mam_node"].as_str().unwrap(), "caterium_research");
+    assert_eq!(json["mam_node"].as_str().unwrap(), "caterium_ore_scan");
     assert_eq!(json["status"].as_str().unwrap(), "unlocked");
 
     let state: serde_json::Value =
@@ -840,7 +840,7 @@ fn progress_unlock_mam_adds_entry() {
         .as_array()
         .unwrap()
         .iter()
-        .any(|m| m.as_str() == Some("caterium_research")));
+        .any(|m| m.as_str() == Some("caterium_ore_scan")));
 
     std::fs::remove_dir_all(&tmp).unwrap();
 }
@@ -855,7 +855,7 @@ fn progress_unlock_mam_is_idempotent() {
         "progress",
         "unlock",
         "mam",
-        "caterium_research",
+        "caterium_ore_scan",
         "--json",
     ];
     pathfinder().args(args).assert().success();
@@ -885,7 +885,7 @@ fn progress_lock_mam_removes_entry() {
             "progress",
             "unlock",
             "mam",
-            "caterium_research",
+            "caterium_ore_scan",
         ])
         .assert()
         .success();
@@ -897,7 +897,7 @@ fn progress_lock_mam_removes_entry() {
             "progress",
             "lock",
             "mam",
-            "caterium_research",
+            "caterium_ore_scan",
             "--json",
         ])
         .assert()
@@ -912,6 +912,44 @@ fn progress_lock_mam_removes_entry() {
     let state: serde_json::Value =
         serde_json::from_str(&std::fs::read_to_string(&file).unwrap()).unwrap();
     assert!(state["mam_nodes"].as_array().unwrap().is_empty());
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
+
+#[test]
+fn progress_unlock_milestone_rejects_unknown_id() {
+    let (tmp, file) = temp_progress_file("milestone_unknown");
+
+    pathfinder()
+        .args([
+            "--progress-file",
+            file.to_str().unwrap(),
+            "progress",
+            "unlock",
+            "milestone",
+            "not_a_real_milestone",
+        ])
+        .assert()
+        .failure();
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
+
+#[test]
+fn progress_unlock_mam_rejects_unknown_id() {
+    let (tmp, file) = temp_progress_file("mam_unknown");
+
+    pathfinder()
+        .args([
+            "--progress-file",
+            file.to_str().unwrap(),
+            "progress",
+            "unlock",
+            "mam",
+            "not_a_real_node",
+        ])
+        .assert()
+        .failure();
 
     std::fs::remove_dir_all(&tmp).unwrap();
 }
@@ -959,16 +997,28 @@ fn progress_unlock_phase_adds_entry() {
 fn progress_unlock_phase_is_idempotent() {
     let (tmp, file) = temp_progress_file("phase_idempotent");
 
+    // Unlock phase 1 first (required prerequisite)
+    pathfinder()
+        .args([
+            "--progress-file",
+            file.to_str().unwrap(),
+            "progress",
+            "unlock",
+            "phase",
+            "1",
+        ])
+        .assert()
+        .success();
+
     let args = [
         "--progress-file",
         file.to_str().unwrap(),
         "progress",
         "unlock",
         "phase",
-        "2",
+        "1",
         "--json",
     ];
-    pathfinder().args(args).assert().success();
 
     let result = pathfinder()
         .args(args)
@@ -1004,9 +1054,10 @@ fn progress_unlock_phase_rejects_out_of_range() {
 }
 
 #[test]
-fn progress_lock_phase_removes_entry() {
-    let (tmp, file) = temp_progress_file("phase_lock");
+fn progress_unlock_phase_rejects_skipping_previous() {
+    let (tmp, file) = temp_progress_file("phase_skip");
 
+    // Try to unlock phase 2 without phase 1
     pathfinder()
         .args([
             "--progress-file",
@@ -1014,10 +1065,32 @@ fn progress_lock_phase_removes_entry() {
             "progress",
             "unlock",
             "phase",
-            "3",
+            "2",
         ])
         .assert()
-        .success();
+        .failure();
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
+
+#[test]
+fn progress_lock_phase_removes_entry() {
+    let (tmp, file) = temp_progress_file("phase_lock");
+
+    // Unlock phases 1, 2, 3 sequentially
+    for phase in ["1", "2", "3"] {
+        pathfinder()
+            .args([
+                "--progress-file",
+                file.to_str().unwrap(),
+                "progress",
+                "unlock",
+                "phase",
+                phase,
+            ])
+            .assert()
+            .success();
+    }
 
     let result = pathfinder()
         .args([
@@ -1040,10 +1113,14 @@ fn progress_lock_phase_removes_entry() {
 
     let state: serde_json::Value =
         serde_json::from_str(&std::fs::read_to_string(&file).unwrap()).unwrap();
-    assert!(state["space_elevator_phases"]
+    let phases: Vec<u64> = state["space_elevator_phases"]
         .as_array()
         .unwrap()
-        .is_empty());
+        .iter()
+        .map(|p| p.as_u64().unwrap())
+        .collect();
+    assert!(!phases.contains(&3), "phase 3 should have been removed");
+    assert!(phases.contains(&1) && phases.contains(&2), "phases 1 and 2 should remain");
 
     std::fs::remove_dir_all(&tmp).unwrap();
 }
@@ -1063,7 +1140,7 @@ fn progress_unlock_alt_adds_entry() {
             "progress",
             "unlock",
             "alt",
-            "alt_cast_screw",
+            "alt_pure_iron_ingot",
             "--json",
         ])
         .assert()
@@ -1073,7 +1150,7 @@ fn progress_unlock_alt_adds_entry() {
         .clone();
 
     let json: serde_json::Value = serde_json::from_slice(&result).unwrap();
-    assert_eq!(json["alt_recipe"].as_str().unwrap(), "alt_cast_screw");
+    assert_eq!(json["alt_recipe"].as_str().unwrap(), "alt_pure_iron_ingot");
     assert_eq!(json["status"].as_str().unwrap(), "unlocked");
 
     let state: serde_json::Value =
@@ -1082,7 +1159,7 @@ fn progress_unlock_alt_adds_entry() {
         .as_array()
         .unwrap()
         .iter()
-        .any(|r| r.as_str() == Some("alt_cast_screw")));
+        .any(|r| r.as_str() == Some("alt_pure_iron_ingot")));
 
     std::fs::remove_dir_all(&tmp).unwrap();
 }
@@ -1097,7 +1174,7 @@ fn progress_unlock_alt_is_idempotent() {
         "progress",
         "unlock",
         "alt",
-        "alt_cast_screw",
+        "alt_pure_iron_ingot",
         "--json",
     ];
     pathfinder().args(args).assert().success();
@@ -1136,6 +1213,25 @@ fn progress_unlock_alt_rejects_missing_prefix() {
 }
 
 #[test]
+fn progress_unlock_alt_rejects_unknown_id() {
+    let (tmp, file) = temp_progress_file("alt_unknown");
+
+    pathfinder()
+        .args([
+            "--progress-file",
+            file.to_str().unwrap(),
+            "progress",
+            "unlock",
+            "alt",
+            "alt_not_a_real_recipe",
+        ])
+        .assert()
+        .failure();
+
+    std::fs::remove_dir_all(&tmp).unwrap();
+}
+
+#[test]
 fn progress_lock_alt_removes_entry() {
     let (tmp, file) = temp_progress_file("alt_lock");
 
@@ -1146,7 +1242,7 @@ fn progress_lock_alt_removes_entry() {
             "progress",
             "unlock",
             "alt",
-            "alt_cast_screw",
+            "alt_pure_iron_ingot",
         ])
         .assert()
         .success();
@@ -1158,7 +1254,7 @@ fn progress_lock_alt_removes_entry() {
             "progress",
             "lock",
             "alt",
-            "alt_cast_screw",
+            "alt_pure_iron_ingot",
             "--json",
         ])
         .assert()

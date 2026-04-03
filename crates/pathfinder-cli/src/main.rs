@@ -250,7 +250,7 @@ fn main() -> Result<()> {
         } => cmd_sink(&db, &fmt, item.as_deref(), rate, category.as_deref()),
         Commands::Nuclear { plants, fuel } => cmd_nuclear(&fmt, plants, &fuel),
         Commands::Companion { action } => cmd_companion(&fmt, action),
-        Commands::Progress { action } => cmd_progress(&fmt, &progress_path, action),
+        Commands::Progress { action } => cmd_progress(&db, &fmt, &progress_path, action),
     }
 }
 
@@ -954,7 +954,12 @@ fn cmd_companion(fmt: &Formatter, action: CompanionAction) -> Result<()> {
 // progress
 // ---------------------------------------------------------------------------
 
-fn cmd_progress(fmt: &Formatter, path: &std::path::Path, action: ProgressAction) -> Result<()> {
+fn cmd_progress(
+    db: &Db,
+    fmt: &Formatter,
+    path: &std::path::Path,
+    action: ProgressAction,
+) -> Result<()> {
     match action {
         ProgressAction::Show => {
             let state = progress::load(path)?;
@@ -1005,6 +1010,13 @@ fn cmd_progress(fmt: &Formatter, path: &std::path::Path, action: ProgressAction)
             let mut state = progress::load(path)?;
             match target {
                 ProgressTarget::Milestone { id } => {
+                    let known = db
+                        .hub_tiers()
+                        .iter()
+                        .any(|t| t.milestones.iter().any(|m| m.id == id));
+                    if !known {
+                        bail!("Unknown milestone id '{}'. Use 'pathfinder list milestones --json' to see valid ids.", id);
+                    }
                     if state.milestones.contains(&id) {
                         if fmt.json_mode {
                             fmt.print_json(&serde_json::json!({ "milestone": id, "status": "already_unlocked" }));
@@ -1025,6 +1037,13 @@ fn cmd_progress(fmt: &Formatter, path: &std::path::Path, action: ProgressAction)
                     }
                 }
                 ProgressTarget::Mam { id } => {
+                    let known = db
+                        .mam_trees()
+                        .iter()
+                        .any(|t| t.nodes.iter().any(|n| n.id == id));
+                    if !known {
+                        bail!("Unknown MAM node id '{}'. Use 'pathfinder list mam --json' to see valid ids.", id);
+                    }
                     if state.mam_nodes.contains(&id) {
                         if fmt.json_mode {
                             fmt.print_json(&serde_json::json!({ "mam_node": id, "status": "already_unlocked" }));
@@ -1048,6 +1067,12 @@ fn cmd_progress(fmt: &Formatter, path: &std::path::Path, action: ProgressAction)
                     if !(1..=5).contains(&number) {
                         bail!("Phase number must be between 1 and 5, got {number}");
                     }
+                    if number > 1 && !state.space_elevator_phases.contains(&(number - 1)) {
+                        bail!(
+                            "Cannot unlock phase {number} before phase {} is submitted.",
+                            number - 1
+                        );
+                    }
                     if state.space_elevator_phases.contains(&number) {
                         if fmt.json_mode {
                             fmt.print_json(&serde_json::json!({ "phase": number, "status": "already_unlocked" }));
@@ -1070,6 +1095,10 @@ fn cmd_progress(fmt: &Formatter, path: &std::path::Path, action: ProgressAction)
                 ProgressTarget::Alt { id } => {
                     if !id.starts_with("alt_") {
                         bail!("Alternate recipe id must start with 'alt_', got '{id}'");
+                    }
+                    let known = db.all_recipes().any(|r| r.id == id && r.is_alternate);
+                    if !known {
+                        bail!("Unknown alternate recipe id '{}'. Use 'pathfinder list recipes --alternate --json' to see valid ids.", id);
                     }
                     if state.alternate_recipes.contains(&id) {
                         if fmt.json_mode {
@@ -1098,6 +1127,13 @@ fn cmd_progress(fmt: &Formatter, path: &std::path::Path, action: ProgressAction)
             let mut state = progress::load(path)?;
             match target {
                 ProgressTarget::Milestone { id } => {
+                    let known = db
+                        .hub_tiers()
+                        .iter()
+                        .any(|t| t.milestones.iter().any(|m| m.id == id));
+                    if !known {
+                        bail!("Unknown milestone id '{}'. Use 'pathfinder list milestones --json' to see valid ids.", id);
+                    }
                     if !state.milestones.contains(&id) {
                         if fmt.json_mode {
                             fmt.print_json(
@@ -1117,6 +1153,13 @@ fn cmd_progress(fmt: &Formatter, path: &std::path::Path, action: ProgressAction)
                     }
                 }
                 ProgressTarget::Mam { id } => {
+                    let known = db
+                        .mam_trees()
+                        .iter()
+                        .any(|t| t.nodes.iter().any(|n| n.id == id));
+                    if !known {
+                        bail!("Unknown MAM node id '{}'. Use 'pathfinder list mam --json' to see valid ids.", id);
+                    }
                     if !state.mam_nodes.contains(&id) {
                         if fmt.json_mode {
                             fmt.print_json(
@@ -1155,6 +1198,13 @@ fn cmd_progress(fmt: &Formatter, path: &std::path::Path, action: ProgressAction)
                     }
                 }
                 ProgressTarget::Alt { id } => {
+                    if !id.starts_with("alt_") {
+                        bail!("Alternate recipe id must start with 'alt_', got '{id}'");
+                    }
+                    let known = db.all_recipes().any(|r| r.id == id && r.is_alternate);
+                    if !known {
+                        bail!("Unknown alternate recipe id '{}'. Use 'pathfinder list recipes --alternate --json' to see valid ids.", id);
+                    }
                     if !state.alternate_recipes.contains(&id) {
                         if fmt.json_mode {
                             fmt.print_json(
