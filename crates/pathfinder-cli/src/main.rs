@@ -1153,24 +1153,33 @@ fn cmd_search(
 // companion
 // ---------------------------------------------------------------------------
 
-const AGENT_CONTENT: &str = include_str!("../../../agent/satisfactory-companion.md");
-const AGENT_FILENAME: &str = "satisfactory-companion.md";
+const SKILL_CONTENT: &str = include_str!("../../../skill/satisfactory-companion.md");
+/// Subdirectory name under .claude/skills/
+const SKILL_DIR_NAME: &str = "satisfactory-companion";
+/// Filename inside the skill subdirectory (Claude Code skills convention)
+const SKILL_FILENAME: &str = "SKILL.md";
 
-fn agents_dir(global: bool) -> Result<std::path::PathBuf> {
+fn skills_dir(global: bool) -> Result<std::path::PathBuf> {
     if global {
         let home = std::env::var_os("HOME")
             .or_else(|| std::env::var_os("USERPROFILE"))
             .map(std::path::PathBuf::from)
             .ok_or_else(|| anyhow::anyhow!("could not determine home directory"))?;
-        Ok(home.join(".claude").join("agents"))
+        Ok(home.join(".claude").join("skills"))
     } else {
-        Ok(std::path::PathBuf::from(".claude").join("agents"))
+        Ok(std::path::PathBuf::from(".claude").join("skills"))
     }
 }
 
-fn agent_status(path: &std::path::Path) -> &'static str {
+fn skill_path(global: bool) -> Result<std::path::PathBuf> {
+    Ok(skills_dir(global)?
+        .join(SKILL_DIR_NAME)
+        .join(SKILL_FILENAME))
+}
+
+fn skill_status(path: &std::path::Path) -> &'static str {
     match std::fs::read_to_string(path) {
-        Ok(content) if content == AGENT_CONTENT => "up_to_date",
+        Ok(content) if content == SKILL_CONTENT => "up_to_date",
         Ok(_) => "outdated",
         Err(_) => "not_installed",
     }
@@ -1179,13 +1188,13 @@ fn agent_status(path: &std::path::Path) -> &'static str {
 fn cmd_companion(fmt: &Formatter, action: CompanionAction) -> Result<()> {
     match action {
         CompanionAction::Install { global } => {
-            let dir = agents_dir(global)?;
-            std::fs::create_dir_all(&dir)
+            let dest = skill_path(global)?;
+            let dir = dest.parent().unwrap();
+            std::fs::create_dir_all(dir)
                 .with_context(|| format!("failed to create {}", dir.display()))?;
 
-            let dest = dir.join(AGENT_FILENAME);
-            let status = agent_status(&dest);
-            std::fs::write(&dest, AGENT_CONTENT)
+            let status = skill_status(&dest);
+            std::fs::write(&dest, SKILL_CONTENT)
                 .with_context(|| format!("failed to write {}", dest.display()))?;
 
             let action_taken = if status == "not_installed" {
@@ -1200,10 +1209,10 @@ fn cmd_companion(fmt: &Formatter, action: CompanionAction) -> Result<()> {
                 fmt.print_json(&json!({ "path": dest.to_string_lossy(), "status": action_taken }));
             } else {
                 match action_taken {
-                    "installed" => println!("Companion agent installed to {}", dest.display()),
-                    "updated" => println!("Companion agent updated at {}", dest.display()),
+                    "installed" => println!("Companion skill installed to {}", dest.display()),
+                    "updated" => println!("Companion skill updated at {}", dest.display()),
                     _ => println!(
-                        "Companion agent is already up to date at {}",
+                        "Companion skill is already up to date at {}",
                         dest.display()
                     ),
                 }
@@ -1212,13 +1221,11 @@ fn cmd_companion(fmt: &Formatter, action: CompanionAction) -> Result<()> {
         }
 
         CompanionAction::Status => {
-            let project_dest = std::path::PathBuf::from(".claude")
-                .join("agents")
-                .join(AGENT_FILENAME);
-            let global_dest = agents_dir(true)?.join(AGENT_FILENAME);
+            let project_dest = skill_path(false)?;
+            let global_dest = skill_path(true)?;
 
-            let project_status = agent_status(&project_dest);
-            let global_status = agent_status(&global_dest);
+            let project_status = skill_status(&project_dest);
+            let global_status = skill_status(&global_dest);
 
             if fmt.json_mode {
                 fmt.print_json(&json!({
@@ -1226,7 +1233,7 @@ fn cmd_companion(fmt: &Formatter, action: CompanionAction) -> Result<()> {
                     "global":  { "path": global_dest.to_string_lossy(),  "status": global_status },
                 }));
             } else {
-                fmt.header("Companion Agent Status");
+                fmt.header("Companion Skill Status");
                 fmt.separator();
                 let fmt_status = |s: &str| match s {
                     "up_to_date" => "up to date",

@@ -686,7 +686,7 @@ fn search_result_fields_are_present() {
 // ---------------------------------------------------------------------------
 
 #[test]
-fn companion_install_project_creates_agent_file() {
+fn companion_install_project_creates_skill_file() {
     let tmp = std::env::temp_dir().join(format!("pathfinder_test_{}", std::process::id()));
     std::fs::create_dir_all(&tmp).unwrap();
 
@@ -695,29 +695,30 @@ fn companion_install_project_creates_agent_file() {
         .current_dir(&tmp)
         .assert()
         .success()
-        .stdout(predicate::str::contains("satisfactory-companion.md"));
+        .stdout(predicate::str::contains("SKILL.md"));
 
-    let agent_path = tmp
+    let skill_path = tmp
         .join(".claude")
-        .join("agents")
-        .join("satisfactory-companion.md");
+        .join("skills")
+        .join("satisfactory-companion")
+        .join("SKILL.md");
     assert!(
-        agent_path.exists(),
-        "agent file should exist at {}",
-        agent_path.display()
+        skill_path.exists(),
+        "skill file should exist at {}",
+        skill_path.display()
     );
 
-    let content = std::fs::read_to_string(&agent_path).unwrap();
+    let content = std::fs::read_to_string(&skill_path).unwrap();
     assert!(
         content.contains("satisfactory-companion"),
-        "agent file should contain valid content"
+        "skill file should contain valid content"
     );
 
     std::fs::remove_dir_all(&tmp).unwrap();
 }
 
 #[test]
-fn companion_install_global_creates_agent_file() {
+fn companion_install_global_creates_skill_file() {
     let tmp = std::env::temp_dir().join(format!("pathfinder_test_global_{}", std::process::id()));
     std::fs::create_dir_all(&tmp).unwrap();
 
@@ -727,16 +728,17 @@ fn companion_install_global_creates_agent_file() {
         .env("USERPROFILE", &tmp)
         .assert()
         .success()
-        .stdout(predicate::str::contains("satisfactory-companion.md"));
+        .stdout(predicate::str::contains("SKILL.md"));
 
-    let agent_path = tmp
+    let skill_path = tmp
         .join(".claude")
-        .join("agents")
-        .join("satisfactory-companion.md");
+        .join("skills")
+        .join("satisfactory-companion")
+        .join("SKILL.md");
     assert!(
-        agent_path.exists(),
-        "agent file should exist at {}",
-        agent_path.display()
+        skill_path.exists(),
+        "skill file should exist at {}",
+        skill_path.display()
     );
 
     std::fs::remove_dir_all(&tmp).unwrap();
@@ -757,10 +759,7 @@ fn companion_install_json_reports_install_path() {
         .clone();
 
     let result: serde_json::Value = serde_json::from_slice(&output).unwrap();
-    assert!(result["path"]
-        .as_str()
-        .unwrap()
-        .contains("satisfactory-companion.md"));
+    assert!(result["path"].as_str().unwrap().contains("SKILL.md"));
     assert_eq!(result["status"].as_str().unwrap(), "installed");
 
     std::fs::remove_dir_all(&tmp).unwrap();
