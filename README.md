@@ -1,6 +1,6 @@
 # Satisfactory Pathfinder
 
-A CLI factory planning companion for [Satisfactory](https://www.satisfactorygame.com/). Calculate production rates, resolve full supply chains, analyze factory bottlenecks, and plan builds — with an optional Claude Code agent that turns natural language into precise game calculations.
+A CLI factory planning companion for [Satisfactory](https://www.satisfactorygame.com/). Calculate production rates, resolve full supply chains, analyze factory bottlenecks, and plan builds — with an optional Claude Code skill that turns natural language into precise game calculations.
 
 ## Overview
 
@@ -9,9 +9,9 @@ Pathfinder has two components:
 | Component | What it is |
 |-----------|-----------|
 | `pathfinder` CLI | A fast Rust binary for querying game data and running factory math |
-| `satisfactory-companion` agent | A Claude Code subagent that uses the CLI to answer factory planning questions in natural language |
+| `satisfactory-companion` skill | A Claude Code skill that uses the CLI to answer factory planning questions in natural language |
 
-You can use the CLI on its own or pair it with the agent for a conversational planning experience.
+You can use the CLI on its own or pair it with the skill for a conversational planning experience.
 
 ---
 
@@ -181,9 +181,9 @@ pathfinder search iron --items
 
 ---
 
-## Claude Code Agent
+## Claude Code Skill
 
-The `agent/satisfactory-companion.md` file is a [Claude Code](https://claude.ai/code) subagent that wraps the pathfinder CLI with natural language skills including:
+The `skill/satisfactory-companion.md` file is a [Claude Code](https://claude.ai/code) skill that wraps the pathfinder CLI with natural language capabilities including:
 
 - Factory design and ASCII blueprint generation
 - Power budget and resource node planning
@@ -197,7 +197,7 @@ The `agent/satisfactory-companion.md` file is a [Claude Code](https://claude.ai/
 - AWESOME Sink value ranking
 - Building material estimation
 
-### Install the agent
+### Install the skill
 
 Once `pathfinder` is installed and on your PATH, run:
 
