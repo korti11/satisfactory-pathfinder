@@ -110,6 +110,56 @@ fn list_items_unknown_category_returns_empty_array() {
 }
 
 #[test]
+fn list_items_item_filter_returns_single_item() {
+    let output = pathfinder()
+        .args(["list", "items", "--item", "Iron Plate", "--json"])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let items: Vec<serde_json::Value> = serde_json::from_slice(&output).unwrap();
+    assert_eq!(items.len(), 1);
+    assert_eq!(items[0]["id"].as_str().unwrap(), "iron_plate");
+    assert!(items[0]["stack_size"].as_u64().unwrap() > 0);
+}
+
+#[test]
+fn list_recipes_by_id_returns_single_recipe() {
+    let output = pathfinder()
+        .args(["list", "recipes", "--id", "iron_plate_default", "--json"])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let recipes: Vec<serde_json::Value> = serde_json::from_slice(&output).unwrap();
+    assert_eq!(recipes.len(), 1);
+    assert_eq!(recipes[0]["id"].as_str().unwrap(), "iron_plate_default");
+    assert_eq!(recipes[0]["machine"].as_str().unwrap(), "constructor");
+}
+
+#[test]
+fn list_milestones_unlocks_filter_returns_correct_tier() {
+    let output = pathfinder()
+        .args(["list", "milestones", "--unlocks", "foundry", "--json"])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let entries: Vec<serde_json::Value> = serde_json::from_slice(&output).unwrap();
+    assert!(!entries.is_empty());
+    assert!(entries.iter().all(|e| {
+        let machines = e["milestone"]["unlocks_machines"].as_array().unwrap();
+        machines.iter().any(|m| m == "foundry")
+    }));
+}
+
+#[test]
 fn list_recipes_for_item_returns_matching_recipes() {
     let output = pathfinder()
         .args(["list", "recipes", "--item", "iron_rod", "--json"])
@@ -452,9 +502,9 @@ fn list_milestones_tier_filter_returns_single_tier() {
         .stdout
         .clone();
 
-    let tiers: Vec<serde_json::Value> = serde_json::from_slice(&output).unwrap();
-    assert_eq!(tiers.len(), 1);
-    assert_eq!(tiers[0]["tier"].as_u64().unwrap(), 0);
+    let entries: Vec<serde_json::Value> = serde_json::from_slice(&output).unwrap();
+    assert!(!entries.is_empty());
+    assert!(entries.iter().all(|e| e["tier"].as_u64().unwrap() == 0));
 }
 
 // ---------------------------------------------------------------------------

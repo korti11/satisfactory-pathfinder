@@ -214,12 +214,18 @@ enum ListTarget {
     Items {
         #[arg(long)]
         category: Option<String>,
+        /// Show a single item by id or name
+        #[arg(long)]
+        item: Option<String>,
     },
     /// List recipes
     Recipes {
         /// Show only recipes that produce this item id
         #[arg(long)]
         item: Option<String>,
+        /// Show only the recipe with this exact id
+        #[arg(long)]
+        id: Option<String>,
         /// Show only alternate recipes
         #[arg(long)]
         alternate: bool,
@@ -236,11 +242,14 @@ enum ListTarget {
     Belts,
     /// List pipeline tiers and throughput rates
     Pipes,
-    /// List HUB milestones, optionally filtered by tier
+    /// List HUB milestones, optionally filtered by tier or by what they unlock
     Milestones {
         /// Show only milestones for this tier number
         #[arg(long)]
         tier: Option<u32>,
+        /// Show only milestones that unlock this machine or recipe id
+        #[arg(long)]
+        unlocks: Option<String>,
     },
     /// List Space Elevator phases and requirements
     SpaceElevator,
@@ -326,8 +335,13 @@ fn main() -> Result<()> {
 
 fn cmd_list(db: &Db, fmt: &Formatter, target: ListTarget) -> Result<()> {
     match target {
-        ListTarget::Items { category } => {
-            let mut items: Vec<_> = if let Some(cat) = &category {
+        ListTarget::Items { category, item } => {
+            let mut items: Vec<_> = if let Some(query) = &item {
+                let lower = query.to_lowercase();
+                db.all_items()
+                    .filter(|i| i.id == lower || i.name.to_lowercase() == lower)
+                    .collect()
+            } else if let Some(cat) = &category {
                 db.items_by_category(cat).collect()
             } else {
                 db.all_items().collect()
@@ -350,16 +364,21 @@ fn cmd_list(db: &Db, fmt: &Formatter, target: ListTarget) -> Result<()> {
             }
         }
 
-        ListTarget::Recipes { item, alternate } => {
+        ListTarget::Recipes {
+            item,
+            id,
+            alternate,
+        } => {
             let recipes: Vec<_> = db
                 .all_recipes()
                 .filter(|r| {
                     let alt_ok = !alternate || r.is_alternate;
+                    let id_ok = id.as_deref().map(|s| r.id == s).unwrap_or(true);
                     let item_ok = item
                         .as_deref()
-                        .map(|id| r.outputs.iter().any(|o| o.item == id))
+                        .map(|i| r.outputs.iter().any(|o| o.item == i))
                         .unwrap_or(true);
-                    alt_ok && item_ok
+                    alt_ok && id_ok && item_ok
                 })
                 .collect();
 
@@ -457,18 +476,49 @@ fn cmd_list(db: &Db, fmt: &Formatter, target: ListTarget) -> Result<()> {
             }
         }
 
-        ListTarget::Milestones { tier } => {
+        ListTarget::Milestones { tier, unlocks } => {
             let tiers: Vec<_> = db
                 .hub_tiers()
                 .iter()
                 .filter(|t| tier.is_none_or(|n| t.tier == n))
+                .filter_map(|t| {
+                    if let Some(id) = &unlocks {
+                        let matching: Vec<_> = t
+                            .milestones
+                            .iter()
+                            .filter(|m| {
+                                m.unlocks_machines.iter().any(|u| u == id)
+                                    || m.unlocks_recipes.iter().any(|u| u == id)
+                            })
+                            .collect();
+                        if matching.is_empty() {
+                            None
+                        } else {
+                            Some((t, matching))
+                        }
+                    } else {
+                        Some((t, t.milestones.iter().collect()))
+                    }
+                })
                 .collect();
             if fmt.json_mode {
-                fmt.print_json(&tiers);
+                let json_out: Vec<serde_json::Value> = tiers
+                    .iter()
+                    .flat_map(|(t, milestones)| {
+                        milestones.iter().map(move |m| {
+                            json!({
+                                "tier": t.tier,
+                                "tier_name": t.name,
+                                "milestone": m,
+                            })
+                        })
+                    })
+                    .collect();
+                fmt.print_json(&json_out);
             } else {
-                for t in &tiers {
+                for (t, milestones) in &tiers {
                     fmt.header(&format!("Tier {} — {}", t.tier, t.name));
-                    for m in &t.milestones {
+                    for m in milestones {
                         let cost: Vec<String> = m
                             .cost
                             .iter()
