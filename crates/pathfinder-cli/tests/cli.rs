@@ -523,6 +523,115 @@ fn list_mam_unknown_tree_returns_empty_array() {
 }
 
 // ---------------------------------------------------------------------------
+// search
+// ---------------------------------------------------------------------------
+
+#[test]
+fn search_returns_items_and_recipes_by_default() {
+    let output = pathfinder()
+        .args(["search", "iron", "plate", "--json"])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let results: Vec<serde_json::Value> = serde_json::from_slice(&output).unwrap();
+    assert!(!results.is_empty());
+    assert!(results.iter().any(|r| r["type"] == "item"));
+    assert!(results.iter().any(|r| r["type"] == "recipe"));
+}
+
+#[test]
+fn search_items_flag_excludes_recipes() {
+    let output = pathfinder()
+        .args(["search", "iron", "plate", "--items", "--json"])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let results: Vec<serde_json::Value> = serde_json::from_slice(&output).unwrap();
+    assert!(!results.is_empty());
+    assert!(results.iter().all(|r| r["type"] == "item"));
+}
+
+#[test]
+fn search_recipes_flag_excludes_items() {
+    let output = pathfinder()
+        .args(["search", "iron", "plate", "--recipes", "--json"])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let results: Vec<serde_json::Value> = serde_json::from_slice(&output).unwrap();
+    assert!(!results.is_empty());
+    assert!(results.iter().all(|r| r["type"] == "recipe"));
+}
+
+#[test]
+fn search_mam_flag_returns_mam_nodes() {
+    let output = pathfinder()
+        .args(["search", "caterium", "--mam", "--json"])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let results: Vec<serde_json::Value> = serde_json::from_slice(&output).unwrap();
+    assert!(!results.is_empty());
+    assert!(results.iter().all(|r| r["type"] == "mam"));
+    assert!(results.iter().any(|r| r["tree"] == "Caterium"));
+}
+
+#[test]
+fn search_milestones_flag_returns_milestones() {
+    let output = pathfinder()
+        .args(["search", "steel", "--milestones", "--json"])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let results: Vec<serde_json::Value> = serde_json::from_slice(&output).unwrap();
+    assert!(!results.is_empty());
+    assert!(results.iter().all(|r| r["type"] == "milestone"));
+}
+
+#[test]
+fn search_no_results_exits_successfully() {
+    pathfinder()
+        .args(["search", "xyzzy_no_such_thing"])
+        .assert()
+        .success()
+        .stdout(predicate::str::contains("No results"));
+}
+
+#[test]
+fn search_result_fields_are_present() {
+    let output = pathfinder()
+        .args(["search", "iron", "plate", "--recipes", "--json"])
+        .assert()
+        .success()
+        .get_output()
+        .stdout
+        .clone();
+
+    let results: Vec<serde_json::Value> = serde_json::from_slice(&output).unwrap();
+    let recipe = results
+        .iter()
+        .find(|r| r["id"] == "iron_plate_default")
+        .unwrap();
+    assert_eq!(recipe["machine"].as_str().unwrap(), "constructor");
+    assert_eq!(recipe["is_alternate"].as_bool().unwrap(), false);
+}
+
+// ---------------------------------------------------------------------------
 // companion install
 // ---------------------------------------------------------------------------
 

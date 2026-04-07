@@ -120,6 +120,24 @@ enum Commands {
         #[command(subcommand)]
         action: ProgressAction,
     },
+    /// Search game data by name or id (case-insensitive, all terms must match)
+    Search {
+        /// One or more search terms (all must appear in name or id)
+        #[arg(required = true)]
+        terms: Vec<String>,
+        /// Search only items
+        #[arg(long)]
+        items: bool,
+        /// Search only recipes
+        #[arg(long)]
+        recipes: bool,
+        /// Search only MAM research nodes
+        #[arg(long)]
+        mam: bool,
+        /// Search only milestones
+        #[arg(long)]
+        milestones: bool,
+    },
 }
 
 #[derive(Subcommand)]
@@ -234,6 +252,19 @@ enum ListTarget {
     },
 }
 
+struct SearchFilters {
+    items: bool,
+    recipes: bool,
+    mam: bool,
+    milestones: bool,
+}
+
+impl SearchFilters {
+    fn search_all(&self) -> bool {
+        !self.items && !self.recipes && !self.mam && !self.milestones
+    }
+}
+
 fn main() -> Result<()> {
     let cli = Cli::parse();
     let fmt = Formatter::new(cli.json);
@@ -269,6 +300,23 @@ fn main() -> Result<()> {
         Commands::Nuclear { plants, fuel } => cmd_nuclear(&fmt, plants, &fuel),
         Commands::Companion { action } => cmd_companion(&fmt, action),
         Commands::Progress { action } => cmd_progress(&db, &fmt, &progress_path, action),
+        Commands::Search {
+            terms,
+            items,
+            recipes,
+            mam,
+            milestones,
+        } => cmd_search(
+            &db,
+            &fmt,
+            &terms,
+            SearchFilters {
+                items,
+                recipes,
+                mam,
+                milestones,
+            },
+        ),
     }
 }
 
@@ -926,6 +974,126 @@ fn cmd_nuclear(fmt: &Formatter, plants: u64, fuel: &str) -> Result<()> {
             "    {}",
             waste_processing_hint.replace("<waste/min>", &format!("{:.0}", total_waste))
         );
+    }
+
+    Ok(())
+}
+
+// ---------------------------------------------------------------------------
+// search
+// ---------------------------------------------------------------------------
+
+fn matches_terms(terms: &[String], name: &str, id: &str) -> bool {
+    let name_lower = name.to_lowercase();
+    let id_lower = id.to_lowercase();
+    terms
+        .iter()
+        .all(|t| name_lower.contains(t.as_str()) || id_lower.contains(t.as_str()))
+}
+
+fn cmd_search(
+    db: &Db,
+    fmt: &Formatter,
+    raw_terms: &[String],
+    filters: SearchFilters,
+) -> Result<()> {
+    let terms: Vec<String> = raw_terms.iter().map(|t| t.to_lowercase()).collect();
+    let search_all = filters.search_all();
+
+    let mut results: Vec<serde_json::Value> = Vec::new();
+
+    if search_all || filters.items {
+        let mut items: Vec<&pathfinder_core::models::Item> = db
+            .all_items()
+            .filter(|i| matches_terms(&terms, &i.name, &i.id))
+            .collect();
+        items.sort_by(|a, b| a.name.cmp(&b.name));
+        for item in items {
+            results.push(json!({
+                "type": "item",
+                "id": item.id,
+                "name": item.name,
+                "category": item.category,
+            }));
+        }
+    }
+
+    if search_all || filters.recipes {
+        let mut recipes: Vec<&pathfinder_core::models::Recipe> = db
+            .all_recipes()
+            .filter(|r| matches_terms(&terms, &r.name, &r.id))
+            .collect();
+        recipes.sort_by(|a, b| a.name.cmp(&b.name));
+        for recipe in recipes {
+            results.push(json!({
+                "type": "recipe",
+                "id": recipe.id,
+                "name": recipe.name,
+                "machine": recipe.machine,
+                "is_alternate": recipe.is_alternate,
+            }));
+        }
+    }
+
+    if search_all || filters.mam {
+        for tree in db.mam_trees() {
+            for node in &tree.nodes {
+                if matches_terms(&terms, &node.name, &node.id) {
+                    results.push(json!({
+                        "type": "mam",
+                        "id": node.id,
+                        "name": node.name,
+                        "tree": tree.name,
+                    }));
+                }
+            }
+        }
+    }
+
+    if search_all || filters.milestones {
+        for tier in db.hub_tiers() {
+            for milestone in &tier.milestones {
+                if matches_terms(&terms, &milestone.name, &milestone.id) {
+                    results.push(json!({
+                        "type": "milestone",
+                        "id": milestone.id,
+                        "name": milestone.name,
+                        "tier": tier.tier,
+                    }));
+                }
+            }
+        }
+    }
+
+    if fmt.json_mode {
+        fmt.print_json(&serde_json::Value::Array(results));
+        return Ok(());
+    }
+
+    if results.is_empty() {
+        println!("No results for: {}", raw_terms.join(" "));
+        return Ok(());
+    }
+
+    for r in &results {
+        let kind = r["type"].as_str().unwrap();
+        let id = r["id"].as_str().unwrap();
+        let name = r["name"].as_str().unwrap();
+        let extra = match kind {
+            "item" => format!("  category={}", r["category"].as_str().unwrap()),
+            "recipe" => {
+                let alt = if r["is_alternate"].as_bool().unwrap() {
+                    " [alt]"
+                } else {
+                    ""
+                };
+                format!("  machine={}{}", r["machine"].as_str().unwrap(), alt)
+            }
+            "mam" => format!("  tree={}", r["tree"].as_str().unwrap()),
+            "milestone" => format!("  tier={}", r["tier"]),
+            _ => String::new(),
+        };
+        println!("[{kind:<9}] {id:<45} {name}{extra}");
     }
 
     Ok(())
