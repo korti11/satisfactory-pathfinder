@@ -79,14 +79,24 @@ pathfinder list items
 # Filter by category: raw, liquid, gas, ingot, part, fuel, equipment, special
 pathfinder list items --category ingot
 
+# Look up a single item by id or name (includes stack_size and all fields)
+pathfinder list items --item "Iron Plate"
+
 # List recipes for an item
 pathfinder list recipes --item iron_rod
+
+# Look up a single recipe by exact id
+pathfinder list recipes --id iron_plate_default
 
 # List alternate recipes only
 pathfinder list recipes --alternate
 
 # List all machines
 pathfinder list machines
+
+# Find which milestone unlocks a specific machine or recipe
+pathfinder list milestones --unlocks foundry
+pathfinder list milestones --unlocks steel_ingot_default
 ```
 
 ### Calculate machine rates
@@ -152,6 +162,21 @@ pathfinder nuclear --plants 4
 
 # Plutonium fuel rod variant
 pathfinder nuclear --plants 2 --fuel plutonium
+```
+
+### Search game data
+
+Search across items, recipes, MAM nodes, and milestones by name or ID. All terms must match (case-insensitive).
+
+```bash
+# Search everything
+pathfinder search iron plate
+
+# Narrow by category
+pathfinder search iron plate --recipes
+pathfinder search caterium --mam
+pathfinder search steel --milestones
+pathfinder search iron --items
 ```
 
 ---
