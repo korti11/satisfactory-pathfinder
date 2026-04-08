@@ -101,7 +101,7 @@
           "name": "HUB Upgrade 6",
           "cost": [{ "item": "iron_rod", "amount": 100 }, { "item": "iron_plate", "amount": 100 }, { "item": "wire", "amount": 100 }, { "item": "concrete", "amount": 50 }],
           "unlocks_machines": ["biomass_burner"],
-          "unlocks_recipes": [],
+          "unlocks_recipes": ["biomass_wood_default", "biomass_leaves_default"],
           "unlocks_other": ["Space Elevator", "FICSIT Freighter", "+3 Inventory Slots"]
         }
       ]
@@ -132,7 +132,7 @@
           "cost": [{ "item": "wire", "amount": 300 }, { "item": "screw", "amount": 300 }, { "item": "iron_plate", "amount": 100 }],
           "unlocks_machines": [],
           "unlocks_recipes": [],
-          "unlocks_other": ["MAM", "Object Scanner", "Map", "+3 Inventory Slots"]
+          "unlocks_other": ["MAM", "Object Scanner", "Map", "Personal Storage Box", "+3 Inventory Slots"]
         }
       ]
     },
@@ -170,7 +170,15 @@
           "cost": [{ "item": "reinforced_iron_plate", "amount": 50 }, { "item": "concrete", "amount": 200 }, { "item": "iron_rod", "amount": 300 }, { "item": "iron_plate", "amount": 300 }],
           "unlocks_machines": [],
           "unlocks_recipes": [],
-          "unlocks_other": ["Conveyor Belt Mk.2", "Conveyor Lift Mk.2"]
+          "unlocks_other": ["Conveyor Belt Mk.2", "Conveyor Lift Mk.2", "Stackable Conveyor Pole"]
+        },
+        {
+          "id": "jump_pads",
+          "name": "Jump Pads",
+          "cost": [{ "item": "rotor", "amount": 50 }, { "item": "iron_plate", "amount": 300 }, { "item": "cable", "amount": 150 }],
+          "unlocks_machines": [],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Jump Pad", "U-Jelly Landing Pad"]
         }
       ]
     },
@@ -185,7 +193,7 @@
           "cost": [{ "item": "reinforced_iron_plate", "amount": 150 }, { "item": "rotor", "amount": 50 }, { "item": "cable", "amount": 500 }],
           "unlocks_machines": ["coal_generator", "water_extractor"],
           "unlocks_recipes": [],
-          "unlocks_other": ["Pipeline Mk.1", "Pipeline Pump", "Coal scanner"]
+          "unlocks_other": ["Pipeline Mk.1", "Pipeline Pump", "Pipeline Support", "Pipeline Junction", "Fluid Buffer", "Coal scanner"]
         },
         {
           "id": "basic_steel_production",
@@ -232,7 +240,7 @@
           "cost": [{ "item": "steel_beam", "amount": 200 }, { "item": "steel_pipe", "amount": 200 }, { "item": "reinforced_iron_plate", "amount": 400 }],
           "unlocks_machines": [],
           "unlocks_recipes": [],
-          "unlocks_other": ["Conveyor Belt Mk.3", "Conveyor Lift Mk.3", "Industrial Storage Container"]
+          "unlocks_other": ["Conveyor Belt Mk.3", "Conveyor Lift Mk.3", "Industrial Storage Container", "Stackable Pipeline Support"]
         },
         {
           "id": "expanded_power_infrastructure",
@@ -240,7 +248,7 @@
           "cost": [{ "item": "encased_industrial_beam", "amount": 50 }, { "item": "steel_beam", "amount": 100 }, { "item": "modular_frame", "amount": 200 }, { "item": "wire", "amount": 2000 }],
           "unlocks_machines": [],
           "unlocks_recipes": [],
-          "unlocks_other": ["Power Storage", "Power Tower"]
+          "unlocks_other": ["Power Storage", "Power Tower", "Power Tower Platform"]
         },
         {
           "id": "hypertubes",
@@ -248,7 +256,7 @@
           "cost": [{ "item": "encased_industrial_beam", "amount": 50 }, { "item": "steel_pipe", "amount": 300 }, { "item": "copper_sheet", "amount": 500 }],
           "unlocks_machines": [],
           "unlocks_recipes": [],
-          "unlocks_other": ["Hypertube Entrance", "Hypertube"]
+          "unlocks_other": ["Hypertube Entrance", "Hypertube", "Hypertube Support", "Stackable Hypertube Support"]
         },
         {
           "id": "ficsit_blueprints",
@@ -256,7 +264,7 @@
           "cost": [{ "item": "modular_frame", "amount": 100 }, { "item": "steel_beam", "amount": 200 }, { "item": "cable", "amount": 500 }, { "item": "concrete", "amount": 1000 }],
           "unlocks_machines": [],
           "unlocks_recipes": [],
-          "unlocks_other": ["Blueprint Designer Mk.1"]
+          "unlocks_other": ["Blueprint Designer Mk.1", "Build Gun upgrade: Blueprints"]
         }
       ]
     },
@@ -326,7 +334,7 @@
           "cost": [{ "item": "motor", "amount": 250 }, { "item": "encased_industrial_beam", "amount": 500 }, { "item": "steel_beam", "amount": 1000 }, { "item": "steel_pipe", "amount": 1000 }],
           "unlocks_machines": [],
           "unlocks_recipes": [],
-          "unlocks_other": ["Railway", "Train Station", "Electric Locomotive", "Freight Car"]
+          "unlocks_other": ["Railway", "Train Station", "Electric Locomotive", "Freight Car", "Freight Platform", "Fluid Freight Platform", "Empty Platform"]
         },
         {
           "id": "pipeline_engineering_mk2",
@@ -364,7 +372,7 @@
           "name": "Bauxite Refinement",
           "cost": [{ "item": "computer", "amount": 100 }, { "item": "heavy_modular_frame", "amount": 100 }, { "item": "motor", "amount": 250 }, { "item": "rubber", "amount": 500 }],
           "unlocks_machines": [],
-          "unlocks_recipes": ["alumina_solution_default", "aluminum_scrap_default", "aluminum_ingot_default", "alclad_aluminum_sheet_default", "aluminum_casing_default"],
+          "unlocks_recipes": ["alumina_solution_default", "aluminum_scrap_default", "aluminum_ingot_default", "alclad_aluminum_sheet_default", "aluminum_casing_default", "packaged_alumina_solution_default"],
           "unlocks_other": ["Bauxite scanner", "Raw Quartz scanner"]
         },
         {
@@ -372,7 +380,7 @@
           "name": "Control System Development",
           "cost": [{ "item": "alclad_aluminum_sheet", "amount": 200 }, { "item": "aluminum_casing", "amount": 400 }, { "item": "computer", "amount": 200 }, { "item": "plastic", "amount": 1000 }],
           "unlocks_machines": ["blender"],
-          "unlocks_recipes": ["battery_default", "radio_control_unit_default", "supercomputer_default", "assembly_director_system_default"],
+          "unlocks_recipes": ["battery_default", "radio_control_unit_default", "supercomputer_default", "assembly_director_system_default", "sulfuric_acid_default", "packaged_sulfuric_acid_default"],
           "unlocks_other": ["Sulfur scanner"]
         },
         {
@@ -396,7 +404,7 @@
           "name": "Hazmat Suit",
           "cost": [{ "item": "gas_filter", "amount": 50 }, { "item": "aluminum_casing", "amount": 100 }, { "item": "quickwire", "amount": 500 }],
           "unlocks_machines": [],
-          "unlocks_recipes": [],
+          "unlocks_recipes": ["iodine_infused_filter_default"],
           "unlocks_other": ["Hazmat Suit", "+3 Inventory Slots"]
         }
       ]
@@ -419,7 +427,7 @@
           "name": "Advanced Aluminum Production",
           "cost": [{ "item": "radio_control_unit", "amount": 50 }, { "item": "aluminum_casing", "amount": 200 }, { "item": "alclad_aluminum_sheet", "amount": 400 }, { "item": "wire", "amount": 3000 }],
           "unlocks_machines": ["resource_well_pressurizer", "resource_well_extractor"],
-          "unlocks_recipes": ["heat_sink_default", "cooling_system_default", "fused_modular_frame_default"],
+          "unlocks_recipes": ["heat_sink_default", "cooling_system_default", "fused_modular_frame_default", "empty_fluid_tank_default", "packaged_nitrogen_gas_default"],
           "unlocks_other": ["Nitrogen Gas scanner"]
         },
         {
@@ -443,7 +451,7 @@
           "name": "Particle Enrichment",
           "cost": [{ "item": "turbo_motor", "amount": 50 }, { "item": "fused_modular_frame", "amount": 100 }, { "item": "cooling_system", "amount": 200 }, { "item": "quickwire", "amount": 2500 }],
           "unlocks_machines": ["particle_accelerator"],
-          "unlocks_recipes": ["non_fissile_uranium_default", "plutonium_pellet_default", "encased_plutonium_cell_default", "plutonium_fuel_rod_default", "nuclear_pasta_default", "pressure_conversion_cube_default"],
+          "unlocks_recipes": ["non_fissile_uranium_default", "plutonium_pellet_default", "encased_plutonium_cell_default", "plutonium_fuel_rod_default", "nuclear_pasta_default", "pressure_conversion_cube_default", "nitric_acid_default", "packaged_nitric_acid_default", "copper_powder_default"],
           "unlocks_other": ["Unlimited Hard Drive access"]
         }
       ]
@@ -458,23 +466,54 @@
           "name": "Matter Conversion",
           "cost": [{ "item": "fused_modular_frame", "amount": 100 }, { "item": "radio_control_unit", "amount": 250 }, { "item": "cooling_system", "amount": 500 }],
           "unlocks_machines": ["converter"],
-          "unlocks_recipes": ["time_crystal_default", "ficsite_ingot_default", "ficsite_trigon_default", "reanimated_sam_default", "biochemical_sculptor_default"],
+          "unlocks_recipes": ["time_crystal_default", "ficsite_ingot_default", "ficsite_trigon_default", "reanimated_sam_default", "biochemical_sculptor_default", "diamonds_default", "sam_fluctuator_default"],
           "unlocks_other": ["SAM scanner"]
         },
         {
           "id": "quantum_encoding",
           "name": "Quantum Encoding",
-          "cost": [{ "item": "time_crystal", "amount": 50 }, { "item": "superposition_oscillator", "amount": 100 }, { "item": "radio_control_unit", "amount": 250 }, { "item": "cooling_system", "amount": 500 }],
+          "cost": [{ "item": "time_crystal", "amount": 50 }, { "item": "ficsite_trigon", "amount": 100 }, { "item": "turbo_motor", "amount": 200 }, { "item": "supercomputer", "amount": 400 }],
           "unlocks_machines": ["quantum_encoder"],
-          "unlocks_recipes": ["dark_matter_crystal_default", "superposition_oscillator_default", "neural_quantum_processor_default", "ballistic_warp_drive_default", "ai_expansion_server_default"],
+          "unlocks_recipes": ["dark_matter_crystal_default", "superposition_oscillator_default", "neural_quantum_processor_default", "ai_expansion_server_default", "excited_photonic_matter_default", "dark_matter_residue_default"],
           "unlocks_other": []
+        },
+        {
+          "id": "spatial_energy_regulation",
+          "name": "Spatial Energy Regulation",
+          "cost": [
+            { "item": "superposition_oscillator", "amount": 100 },
+            { "item": "turbo_motor", "amount": 250 },
+            { "item": "radio_control_unit", "amount": 500 },
+            { "item": "sam_fluctuator", "amount": 1000 }
+          ],
+          "unlocks_machines": [],
+          "unlocks_recipes": ["singularity_cell_default", "ballistic_warp_drive_default"],
+          "unlocks_other": ["Main Portal", "Satellite Portal"]
+        },
+        {
+          "id": "ficsit_blueprints_mk3",
+          "name": "FICSIT Blueprints Mk.3",
+          "cost": [
+            { "item": "neural_quantum_processor", "amount": 100 },
+            { "item": "time_crystal", "amount": 250 },
+            { "item": "ficsite_trigon", "amount": 500 },
+            { "item": "fused_modular_frame", "amount": 500 }
+          ],
+          "unlocks_machines": [],
+          "unlocks_recipes": [],
+          "unlocks_other": ["Blueprint Designer Mk.3"]
         },
         {
           "id": "peak_efficiency",
           "name": "Peak Efficiency",
-          "cost": [],
+          "cost": [
+            { "item": "time_crystal", "amount": 250 },
+            { "item": "ficsite_trigon", "amount": 250 },
+            { "item": "alclad_aluminum_sheet", "amount": 5000 },
+            { "item": "iron_plate", "amount": 10000 }
+          ],
           "unlocks_machines": [],
-          "unlocks_recipes": [],
+          "unlocks_recipes": ["ficsonium_default", "ficsonium_fuel_rod_default"],
           "unlocks_other": ["Conveyor Belt Mk.6", "Conveyor Lift Mk.6"]
         }
       ]
