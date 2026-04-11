@@ -179,6 +179,32 @@ pathfinder search steel --milestones
 pathfinder search iron --items
 ```
 
+### Track world progress
+
+Track which milestones, MAM nodes, Space Elevator phases, and alternate recipes you've unlocked in your save:
+
+```bash
+# Show all unlocked progress
+pathfinder progress show
+
+# Filter views
+pathfinder progress show --milestones
+pathfinder progress show --mam
+pathfinder progress show --phases
+pathfinder progress show --alternates
+pathfinder progress show --locked   # show only locked items
+
+# Unlock and lock entries
+pathfinder progress unlock milestone tier_2_parts
+pathfinder progress lock milestone tier_2_parts
+
+pathfinder progress unlock mam caterium_quickwire
+pathfinder progress unlock phase 1
+pathfinder progress unlock alt alt_pure_iron_ingot
+```
+
+Progress is stored in `progress.json` in your working directory. All IDs are validated against game data.
+
 ---
 
 ## Claude Code Skill
@@ -228,12 +254,12 @@ All game knowledge lives in `data/`. These JSON files are the source of truth fo
 
 | File | Contents |
 |------|----------|
-| `items.json` | 175 items with categories, stack sizes, and sink values |
-| `recipes.json` | 252 recipes including ~100 alternates |
-| `machines.json` | 24 machines with power draw and slot counts |
-| `resources.json` | 37 resource node entries with purity and extraction rates |
+| `items.json` | All items with categories, stack sizes, and sink values |
+| `recipes.json` | All recipes including defaults, alternates, equipment workshop, converter, and nuclear burning recipes |
+| `machines.json` | All machines with power draw and slot counts |
+| `resources.json` | Resource node entries with purity and extraction rates |
 | `logistics.json` | Conveyor belt (Mk.1–6) and pipeline (Mk.1–2) tier capacities |
-| `milestones.json` | All HUB milestones, Space Elevator phases, and MAM research trees |
+| `milestones.json` | All HUB milestones, Space Elevator phases, and MAM research trees with full dependency graphs |
 
 ---
 
