@@ -176,6 +176,8 @@ pub struct MamNode {
     pub name: String,
     pub cost: Vec<BuildCost>,
     pub unlocks: Vec<String>,
+    #[serde(default)]
+    pub requires: Vec<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

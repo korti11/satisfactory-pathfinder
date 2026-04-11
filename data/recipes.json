@@ -172,7 +172,7 @@
     "name": "Biomass (Leaves)",
     "is_alternate": false,
     "machine": "constructor",
-    "cycle_time_s": 4,
+    "cycle_time_s": 5,
     "inputs": [
       {
         "item": "leaves",
@@ -214,17 +214,17 @@
     "name": "Solid Biofuel",
     "is_alternate": false,
     "machine": "constructor",
-    "cycle_time_s": 8,
+    "cycle_time_s": 4,
     "inputs": [
       {
         "item": "biomass",
-        "amount": 5
+        "amount": 8
       }
     ],
     "outputs": [
       {
         "item": "solid_biofuel",
-        "amount": 1
+        "amount": 4
       }
     ],
     "unlock_tier": 0,
@@ -299,7 +299,7 @@
       }
     ],
     "unlock_tier": 2,
-    "notes": "Scaled ×0.25 from wiki (20 rod+15 screw→1 rotor@5/min): 5 rod+25 screw per 15s still gives 4/min... wiki: 20+15→1 at 5/min=12s cycle"
+    "notes": ""
   },
   {
     "id": "modular_frame_default",
@@ -331,11 +331,11 @@
     "name": "Smart Plating",
     "is_alternate": false,
     "machine": "assembler",
-    "cycle_time_s": 12,
+    "cycle_time_s": 30,
     "inputs": [
       {
         "item": "reinforced_iron_plate",
-        "amount": 2
+        "amount": 1
       },
       {
         "item": "rotor",
@@ -356,17 +356,17 @@
     "name": "Quartz Crystal",
     "is_alternate": false,
     "machine": "constructor",
-    "cycle_time_s": 7.5,
+    "cycle_time_s": 8,
     "inputs": [
       {
         "item": "raw_quartz",
-        "amount": 3
+        "amount": 5
       }
     ],
     "outputs": [
       {
         "item": "quartz_crystal",
-        "amount": 1
+        "amount": 3
       }
     ],
     "unlock_tier": 3,
@@ -377,7 +377,7 @@
     "name": "Silica",
     "is_alternate": false,
     "machine": "constructor",
-    "cycle_time_s": 7.5,
+    "cycle_time_s": 8,
     "inputs": [
       {
         "item": "raw_quartz",
@@ -412,7 +412,7 @@
     "outputs": [
       {
         "item": "steel_ingot",
-        "amount": 1
+        "amount": 3
       }
     ],
     "unlock_tier": 3,
@@ -423,7 +423,7 @@
     "name": "Steel Beam",
     "is_alternate": false,
     "machine": "constructor",
-    "cycle_time_s": 6,
+    "cycle_time_s": 4,
     "inputs": [
       {
         "item": "steel_ingot",
@@ -448,13 +448,13 @@
     "inputs": [
       {
         "item": "steel_ingot",
-        "amount": 2
+        "amount": 3
       }
     ],
     "outputs": [
       {
         "item": "steel_pipe",
-        "amount": 1
+        "amount": 2
       }
     ],
     "unlock_tier": 3,
@@ -465,7 +465,7 @@
     "name": "Versatile Framework",
     "is_alternate": false,
     "machine": "assembler",
-    "cycle_time_s": 12,
+    "cycle_time_s": 24,
     "inputs": [
       {
         "item": "modular_frame",
@@ -473,13 +473,13 @@
       },
       {
         "item": "steel_beam",
-        "amount": 2
+        "amount": 12
       }
     ],
     "outputs": [
       {
         "item": "versatile_framework",
-        "amount": 1
+        "amount": 2
       }
     ],
     "unlock_tier": 3,
@@ -494,7 +494,7 @@
     "inputs": [
       {
         "item": "steel_pipe",
-        "amount": 5
+        "amount": 3
       },
       {
         "item": "wire",
@@ -699,8 +699,104 @@
         "amount": 2
       },
       {
+        "item": "heavy_oil_residue",
+        "amount": 2
+      }
+    ],
+    "unlock_tier": 5,
+    "notes": ""
+  },
+  {
+    "id": "polyester_fabric_default",
+    "name": "Polyester Fabric",
+    "is_alternate": false,
+    "machine": "refinery",
+    "cycle_time_s": 2,
+    "inputs": [
+      {
         "item": "polymer_resin",
         "amount": 1
+      },
+      {
+        "item": "water",
+        "amount": 1
+      }
+    ],
+    "outputs": [
+      {
+        "item": "fabric",
+        "amount": 1
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": "MAM Mycelia Research"
+  },
+  {
+    "id": "residual_plastic_default",
+    "name": "Residual Plastic",
+    "is_alternate": false,
+    "machine": "refinery",
+    "cycle_time_s": 6,
+    "inputs": [
+      {
+        "item": "polymer_resin",
+        "amount": 6
+      },
+      {
+        "item": "water",
+        "amount": 2
+      }
+    ],
+    "outputs": [
+      {
+        "item": "plastic",
+        "amount": 2
+      }
+    ],
+    "unlock_tier": 5,
+    "notes": ""
+  },
+  {
+    "id": "residual_rubber_default",
+    "name": "Residual Rubber",
+    "is_alternate": false,
+    "machine": "refinery",
+    "cycle_time_s": 6,
+    "inputs": [
+      {
+        "item": "polymer_resin",
+        "amount": 4
+      },
+      {
+        "item": "water",
+        "amount": 4
+      }
+    ],
+    "outputs": [
+      {
+        "item": "rubber",
+        "amount": 2
+      }
+    ],
+    "unlock_tier": 5,
+    "notes": ""
+  },
+  {
+    "id": "residual_fuel_default",
+    "name": "Residual Fuel",
+    "is_alternate": false,
+    "machine": "refinery",
+    "cycle_time_s": 6,
+    "inputs": [
+      {
+        "item": "heavy_oil_residue",
+        "amount": 6
+      }
+    ],
+    "outputs": [
+      {
+        "item": "fuel",
+        "amount": 4
       }
     ],
     "unlock_tier": 5,
@@ -757,6 +853,81 @@
     "notes": ""
   },
   {
+    "id": "unpackage_oil_default",
+    "name": "Unpackage Oil",
+    "is_alternate": false,
+    "machine": "packager",
+    "cycle_time_s": 2,
+    "inputs": [
+      {
+        "item": "packaged_oil",
+        "amount": 2
+      }
+    ],
+    "outputs": [
+      {
+        "item": "crude_oil",
+        "amount": 2
+      },
+      {
+        "item": "empty_canister",
+        "amount": 2
+      }
+    ],
+    "unlock_tier": 5,
+    "notes": ""
+  },
+  {
+    "id": "packaged_water_default",
+    "name": "Packaged Water",
+    "is_alternate": false,
+    "machine": "packager",
+    "cycle_time_s": 2,
+    "inputs": [
+      {
+        "item": "water",
+        "amount": 2
+      },
+      {
+        "item": "empty_canister",
+        "amount": 2
+      }
+    ],
+    "outputs": [
+      {
+        "item": "packaged_water",
+        "amount": 2
+      }
+    ],
+    "unlock_tier": 5,
+    "notes": ""
+  },
+  {
+    "id": "unpackage_water_default",
+    "name": "Unpackage Water",
+    "is_alternate": false,
+    "machine": "packager",
+    "cycle_time_s": 1,
+    "inputs": [
+      {
+        "item": "packaged_water",
+        "amount": 2
+      }
+    ],
+    "outputs": [
+      {
+        "item": "water",
+        "amount": 2
+      },
+      {
+        "item": "empty_canister",
+        "amount": 2
+      }
+    ],
+    "unlock_tier": 5,
+    "notes": ""
+  },
+  {
     "id": "packaged_fuel_default",
     "name": "Packaged Fuel",
     "is_alternate": false,
@@ -775,6 +946,31 @@
     "outputs": [
       {
         "item": "packaged_fuel",
+        "amount": 2
+      }
+    ],
+    "unlock_tier": 5,
+    "notes": ""
+  },
+  {
+    "id": "unpackage_fuel_default",
+    "name": "Unpackage Fuel",
+    "is_alternate": false,
+    "machine": "packager",
+    "cycle_time_s": 2,
+    "inputs": [
+      {
+        "item": "packaged_fuel",
+        "amount": 2
+      }
+    ],
+    "outputs": [
+      {
+        "item": "fuel",
+        "amount": 2
+      },
+      {
+        "item": "empty_canister",
         "amount": 2
       }
     ],
@@ -807,6 +1003,52 @@
     "notes": ""
   },
   {
+    "id": "unpackage_liquid_biofuel_default",
+    "name": "Unpackage Liquid Biofuel",
+    "is_alternate": false,
+    "machine": "packager",
+    "cycle_time_s": 2,
+    "inputs": [
+      {
+        "item": "packaged_liquid_biofuel",
+        "amount": 2
+      }
+    ],
+    "outputs": [
+      {
+        "item": "liquid_biofuel",
+        "amount": 2
+      },
+      {
+        "item": "empty_canister",
+        "amount": 2
+      }
+    ],
+    "unlock_tier": 5,
+    "notes": ""
+  },
+  {
+    "id": "petroleum_coke_default",
+    "name": "Petroleum Coke",
+    "is_alternate": false,
+    "machine": "refinery",
+    "cycle_time_s": 6,
+    "inputs": [
+      {
+        "item": "heavy_oil_residue",
+        "amount": 4
+      }
+    ],
+    "outputs": [
+      {
+        "item": "petroleum_coke",
+        "amount": 12
+      }
+    ],
+    "unlock_tier": 5,
+    "notes": ""
+  },
+  {
     "id": "packaged_heavy_oil_residue_default",
     "name": "Packaged Heavy Oil Residue",
     "is_alternate": false,
@@ -832,6 +1074,31 @@
     "notes": ""
   },
   {
+    "id": "unpackage_heavy_oil_residue_default",
+    "name": "Unpackage Heavy Oil Residue",
+    "is_alternate": false,
+    "machine": "packager",
+    "cycle_time_s": 6,
+    "inputs": [
+      {
+        "item": "packaged_heavy_oil_residue",
+        "amount": 2
+      }
+    ],
+    "outputs": [
+      {
+        "item": "heavy_oil_residue",
+        "amount": 2
+      },
+      {
+        "item": "empty_canister",
+        "amount": 2
+      }
+    ],
+    "unlock_tier": 5,
+    "notes": ""
+  },
+  {
     "id": "computer_default",
     "name": "Computer",
     "is_alternate": false,
@@ -849,10 +1116,6 @@
       {
         "item": "plastic",
         "amount": 16
-      },
-      {
-        "item": "screw",
-        "amount": 52
       }
     ],
     "outputs": [
@@ -1338,6 +1601,31 @@
     "notes": ""
   },
   {
+    "id": "unpackage_alumina_solution_default",
+    "name": "Unpackage Alumina Solution",
+    "is_alternate": false,
+    "machine": "packager",
+    "cycle_time_s": 1,
+    "inputs": [
+      {
+        "item": "packaged_alumina_solution",
+        "amount": 2
+      }
+    ],
+    "outputs": [
+      {
+        "item": "alumina_solution",
+        "amount": 2
+      },
+      {
+        "item": "empty_canister",
+        "amount": 2
+      }
+    ],
+    "unlock_tier": 7,
+    "notes": ""
+  },
+  {
     "id": "packaged_sulfuric_acid_default",
     "name": "Packaged Sulfuric Acid",
     "is_alternate": false,
@@ -1363,44 +1651,69 @@
     "notes": ""
   },
   {
-    "id": "radio_control_unit_default",
-    "name": "Radio Control Unit",
+    "id": "unpackage_sulfuric_acid_default",
+    "name": "Unpackage Sulfuric Acid",
     "is_alternate": false,
-    "machine": "manufacturer",
-    "cycle_time_s": 40,
+    "machine": "packager",
+    "cycle_time_s": 1,
     "inputs": [
       {
-        "item": "circuit_board",
-        "amount": 4
-      },
-      {
-        "item": "aluminum_casing",
-        "amount": 12
-      },
-      {
-        "item": "crystal_oscillator",
+        "item": "packaged_sulfuric_acid",
         "amount": 1
       }
     ],
     "outputs": [
       {
-        "item": "radio_control_unit",
-        "amount": 3
+        "item": "sulfuric_acid",
+        "amount": 1
+      },
+      {
+        "item": "empty_canister",
+        "amount": 1
       }
     ],
     "unlock_tier": 7,
-    "notes": "Scaled x3: 3 RCU per 40s = 4.5/min"
+    "notes": ""
+  },
+  {
+    "id": "radio_control_unit_default",
+    "name": "Radio Control Unit",
+    "is_alternate": false,
+    "machine": "manufacturer",
+    "cycle_time_s": 48,
+    "inputs": [
+      {
+        "item": "aluminum_casing",
+        "amount": 32
+      },
+      {
+        "item": "crystal_oscillator",
+        "amount": 1
+      },
+      {
+        "item": "computer",
+        "amount": 2
+      }
+    ],
+    "outputs": [
+      {
+        "item": "radio_control_unit",
+        "amount": 2
+      }
+    ],
+    "unlock_tier": 7,
+    "notes": ""
   },
   {
     "id": "supercomputer_default",
     "name": "Supercomputer",
     "is_alternate": false,
     "machine": "manufacturer",
-    "cycle_time_s": 120,
+    "cycle_time_s": 32,
     "inputs": [
       {
         "item": "computer",
-        "amount": 2
+        "amount": 4
       },
       {
         "item": "ai_limiter",
@@ -1778,6 +2091,31 @@
     "notes": ""
   },
   {
+    "id": "unpackage_nitric_acid_default",
+    "name": "Unpackage Nitric Acid",
+    "is_alternate": false,
+    "machine": "packager",
+    "cycle_time_s": 3,
+    "inputs": [
+      {
+        "item": "packaged_nitric_acid",
+        "amount": 1
+      }
+    ],
+    "outputs": [
+      {
+        "item": "nitric_acid",
+        "amount": 1
+      },
+      {
+        "item": "empty_fluid_tank",
+        "amount": 1
+      }
+    ],
+    "unlock_tier": 8,
+    "notes": ""
+  },
+  {
     "id": "packaged_nitrogen_gas_default",
     "name": "Packaged Nitrogen Gas",
     "is_alternate": false,
@@ -1796,6 +2134,31 @@
     "outputs": [
       {
         "item": "packaged_nitrogen_gas",
+        "amount": 1
+      }
+    ],
+    "unlock_tier": 8,
+    "notes": ""
+  },
+  {
+    "id": "unpackage_nitrogen_gas_default",
+    "name": "Unpackage Nitrogen Gas",
+    "is_alternate": false,
+    "machine": "packager",
+    "cycle_time_s": 1,
+    "inputs": [
+      {
+        "item": "packaged_nitrogen_gas",
+        "amount": 1
+      }
+    ],
+    "outputs": [
+      {
+        "item": "nitrogen_gas",
+        "amount": 4
+      },
+      {
+        "item": "empty_fluid_tank",
         "amount": 1
       }
     ],
@@ -1832,15 +2195,15 @@
     "name": "Pressure Conversion Cube",
     "is_alternate": false,
     "machine": "assembler",
-    "cycle_time_s": 120,
+    "cycle_time_s": 60,
     "inputs": [
       {
-        "item": "versatile_framework",
-        "amount": 5
+        "item": "fused_modular_frame",
+        "amount": 1
       },
       {
-        "item": "encased_uranium_cell",
-        "amount": 5
+        "item": "radio_control_unit",
+        "amount": 2
       }
     ],
     "outputs": [
@@ -1861,7 +2224,7 @@
     "inputs": [
       {
         "item": "modular_engine",
-        "amount": 2
+        "amount": 5
       },
       {
         "item": "turbo_motor",
@@ -1869,7 +2232,7 @@
       },
       {
         "item": "cooling_system",
-        "amount": 3
+        "amount": 6
       },
       {
         "item": "fused_modular_frame",
@@ -1879,7 +2242,7 @@
     "outputs": [
       {
         "item": "thermal_propulsion_rocket",
-        "amount": 1
+        "amount": 2
       }
     ],
     "unlock_tier": 8,
@@ -1893,7 +2256,7 @@
     "cycle_time_s": 32,
     "inputs": [
       {
-        "item": "motor",
+        "item": "cooling_system",
         "amount": 4
       },
       {
@@ -1901,11 +2264,11 @@
         "amount": 2
       },
       {
-        "item": "electromagnetic_control_rod",
+        "item": "motor",
         "amount": 4
       },
       {
-        "item": "rotor",
+        "item": "rubber",
         "amount": 24
       }
     ],
@@ -1952,25 +2315,50 @@
     "name": "Uranium Fuel Rod",
     "is_alternate": false,
     "machine": "manufacturer",
-    "cycle_time_s": 100,
+    "cycle_time_s": 150,
     "inputs": [
       {
         "item": "encased_uranium_cell",
-        "amount": 10
+        "amount": 50
       },
       {
-        "item": "electromagnetic_control_rod",
+        "item": "encased_industrial_beam",
         "amount": 3
       },
       {
-        "item": "crystal_oscillator",
-        "amount": 1
+        "item": "electromagnetic_control_rod",
+        "amount": 5
       }
     ],
     "outputs": [
       {
         "item": "uranium_fuel_rod",
         "amount": 1
+      }
+    ],
+    "unlock_tier": 8,
+    "notes": ""
+  },
+  {
+    "id": "uranium_fuel_rod_burning",
+    "name": "Uranium Fuel Rod (Burning)",
+    "is_alternate": false,
+    "machine": "nuclear_power_plant",
+    "cycle_time_s": 300,
+    "inputs": [
+      {
+        "item": "uranium_fuel_rod",
+        "amount": 1
+      },
+      {
+        "item": "water",
+        "amount": 1200
+      }
+    ],
+    "outputs": [
+      {
+        "item": "uranium_waste",
+        "amount": 50
       }
     ],
     "unlock_tier": 8,
@@ -2168,6 +2556,31 @@
       {
         "item": "coal",
         "amount": 20
+      }
+    ],
+    "outputs": [
+      {
+        "item": "diamonds",
+        "amount": 1
+      }
+    ],
+    "unlock_tier": 9,
+    "notes": ""
+  },
+  {
+    "id": "alt_cloudy_diamonds",
+    "name": "Alt: Cloudy Diamonds",
+    "is_alternate": true,
+    "machine": "particle_accelerator",
+    "cycle_time_s": 3,
+    "inputs": [
+      {
+        "item": "coal",
+        "amount": 12
+      },
+      {
+        "item": "limestone",
+        "amount": 24
       }
     ],
     "outputs": [
@@ -2399,22 +2812,22 @@
     "name": "Plutonium Fuel Rod",
     "is_alternate": false,
     "machine": "manufacturer",
-    "cycle_time_s": 120,
+    "cycle_time_s": 240,
     "inputs": [
       {
-        "item": "plutonium_pellet",
-        "amount": 1
+        "item": "encased_plutonium_cell",
+        "amount": 30
+      },
+      {
+        "item": "steel_beam",
+        "amount": 18
       },
       {
         "item": "electromagnetic_control_rod",
-        "amount": 1
+        "amount": 6
       },
       {
-        "item": "ficsite_trigon",
-        "amount": 20
-      },
-      {
-        "item": "excited_photonic_matter",
+        "item": "heat_sink",
         "amount": 10
       }
     ],
@@ -2422,25 +2835,46 @@
       {
         "item": "plutonium_fuel_rod",
         "amount": 1
-      },
-      {
-        "item": "dark_matter_residue",
-        "amount": 10
       }
     ],
-    "unlock_tier": 9,
+    "unlock_tier": 8,
     "notes": ""
   },
   {
-    "id": "power_shard_default",
-    "name": "Power Shard",
+    "id": "plutonium_fuel_rod_burning",
+    "name": "Plutonium Fuel Rod (Burning)",
     "is_alternate": false,
-    "machine": "particle_accelerator",
-    "cycle_time_s": 2,
+    "machine": "nuclear_power_plant",
+    "cycle_time_s": 600,
     "inputs": [
       {
-        "item": "quartz_crystal",
-        "amount": 15
+        "item": "plutonium_fuel_rod",
+        "amount": 1
+      },
+      {
+        "item": "water",
+        "amount": 2400
+      }
+    ],
+    "outputs": [
+      {
+        "item": "plutonium_waste",
+        "amount": 10
+      }
+    ],
+    "unlock_tier": 8,
+    "notes": ""
+  },
+  {
+    "id": "power_shard_blue_default",
+    "name": "Power Shard (1)",
+    "is_alternate": false,
+    "machine": "constructor",
+    "cycle_time_s": 8,
+    "inputs": [
+      {
+        "item": "blue_power_slug",
+        "amount": 1
       }
     ],
     "outputs": [
@@ -2449,50 +2883,166 @@
         "amount": 1
       }
     ],
-    "unlock_tier": 9,
-    "notes": ""
+    "unlock_tier": 0,
+    "notes": "MAM Power Slugs Research"
   },
   {
-    "id": "sam_fluctuator_default",
-    "name": "SAM Fluctuator",
+    "id": "power_shard_yellow_default",
+    "name": "Power Shard (2)",
     "is_alternate": false,
-    "machine": "converter",
-    "cycle_time_s": 6,
+    "machine": "constructor",
+    "cycle_time_s": 12,
     "inputs": [
+      {
+        "item": "yellow_power_slug",
+        "amount": 1
+      }
+    ],
+    "outputs": [
+      {
+        "item": "power_shard",
+        "amount": 2
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": "MAM Power Slugs Research"
+  },
+  {
+    "id": "power_shard_purple_default",
+    "name": "Power Shard (5)",
+    "is_alternate": false,
+    "machine": "constructor",
+    "cycle_time_s": 24,
+    "inputs": [
+      {
+        "item": "purple_power_slug",
+        "amount": 1
+      }
+    ],
+    "outputs": [
+      {
+        "item": "power_shard",
+        "amount": 5
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": "MAM Power Slugs Research"
+  },
+  {
+    "id": "synthetic_power_shard_default",
+    "name": "Synthetic Power Shard",
+    "is_alternate": false,
+    "machine": "quantum_encoder",
+    "cycle_time_s": 12,
+    "inputs": [
+      {
+        "item": "time_crystal",
+        "amount": 2
+      },
+      {
+        "item": "dark_matter_crystal",
+        "amount": 2
+      },
+      {
+        "item": "quartz_crystal",
+        "amount": 12
+      },
+      {
+        "item": "excited_photonic_matter",
+        "amount": 12
+      }
+    ],
+    "outputs": [
+      {
+        "item": "power_shard",
+        "amount": 1
+      },
+      {
+        "item": "dark_matter_residue",
+        "amount": 12
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": "MAM Power Slugs Research"
+  },
+  {
+    "id": "reanimated_sam_default",
+    "name": "Reanimated SAM",
+    "is_alternate": false,
+    "machine": "constructor",
+    "cycle_time_s": 2,
+    "inputs": [
+      {
+        "item": "sam",
+        "amount": 4
+      }
+    ],
+    "outputs": [
       {
         "item": "reanimated_sam",
         "amount": 1
       }
     ],
+    "unlock_tier": 0,
+    "notes": "MAM Alien Technology Research"
+  },
+  {
+    "id": "sam_fluctuator_default",
+    "name": "SAM Fluctuator",
+    "is_alternate": false,
+    "machine": "manufacturer",
+    "cycle_time_s": 6,
+    "inputs": [
+      {
+        "item": "reanimated_sam",
+        "amount": 6
+      },
+      {
+        "item": "wire",
+        "amount": 5
+      },
+      {
+        "item": "steel_pipe",
+        "amount": 3
+      }
+    ],
     "outputs": [
       {
         "item": "sam_fluctuator",
-        "amount": 2
+        "amount": 1
       }
     ],
-    "unlock_tier": 9,
-    "notes": ""
+    "unlock_tier": 0,
+    "notes": "MAM Alien Technology Research"
   },
   {
     "id": "singularity_cell_default",
     "name": "Singularity Cell",
     "is_alternate": false,
-    "machine": "particle_accelerator",
-    "cycle_time_s": 2,
+    "machine": "manufacturer",
+    "cycle_time_s": 60,
     "inputs": [
       {
-        "item": "plutonium_pellet",
-        "amount": 3
+        "item": "nuclear_pasta",
+        "amount": 1
       },
       {
-        "item": "dark_matter_residue",
-        "amount": 6
+        "item": "dark_matter_crystal",
+        "amount": 20
+      },
+      {
+        "item": "iron_plate",
+        "amount": 100
+      },
+      {
+        "item": "concrete",
+        "amount": 200
       }
     ],
     "outputs": [
       {
         "item": "singularity_cell",
-        "amount": 1
+        "amount": 10
       }
     ],
     "unlock_tier": 9,
@@ -2503,21 +3053,33 @@
     "name": "Superposition Oscillator",
     "is_alternate": false,
     "machine": "quantum_encoder",
-    "cycle_time_s": 2,
+    "cycle_time_s": 12,
     "inputs": [
       {
         "item": "dark_matter_crystal",
+        "amount": 6
+      },
+      {
+        "item": "crystal_oscillator",
         "amount": 1
       },
       {
+        "item": "alclad_aluminum_sheet",
+        "amount": 9
+      },
+      {
         "item": "excited_photonic_matter",
-        "amount": 1
+        "amount": 25
       }
     ],
     "outputs": [
       {
         "item": "superposition_oscillator",
         "amount": 1
+      },
+      {
+        "item": "dark_matter_residue",
+        "amount": 25
       }
     ],
     "unlock_tier": 9,
@@ -2528,17 +3090,17 @@
     "name": "Time Crystal",
     "is_alternate": false,
     "machine": "converter",
-    "cycle_time_s": 6,
+    "cycle_time_s": 10,
     "inputs": [
       {
-        "item": "reanimated_sam",
-        "amount": 1
+        "item": "diamonds",
+        "amount": 2
       }
     ],
     "outputs": [
       {
         "item": "time_crystal",
-        "amount": 2
+        "amount": 1
       }
     ],
     "unlock_tier": 9,
@@ -2845,8 +3407,8 @@
     "notes": ""
   },
   {
-    "id": "converter_quartz_from_caterium",
-    "name": "Raw Quartz (from Caterium Ore)",
+    "id": "converter_quartz_from_bauxite",
+    "name": "Raw Quartz (from Bauxite)",
     "is_alternate": false,
     "machine": "converter",
     "cycle_time_s": 6,
@@ -2856,8 +3418,8 @@
         "amount": 1
       },
       {
-        "item": "caterium_ore",
-        "amount": 12
+        "item": "bauxite",
+        "amount": 10
       }
     ],
     "outputs": [
@@ -2870,8 +3432,8 @@
     "notes": ""
   },
   {
-    "id": "converter_sulfur_from_caterium",
-    "name": "Sulfur (from Caterium Ore)",
+    "id": "converter_quartz_from_coal",
+    "name": "Raw Quartz (from Coal)",
     "is_alternate": false,
     "machine": "converter",
     "cycle_time_s": 6,
@@ -2881,13 +3443,88 @@
         "amount": 1
       },
       {
-        "item": "caterium_ore",
-        "amount": 15
+        "item": "coal",
+        "amount": 24
+      }
+    ],
+    "outputs": [
+      {
+        "item": "raw_quartz",
+        "amount": 12
+      }
+    ],
+    "unlock_tier": 9,
+    "notes": ""
+  },
+  {
+    "id": "converter_sulfur_from_coal",
+    "name": "Sulfur (from Coal)",
+    "is_alternate": false,
+    "machine": "converter",
+    "cycle_time_s": 6,
+    "inputs": [
+      {
+        "item": "reanimated_sam",
+        "amount": 1
+      },
+      {
+        "item": "coal",
+        "amount": 20
       }
     ],
     "outputs": [
       {
         "item": "sulfur",
+        "amount": 12
+      }
+    ],
+    "unlock_tier": 9,
+    "notes": ""
+  },
+  {
+    "id": "converter_sulfur_from_iron",
+    "name": "Sulfur (from Iron Ore)",
+    "is_alternate": false,
+    "machine": "converter",
+    "cycle_time_s": 6,
+    "inputs": [
+      {
+        "item": "reanimated_sam",
+        "amount": 1
+      },
+      {
+        "item": "iron_ore",
+        "amount": 30
+      }
+    ],
+    "outputs": [
+      {
+        "item": "sulfur",
+        "amount": 12
+      }
+    ],
+    "unlock_tier": 9,
+    "notes": ""
+  },
+  {
+    "id": "converter_uranium_from_bauxite",
+    "name": "Uranium Ore (from Bauxite)",
+    "is_alternate": false,
+    "machine": "converter",
+    "cycle_time_s": 6,
+    "inputs": [
+      {
+        "item": "reanimated_sam",
+        "amount": 1
+      },
+      {
+        "item": "bauxite",
+        "amount": 48
+      }
+    ],
+    "outputs": [
+      {
+        "item": "uranium",
         "amount": 12
       }
     ],
@@ -2920,7 +3557,7 @@
     "name": "Quickwire",
     "is_alternate": false,
     "machine": "constructor",
-    "cycle_time_s": 12,
+    "cycle_time_s": 5,
     "inputs": [
       {
         "item": "caterium_ingot",
@@ -2958,6 +3595,56 @@
     "notes": "MAM Alien Megafauna"
   },
   {
+    "id": "stun_rebar_default",
+    "name": "Stun Rebar",
+    "is_alternate": false,
+    "machine": "assembler",
+    "cycle_time_s": 6,
+    "inputs": [
+      {
+        "item": "iron_rebar",
+        "amount": 1
+      },
+      {
+        "item": "quickwire",
+        "amount": 5
+      }
+    ],
+    "outputs": [
+      {
+        "item": "stun_rebar",
+        "amount": 1
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": "MAM Caterium Research"
+  },
+  {
+    "id": "shatter_rebar_default",
+    "name": "Shatter Rebar",
+    "is_alternate": false,
+    "machine": "assembler",
+    "cycle_time_s": 12,
+    "inputs": [
+      {
+        "item": "iron_rebar",
+        "amount": 2
+      },
+      {
+        "item": "quartz_crystal",
+        "amount": 3
+      }
+    ],
+    "outputs": [
+      {
+        "item": "shatter_rebar",
+        "amount": 1
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": "MAM Quartz Research"
+  },
+  {
     "id": "biomass_mycelia_default",
     "name": "Biomass (Mycelia)",
     "is_alternate": false,
@@ -2979,11 +3666,95 @@
     "notes": "MAM Mycelia Research"
   },
   {
+    "id": "stinger_protein_default",
+    "name": "Stinger Protein",
+    "is_alternate": false,
+    "machine": "constructor",
+    "cycle_time_s": 3,
+    "inputs": [
+      {
+        "item": "stinger_remains",
+        "amount": 1
+      }
+    ],
+    "outputs": [
+      {
+        "item": "alien_protein",
+        "amount": 1
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": "MAM Alien Megafauna Research"
+  },
+  {
+    "id": "hog_protein_default",
+    "name": "Hog Protein",
+    "is_alternate": false,
+    "machine": "constructor",
+    "cycle_time_s": 3,
+    "inputs": [
+      {
+        "item": "hog_remains",
+        "amount": 1
+      }
+    ],
+    "outputs": [
+      {
+        "item": "alien_protein",
+        "amount": 1
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": "MAM Alien Megafauna Research"
+  },
+  {
+    "id": "hatcher_protein_default",
+    "name": "Hatcher Protein",
+    "is_alternate": false,
+    "machine": "constructor",
+    "cycle_time_s": 3,
+    "inputs": [
+      {
+        "item": "hatcher_remains",
+        "amount": 1
+      }
+    ],
+    "outputs": [
+      {
+        "item": "alien_protein",
+        "amount": 1
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": "MAM Alien Megafauna Research"
+  },
+  {
+    "id": "spitter_protein_default",
+    "name": "Spitter Protein",
+    "is_alternate": false,
+    "machine": "constructor",
+    "cycle_time_s": 3,
+    "inputs": [
+      {
+        "item": "spitter_remains",
+        "amount": 1
+      }
+    ],
+    "outputs": [
+      {
+        "item": "alien_protein",
+        "amount": 1
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": "MAM Alien Megafauna Research"
+  },
+  {
     "id": "biomass_alien_protein_default",
     "name": "Biomass (Alien Protein)",
     "is_alternate": false,
     "machine": "constructor",
-    "cycle_time_s": 1.2,
+    "cycle_time_s": 4,
     "inputs": [
       {
         "item": "alien_protein",
@@ -3074,7 +3845,7 @@
     "id": "smokeless_powder_default",
     "name": "Smokeless Powder",
     "is_alternate": false,
-    "machine": "assembler",
+    "machine": "refinery",
     "cycle_time_s": 6,
     "inputs": [
       {
@@ -3082,14 +3853,14 @@
         "amount": 2
       },
       {
-        "item": "steel_pipe",
+        "item": "heavy_oil_residue",
         "amount": 1
       }
     ],
     "outputs": [
       {
         "item": "smokeless_powder",
-        "amount": 5
+        "amount": 2
       }
     ],
     "unlock_tier": 5,
@@ -3144,6 +3915,31 @@
     ],
     "unlock_tier": 5,
     "notes": "MAM Sulfur Research"
+  },
+  {
+    "id": "pulse_nobelisk_default",
+    "name": "Pulse Nobelisk",
+    "is_alternate": false,
+    "machine": "assembler",
+    "cycle_time_s": 60,
+    "inputs": [
+      {
+        "item": "nobelisk",
+        "amount": 5
+      },
+      {
+        "item": "crystal_oscillator",
+        "amount": 1
+      }
+    ],
+    "outputs": [
+      {
+        "item": "pulse_nobelisk",
+        "amount": 5
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": "MAM Quartz Research"
   },
   {
     "id": "cluster_nobelisk_default",
@@ -3232,22 +4028,26 @@
     "id": "rocket_fuel_default",
     "name": "Rocket Fuel",
     "is_alternate": false,
-    "machine": "refinery",
+    "machine": "blender",
     "cycle_time_s": 6,
     "inputs": [
       {
-        "item": "fuel",
-        "amount": 12
+        "item": "turbofuel",
+        "amount": 6
       },
       {
-        "item": "compacted_coal",
-        "amount": 3
+        "item": "nitric_acid",
+        "amount": 1
       }
     ],
     "outputs": [
       {
         "item": "rocket_fuel",
-        "amount": 5
+        "amount": 10
+      },
+      {
+        "item": "compacted_coal",
+        "amount": 1
       }
     ],
     "unlock_tier": 7,
@@ -3258,21 +4058,21 @@
     "name": "Turbofuel",
     "is_alternate": false,
     "machine": "refinery",
-    "cycle_time_s": 16,
+    "cycle_time_s": 15,
     "inputs": [
       {
         "item": "fuel",
-        "amount": 13
+        "amount": 6
       },
       {
         "item": "compacted_coal",
-        "amount": 2
+        "amount": 4
       }
     ],
     "outputs": [
       {
         "item": "turbofuel",
-        "amount": 2
+        "amount": 5
       }
     ],
     "unlock_tier": 6,
@@ -3333,6 +4133,31 @@
     "notes": "MAM Sulfur Research"
   },
   {
+    "id": "unpackage_turbofuel_default",
+    "name": "Unpackage Turbofuel",
+    "is_alternate": false,
+    "machine": "packager",
+    "cycle_time_s": 6,
+    "inputs": [
+      {
+        "item": "packaged_turbofuel",
+        "amount": 2
+      }
+    ],
+    "outputs": [
+      {
+        "item": "turbofuel",
+        "amount": 2
+      },
+      {
+        "item": "empty_canister",
+        "amount": 2
+      }
+    ],
+    "unlock_tier": 6,
+    "notes": "MAM Sulfur Research"
+  },
+  {
     "id": "packaged_rocket_fuel_default",
     "name": "Packaged Rocket Fuel",
     "is_alternate": false,
@@ -3358,6 +4183,31 @@
     "notes": "MAM Sulfur Research"
   },
   {
+    "id": "unpackage_rocket_fuel_default",
+    "name": "Unpackage Rocket Fuel",
+    "is_alternate": false,
+    "machine": "packager",
+    "cycle_time_s": 1,
+    "inputs": [
+      {
+        "item": "packaged_rocket_fuel",
+        "amount": 1
+      }
+    ],
+    "outputs": [
+      {
+        "item": "rocket_fuel",
+        "amount": 2
+      },
+      {
+        "item": "empty_fluid_tank",
+        "amount": 1
+      }
+    ],
+    "unlock_tier": 7,
+    "notes": "MAM Sulfur Research"
+  },
+  {
     "id": "packaged_ionized_fuel_default",
     "name": "Packaged Ionized Fuel",
     "is_alternate": false,
@@ -3376,6 +4226,31 @@
     "outputs": [
       {
         "item": "packaged_ionized_fuel",
+        "amount": 2
+      }
+    ],
+    "unlock_tier": 8,
+    "notes": "MAM Sulfur Research"
+  },
+  {
+    "id": "unpackage_ionized_fuel_default",
+    "name": "Unpackage Ionized Fuel",
+    "is_alternate": false,
+    "machine": "packager",
+    "cycle_time_s": 3,
+    "inputs": [
+      {
+        "item": "packaged_ionized_fuel",
+        "amount": 2
+      }
+    ],
+    "outputs": [
+      {
+        "item": "ionized_fuel",
+        "amount": 4
+      },
+      {
+        "item": "empty_fluid_tank",
         "amount": 2
       }
     ],
@@ -3457,25 +4332,25 @@
     "id": "rifle_ammo_default",
     "name": "Rifle Ammo",
     "is_alternate": false,
-    "machine": "manufacturer",
-    "cycle_time_s": 8,
+    "machine": "assembler",
+    "cycle_time_s": 12,
     "inputs": [
       {
-        "item": "smokeless_powder",
-        "amount": 8
+        "item": "copper_sheet",
+        "amount": 3
       },
       {
-        "item": "copper_sheet",
-        "amount": 10
+        "item": "smokeless_powder",
+        "amount": 2
       }
     ],
     "outputs": [
       {
         "item": "rifle_ammo",
-        "amount": 20
+        "amount": 15
       }
     ],
-    "unlock_tier": 7,
+    "unlock_tier": 0,
     "notes": "MAM Sulfur Research"
   },
   {
@@ -3507,30 +4382,146 @@
     "id": "turbo_rifle_ammo_default",
     "name": "Turbo Rifle Ammo",
     "is_alternate": false,
-    "machine": "manufacturer",
+    "machine": "blender",
     "cycle_time_s": 12,
     "inputs": [
       {
         "item": "rifle_ammo",
-        "amount": 15
+        "amount": 25
       },
       {
         "item": "aluminum_casing",
-        "amount": 5
+        "amount": 3
       },
       {
-        "item": "smokeless_powder",
-        "amount": 5
+        "item": "turbofuel",
+        "amount": 3
       }
     ],
     "outputs": [
       {
         "item": "turbo_rifle_ammo",
-        "amount": 15
+        "amount": 50
       }
     ],
-    "unlock_tier": 7,
-    "notes": "MAM Caterium Research"
+    "unlock_tier": 0,
+    "notes": "MAM Sulfur Research"
+  },
+  {
+    "id": "turbo_rifle_ammo_packaged_default",
+    "name": "Turbo Rifle Ammo (Packaged)",
+    "is_alternate": false,
+    "machine": "manufacturer",
+    "cycle_time_s": 12,
+    "inputs": [
+      {
+        "item": "rifle_ammo",
+        "amount": 25
+      },
+      {
+        "item": "aluminum_casing",
+        "amount": 3
+      },
+      {
+        "item": "packaged_turbofuel",
+        "amount": 3
+      }
+    ],
+    "outputs": [
+      {
+        "item": "turbo_rifle_ammo",
+        "amount": 50
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": "MAM Sulfur Research"
+  },
+  {
+    "id": "golden_factory_cart_crafted",
+    "name": "Golden Factory Cart",
+    "is_alternate": false,
+    "machine": "equipment_workshop",
+    "cycle_time_s": 0,
+    "inputs": [
+      {
+        "item": "caterium_ingot",
+        "amount": 15
+      },
+      {
+        "item": "iron_rod",
+        "amount": 4
+      },
+      {
+        "item": "rotor",
+        "amount": 2
+      }
+    ],
+    "outputs": [
+      {
+        "item": "golden_factory_cart",
+        "amount": 1
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": "AWESOME Shop"
+  },
+  {
+    "id": "factory_cart_crafted",
+    "name": "Factory Cart",
+    "is_alternate": false,
+    "machine": "equipment_workshop",
+    "cycle_time_s": 0,
+    "inputs": [
+      {
+        "item": "reinforced_iron_plate",
+        "amount": 4
+      },
+      {
+        "item": "iron_rod",
+        "amount": 4
+      },
+      {
+        "item": "rotor",
+        "amount": 2
+      }
+    ],
+    "outputs": [
+      {
+        "item": "factory_cart",
+        "amount": 1
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": "AWESOME Shop"
+  },
+  {
+    "id": "blade_runners_crafted",
+    "name": "Blade Runners",
+    "is_alternate": false,
+    "machine": "equipment_workshop",
+    "cycle_time_s": 0,
+    "inputs": [
+      {
+        "item": "silica",
+        "amount": 20
+      },
+      {
+        "item": "modular_frame",
+        "amount": 3
+      },
+      {
+        "item": "rotor",
+        "amount": 3
+      }
+    ],
+    "outputs": [
+      {
+        "item": "blade_runners",
+        "amount": 1
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": "MAM Quartz Research"
   },
   {
     "id": "chainsaw_crafted",
@@ -3736,10 +4727,6 @@
       {
         "item": "iron_rod",
         "amount": 4
-      },
-      {
-        "item": "motor",
-        "amount": 2
       }
     ],
     "outputs": [
@@ -3788,16 +4775,20 @@
     "cycle_time_s": 0,
     "inputs": [
       {
-        "item": "iron_plate",
+        "item": "xeno_zapper",
+        "amount": 2
+      },
+      {
+        "item": "modular_frame",
         "amount": 5
       },
       {
         "item": "iron_rod",
-        "amount": 20
+        "amount": 25
       },
       {
-        "item": "screw",
-        "amount": 50
+        "item": "wire",
+        "amount": 500
       }
     ],
     "outputs": [
@@ -3817,16 +4808,20 @@
     "cycle_time_s": 0,
     "inputs": [
       {
+        "item": "iron_rod",
+        "amount": 10
+      },
+      {
         "item": "reinforced_iron_plate",
-        "amount": 8
+        "amount": 2
       },
       {
-        "item": "rotor",
-        "amount": 4
+        "item": "cable",
+        "amount": 15
       },
       {
-        "item": "rubber",
-        "amount": 5
+        "item": "wire",
+        "amount": 50
       }
     ],
     "outputs": [
@@ -3837,6 +4832,255 @@
     ],
     "unlock_tier": 5,
     "notes": "Manual crafting only"
+  },
+  {
+    "id": "zipline_crafted",
+    "name": "Zipline",
+    "is_alternate": false,
+    "machine": "equipment_workshop",
+    "cycle_time_s": 0,
+    "inputs": [
+      {
+        "item": "xeno_zapper",
+        "amount": 1
+      },
+      {
+        "item": "quickwire",
+        "amount": 30
+      },
+      {
+        "item": "iron_rod",
+        "amount": 3
+      },
+      {
+        "item": "cable",
+        "amount": 10
+      }
+    ],
+    "outputs": [
+      {
+        "item": "zipline",
+        "amount": 1
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": "MAM Caterium Research"
+  },
+  {
+    "id": "nutritional_inhaler_crafted",
+    "name": "Nutritional Inhaler",
+    "is_alternate": false,
+    "machine": "equipment_workshop",
+    "cycle_time_s": 0,
+    "inputs": [
+      {
+        "item": "bacon_agaric",
+        "amount": 1
+      },
+      {
+        "item": "paleberry",
+        "amount": 2
+      },
+      {
+        "item": "beryl_nut",
+        "amount": 5
+      }
+    ],
+    "outputs": [
+      {
+        "item": "medicinal_inhaler",
+        "amount": 1
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": "MAM Nutrients Research"
+  },
+  {
+    "id": "vitamin_inhaler_crafted",
+    "name": "Vitamin Inhaler",
+    "is_alternate": false,
+    "machine": "equipment_workshop",
+    "cycle_time_s": 0,
+    "inputs": [
+      {
+        "item": "mycelia",
+        "amount": 10
+      },
+      {
+        "item": "paleberry",
+        "amount": 5
+      }
+    ],
+    "outputs": [
+      {
+        "item": "medicinal_inhaler",
+        "amount": 1
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": "MAM Mycelia Research"
+  },
+  {
+    "id": "therapeutic_inhaler_crafted",
+    "name": "Therapeutic Inhaler",
+    "is_alternate": false,
+    "machine": "equipment_workshop",
+    "cycle_time_s": 0,
+    "inputs": [
+      {
+        "item": "mycelia",
+        "amount": 15
+      },
+      {
+        "item": "alien_protein",
+        "amount": 1
+      },
+      {
+        "item": "bacon_agaric",
+        "amount": 1
+      }
+    ],
+    "outputs": [
+      {
+        "item": "medicinal_inhaler",
+        "amount": 1
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": "MAM Mycelia Research"
+  },
+  {
+    "id": "protein_inhaler_crafted",
+    "name": "Protein Inhaler",
+    "is_alternate": false,
+    "machine": "equipment_workshop",
+    "cycle_time_s": 0,
+    "inputs": [
+      {
+        "item": "alien_protein",
+        "amount": 1
+      },
+      {
+        "item": "beryl_nut",
+        "amount": 10
+      }
+    ],
+    "outputs": [
+      {
+        "item": "medicinal_inhaler",
+        "amount": 1
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": "MAM Alien Megafauna Research"
+  },
+  {
+    "id": "rifle_crafted",
+    "name": "Rifle",
+    "is_alternate": false,
+    "machine": "equipment_workshop",
+    "cycle_time_s": 0,
+    "inputs": [
+      {
+        "item": "motor",
+        "amount": 2
+      },
+      {
+        "item": "rubber",
+        "amount": 10
+      },
+      {
+        "item": "steel_pipe",
+        "amount": 25
+      },
+      {
+        "item": "screw",
+        "amount": 250
+      }
+    ],
+    "outputs": [
+      {
+        "item": "rifle",
+        "amount": 1
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": "MAM Sulfur Research"
+  },
+  {
+    "id": "rebar_gun_crafted",
+    "name": "Rebar Gun",
+    "is_alternate": false,
+    "machine": "equipment_workshop",
+    "cycle_time_s": 0,
+    "inputs": [
+      {
+        "item": "reinforced_iron_plate",
+        "amount": 6
+      },
+      {
+        "item": "iron_rod",
+        "amount": 16
+      },
+      {
+        "item": "screw",
+        "amount": 100
+      }
+    ],
+    "outputs": [
+      {
+        "item": "rebar_gun",
+        "amount": 1
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": "MAM Alien Megafauna Research"
+  },
+  {
+    "id": "parachute_crafted",
+    "name": "Parachute",
+    "is_alternate": false,
+    "machine": "equipment_workshop",
+    "cycle_time_s": 0,
+    "inputs": [
+      {
+        "item": "fabric",
+        "amount": 20
+      },
+      {
+        "item": "cable",
+        "amount": 10
+      }
+    ],
+    "outputs": [
+      {
+        "item": "parachute",
+        "amount": 1
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": "MAM Mycelia Research"
+  },
+  {
+    "id": "alt_aluminum_beam",
+    "name": "Alt: Aluminum Beam",
+    "is_alternate": true,
+    "machine": "constructor",
+    "cycle_time_s": 8,
+    "inputs": [
+      {
+        "item": "aluminum_ingot",
+        "amount": 3
+      }
+    ],
+    "outputs": [
+      {
+        "item": "steel_beam",
+        "amount": 3
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": ""
   },
   {
     "id": "alt_pure_iron_ingot",
@@ -4108,6 +5352,31 @@
       {
         "item": "caterium_ingot",
         "amount": 1
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": ""
+  },
+  {
+    "id": "alt_tempered_copper_ingot",
+    "name": "Alt: Tempered Copper Ingot",
+    "is_alternate": true,
+    "machine": "foundry",
+    "cycle_time_s": 12,
+    "inputs": [
+      {
+        "item": "copper_ore",
+        "amount": 5
+      },
+      {
+        "item": "petroleum_coke",
+        "amount": 8
+      }
+    ],
+    "outputs": [
+      {
+        "item": "copper_ingot",
+        "amount": 12
       }
     ],
     "unlock_tier": 0,
@@ -5902,7 +7171,7 @@
     "name": "Alt: Fertile Uranium",
     "is_alternate": true,
     "machine": "blender",
-    "cycle_time_s": 24,
+    "cycle_time_s": 12,
     "inputs": [
       {
         "item": "uranium",
@@ -6285,7 +7554,7 @@
     "name": "Alt: Nitro Rocket Fuel",
     "is_alternate": true,
     "machine": "blender",
-    "cycle_time_s": 6,
+    "cycle_time_s": 2.4,
     "inputs": [
       {
         "item": "fuel",
@@ -6322,7 +7591,7 @@
     "name": "Alt: Dark-Ion Fuel",
     "is_alternate": true,
     "machine": "converter",
-    "cycle_time_s": 24,
+    "cycle_time_s": 3,
     "inputs": [
       {
         "item": "packaged_rocket_fuel",
@@ -6511,6 +7780,35 @@
       {
         "item": "black_powder",
         "amount": 6
+      }
+    ],
+    "unlock_tier": 0,
+    "notes": ""
+  },
+  {
+    "id": "alt_flexible_framework",
+    "name": "Alt: Flexible Framework",
+    "is_alternate": true,
+    "machine": "manufacturer",
+    "cycle_time_s": 16,
+    "inputs": [
+      {
+        "item": "modular_frame",
+        "amount": 1
+      },
+      {
+        "item": "steel_beam",
+        "amount": 6
+      },
+      {
+        "item": "rubber",
+        "amount": 8
+      }
+    ],
+    "outputs": [
+      {
+        "item": "versatile_framework",
+        "amount": 2
       }
     ],
     "unlock_tier": 0,

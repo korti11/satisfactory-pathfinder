@@ -579,12 +579,18 @@ fn cmd_list(db: &Db, fmt: &Formatter, target: ListTarget) -> Result<()> {
                             .iter()
                             .map(|c| format!("{}×{}", c.amount, c.item))
                             .collect();
+                        let requires = if node.requires.is_empty() {
+                            String::new()
+                        } else {
+                            format!("  requires: {}", node.requires.join(", "))
+                        };
                         println!(
-                            "  {:<35} ({})  [{}]  → {}",
+                            "  {:<35} ({})  [{}]  → {}{}",
                             node.name,
                             node.id,
                             cost.join(", "),
-                            node.unlocks.join(", ")
+                            node.unlocks.join(", "),
+                            requires
                         );
                     }
                 }
