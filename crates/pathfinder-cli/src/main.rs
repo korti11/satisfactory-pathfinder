@@ -920,7 +920,7 @@ fn cmd_sink(
         .filter(|i| i.sink_value > 0)
         .filter(|i| category.is_none_or(|c| i.category == c))
         .collect();
-    items.sort_by(|a, b| b.sink_value.cmp(&a.sink_value));
+    items.sort_by_key(|b| std::cmp::Reverse(b.sink_value));
 
     if fmt.json_mode {
         let out: Vec<_> = items
